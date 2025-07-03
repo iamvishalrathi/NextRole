@@ -135,7 +135,7 @@ export async function getCurrentUser():Promise<User
 export async function isAuthenticated(){
     const user = await getCurrentUser();
 
-    return !!user;
+    return !!user; // returns true if user is authenticated, false otherwise. It convert the user object to a boolean by checking its truthiness.
 }
 
 export async function signOut(){
