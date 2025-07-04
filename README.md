@@ -23,29 +23,26 @@
 
 <br>
 
-##  Table of Contents
+## 🔗 Table of Contents
 
-- [ Overview](#-overview)
-- [ Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [ Project Structure](#-project-structure)
-  - [ Project Index](#-project-index)
-- [ Getting Started](#-getting-started)
-  - [ Installation](#-installation)
-  - [ Usage](#-usage)
-  - [ Testing](#-testing)
-- [Contact](#-contact)
+- [📍 Overview](#-overview)
+- [👾 Features](#-features)
+- [⚙️ Tech Stack](#-tech-stack)
+- [🔍 Website Preview](#-website-preview)
+- [📂 Repository Structure](#-repository-structure)
+- [🚀 Getting Started](#-getting-started)
+    - [📦 Installation](#-installation)
+    - [🤖 Usage](#-usage)
+- [📞 Contact](#-contact)
 
 ---
 
-##  Overview
-
+## 📍 Overview
 PrepWise is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate customized interview questions, conduct realistic interview simulations, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
 
-![image](https://github.com/user-attachments/assets/24f52e77-48b6-4e24-90ef-3e6b2846db6a)
-
 ---
-##  Features
+
+## 👾 Features
 
 ### 1. Customized Interview Generation
 - Create personalized interview experiences based on:
@@ -84,7 +81,8 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 - View profiles of other users and their public interviews
 
 ---
-### Tech Stack
+
+## ⚙️ Tech Stack
 
 ### Frontend
 - **Next.js**: React framework for server-rendered applications
@@ -101,11 +99,15 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 
 ### Authentication
 - Firebase Authentication for secure user management
----
 
 ---
 
-##  Project Structure
+## 🔍 Website Preview
+![image](https://github.com/iamvishalrathi/PodTales/blob/main/public/sns.png)
+
+---
+
+## 📂 Repository Structure
 
 ```sh
 └── NextRole/
@@ -170,363 +172,9 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
         └── vapi.d.ts
 ```
 
+## 🚀 Getting Started
 
-###  Project Index
-<details open>
-	<summary><b><code>NextRole/</code></b></summary>
-	<details> <!-- __root__ Submodule -->
-		<summary><b>__root__</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/package-lock.json'>package-lock.json</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/next.config.ts'>next.config.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/tsconfig.json'>tsconfig.json</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/eslint.config.mjs'>eslint.config.mjs</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/postcss.config.mjs'>postcss.config.mjs</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/package.json'>package.json</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components.json'>components.json</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-	<details> <!-- types Submodule -->
-		<summary><b>types</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/types/vapi.d.ts'>vapi.d.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/types/index.d.ts'>index.d.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-	<details> <!-- lib Submodule -->
-		<summary><b>lib</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/vapi.sdk.ts'>vapi.sdk.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/utils.ts'>utils.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-			<details>
-				<summary><b>actions</b></summary>
-				<blockquote>
-					<table>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/actions/auth.action.ts'>auth.action.ts</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/actions/general.actions.ts'>general.actions.ts</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					</table>
-				</blockquote>
-			</details>
-		</blockquote>
-	</details>
-	<details> <!-- components Submodule -->
-		<summary><b>components</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/Agent.tsx'>Agent.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/EditInterview.tsx'>EditInterview.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/InterviewForm.tsx'>InterviewForm.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/SignOut.tsx'>SignOut.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/FormField.tsx'>FormField.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/FeedbackWithRating.tsx'>FeedbackWithRating.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/AuthForm.tsx'>AuthForm.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/InterviewCard.tsx'>InterviewCard.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/RatingModal.tsx'>RatingModal.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/DisplayTechIcons.tsx'>DisplayTechIcons.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-			<details>
-				<summary><b>ui</b></summary>
-				<blockquote>
-					<table>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/label.tsx'>label.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/input.tsx'>input.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/form.tsx'>form.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/button.tsx'>button.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/switch.tsx'>switch.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/sonner.tsx'>sonner.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					</table>
-				</blockquote>
-			</details>
-		</blockquote>
-	</details>
-	<details> <!-- constants Submodule -->
-		<summary><b>constants</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/constants/index.ts'>index.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-	<details> <!-- app Submodule -->
-		<summary><b>app</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/layout.tsx'>layout.tsx</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/globals.css'>globals.css</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-			<details>
-				<summary><b>(auth)</b></summary>
-				<blockquote>
-					<table>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/layout.tsx'>layout.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					</table>
-					<details>
-						<summary><b>sign-in</b></summary>
-						<blockquote>
-							<table>
-							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/sign-in/page.tsx'>page.tsx</a></b></td>
-								<td><code>❯ REPLACE-ME</code></td>
-							</tr>
-							</table>
-						</blockquote>
-					</details>
-					<details>
-						<summary><b>sign-up</b></summary>
-						<blockquote>
-							<table>
-							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/sign-up/page.tsx'>page.tsx</a></b></td>
-								<td><code>❯ REPLACE-ME</code></td>
-							</tr>
-							</table>
-						</blockquote>
-					</details>
-				</blockquote>
-			</details>
-			<details>
-				<summary><b>(root)</b></summary>
-				<blockquote>
-					<table>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/layout.tsx'>layout.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/page.tsx'>page.tsx</a></b></td>
-						<td><code>❯ REPLACE-ME</code></td>
-					</tr>
-					</table>
-					<details>
-						<summary><b>interview</b></summary>
-						<blockquote>
-							<table>
-							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/page.tsx'>page.tsx</a></b></td>
-								<td><code>❯ REPLACE-ME</code></td>
-							</tr>
-							</table>
-							<details>
-								<summary><b>[id]</b></summary>
-								<blockquote>
-									<table>
-									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/page.tsx'>page.tsx</a></b></td>
-										<td><code>❯ REPLACE-ME</code></td>
-									</tr>
-									</table>
-									<details>
-										<summary><b>analytics</b></summary>
-										<blockquote>
-											<table>
-											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/analytics/page.tsx'>page.tsx</a></b></td>
-												<td><code>❯ REPLACE-ME</code></td>
-											</tr>
-											</table>
-										</blockquote>
-									</details>
-									<details>
-										<summary><b>edit</b></summary>
-										<blockquote>
-											<table>
-											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/edit/page.tsx'>page.tsx</a></b></td>
-												<td><code>❯ REPLACE-ME</code></td>
-											</tr>
-											</table>
-										</blockquote>
-									</details>
-									<details>
-										<summary><b>feedback</b></summary>
-										<blockquote>
-											<table>
-											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/feedback/page.tsx'>page.tsx</a></b></td>
-												<td><code>❯ REPLACE-ME</code></td>
-											</tr>
-											</table>
-										</blockquote>
-									</details>
-								</blockquote>
-							</details>
-						</blockquote>
-					</details>
-					<details>
-						<summary><b>user</b></summary>
-						<blockquote>
-							<details>
-								<summary><b>[id]</b></summary>
-								<blockquote>
-									<table>
-									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/user/[id]/page.tsx'>page.tsx</a></b></td>
-										<td><code>❯ REPLACE-ME</code></td>
-									</tr>
-									</table>
-								</blockquote>
-							</details>
-						</blockquote>
-					</details>
-				</blockquote>
-			</details>
-			<details>
-				<summary><b>api</b></summary>
-				<blockquote>
-					<details>
-						<summary><b>vapi</b></summary>
-						<blockquote>
-							<details>
-								<summary><b>generate</b></summary>
-								<blockquote>
-									<table>
-									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/api/vapi/generate/route.ts'>route.ts</a></b></td>
-										<td><code>❯ REPLACE-ME</code></td>
-									</tr>
-									</table>
-								</blockquote>
-							</details>
-						</blockquote>
-					</details>
-				</blockquote>
-			</details>
-		</blockquote>
-	</details>
-	<details> <!-- firebase Submodule -->
-		<summary><b>firebase</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/firebase/client.ts'>client.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/firebase/admin.ts'>admin.ts</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-</details>
-
----
-##  Getting Started
-
-###  Prerequisites
-
-Before getting started with NextRole, ensure your runtime environment meets the following requirements:
-
-- **Programming Language:** TypeScript
-- **Package Manager:** Npm
-
-
-###  Installation
+### 📦 Installation
 
 Install NextRole using one of the following methods:
 
@@ -551,24 +199,12 @@ Install NextRole using one of the following methods:
 ❯ npm install
 ```
 
-
-
-
-###  Usage
+### 🤖 Usage
 Run NextRole using the following command:
 **Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
 
 ```sh
-❯ npm start
-```
-
-
-###  Testing
-Run the test suite using the following command:
-**Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
-
-```sh
-❯ npm test
+❯ npm run dev
 ```
 
 ---
