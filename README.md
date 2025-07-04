@@ -30,7 +30,7 @@
 
 - [📍 Overview](#-overview)
 - [👾 Features](#-features)
-- [⚙️ Tech Stack](#-tech-stack)
+- [⚙ Tech Stack](#-tech-stack)
 - [🔍 Website Preview](#-website-preview)
 - [📂 Repository Structure](#-repository-structure)
 - [🚀 Getting Started](#-getting-started)
@@ -41,7 +41,7 @@
 ---
 
 ## 📍 Overview
-PrepWise is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate customized interview questions, conduct realistic interview simulations, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
+NextRole is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate customized interview questions, conduct realistic interview simulations, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
 
 ---
 
@@ -84,7 +84,7 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 - 👥 View profiles of other users and their public interviews
 ---
 
-## ⚙️ Tech Stack
+## ⚙ Tech Stack
 
 ### 🖥️ Frontend
 - **Next.js**: React framework for server-rendered applications
