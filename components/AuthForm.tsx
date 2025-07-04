@@ -70,7 +70,8 @@ const AuthForm = ({type}:{type:FormType}) => {
           uid: userCredentials.user.uid,
           name: name!,
           email,
-          password
+          password,
+          isRecuiter: isRecruiter
         })
 
         if (!result?.success) {

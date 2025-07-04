@@ -87,6 +87,7 @@ interface SignUpParams {
   name: string;
   email: string;
   password: string;
+  isRecuiter: boolean;
 }
 
 type FormType = "sign-in" | "sign-up";
