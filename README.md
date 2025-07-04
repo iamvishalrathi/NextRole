@@ -18,8 +18,8 @@
     <img src="https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="nextjs" />
     <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="typescript" />
     <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="tailwindcss" />
+    <img src="https://img.shields.io/badge/shadcn--ui-18181B?style=for-the-badge&logo=ui&logoColor=white" alt="shadcn" />
     <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="firebase" />
-    <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="openai" />
     <img src="https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="gemini" />
     <img src="https://img.shields.io/badge/Vapi_AI-000000?style=for-the-badge&logo=voice&logoColor=white" alt="vapi" />
 </p>
@@ -48,41 +48,40 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 ## 👾 Features
 
 ### 1. Customized Interview Generation
-- Create personalized interview experiences based on:
-  - Job role (e.g., Frontend Developer, Data Scientist)
-  - Experience level (Entry, Mid, Senior)
-  - Interview type (Behavioral, Technical, Mixed)
-  - Tech stack (e.g., React, Node.js, MongoDB)
-  - Number of questions (1-20)
-  - Visibility settings (Public or Private)
+- 📝 Create personalized interview experiences based on:
+  - 💼 Job role (e.g., Frontend Developer, Data Scientist)
+  - 📈 Experience level (Entry, Mid, Senior)
+  - 🧩 Interview type (Behavioral, Technical, Mixed)
+  - 🛠️ Tech stack (e.g., React, Node.js, MongoDB)
+  - 🔢 Number of questions (1-20)
+  - 🔒 Visibility settings (Public or Private)
 
 ### 2. AI-Powered Interview Simulation
-- Voice-based interview conducted by an AI interviewer
-- Natural conversation flow with realistic questions
-- Real-time transcription of responses
+- 🎤 Voice-based interview conducted by an AI interviewer
+- 💬 Natural conversation flow with realistic questions
+- 📝 Real-time transcription of responses
 
 ### 3. Comprehensive Feedback
-- Detailed performance analysis across multiple categories:
-  - Communication Skills
-  - Technical Knowledge
-  - Problem-Solving
-  - Cultural & Role Fit
-  - Confidence & Clarity
-- Overall score out of 100
-- Identified strengths and areas for improvement
-- Final assessment with actionable recommendations
+- 📊 Detailed performance analysis across multiple categories:
+  - 🗣️ Communication Skills
+  - 💡 Technical Knowledge
+  - 🧮 Problem-Solving
+  - 🤝 Cultural & Role Fit
+  - 💪 Confidence & Clarity
+- 🏅 Overall score out of 100
+- 🌟 Identified strengths and areas for improvement
+- 📝 Final assessment with actionable recommendations
 
 ### 4. User Profiles & Interview Library
-- Personal user profiles with interview history
-- Access to public interviews created by other users
-- Rating system for interview quality
-- Analytics for interview creators
+- 👤 Personal user profiles with interview history
+- 🌐 Access to public interviews created by other users
+- ⭐ Rating system for interview quality
+- 📈 Analytics for interview creators
 
 ### 5. Community Features
-- Discover and practice with interviews created by other users
-- Share your custom interviews with the community
-- View profiles of other users and their public interviews
-
+- 🔎 Discover and practice with interviews created by other users
+- 📤 Share your custom interviews with the community
+- 👥 View profiles of other users and their public interviews
 ---
 
 ## ⚙️ Tech Stack
@@ -92,7 +91,7 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **React Hook Form**: Form validation and handling
 - **Zod**: TypeScript-first schema validation
-- **Sonner**: Toast notifications
+- **Shadcn**: Accessible and customizable UI components
 
 ### 🛠️ Backend
 - **Next.js API Routes**: Server-side API endpoints
