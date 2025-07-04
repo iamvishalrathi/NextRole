@@ -1,7 +1,7 @@
 <p align="center">
     <img src="/public/logo.svg" align="center" width="30%">
 </p>
-<p align="center"><h1 align="center">NextRole - AI-Powered Interview Practice Platform</h1></p>
+<p align="center"><h1 align="center">NextRole - AI-Powered Interview Platform</h1></p>
 <p align="center">
 	<em><code>❯ REPLACE-ME</code></em>
 </p>
