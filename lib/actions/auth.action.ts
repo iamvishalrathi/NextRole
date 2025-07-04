@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 const ONE_WEEK = 60*60*24*7
 
 export async function signUp( params : SignUpParams){
-    const {uid , name , email, isRecuiter} = params;
+    const {uid , name , email, isRecruiter} = params;
 
     try{
         const userRecord = await db.collection('users').doc(uid).get();
@@ -26,7 +26,7 @@ export async function signUp( params : SignUpParams){
             name, 
             email,
             avatarColor,
-            isRecuiter
+            isRecruiter
         })
 
         return {
@@ -123,7 +123,9 @@ export async function getCurrentUser():Promise<User
         }
 
         return {
-            ...userData, id:userRecord.id
+            ...userData, 
+            id:userRecord.id,
+            isRecruiter: userData?.isRecruiter || false
         } as User
 
     }
@@ -183,7 +185,8 @@ export async function getUserById(userId: string): Promise<User | null> {
             id: userId,
             name: userData?.name,
             email: userData?.email,
-            avatarColor: userData?.avatarColor
+            avatarColor: userData?.avatarColor,
+            isRecruiter: userData?.isRecruiter || false
         };
     } catch (error) {
         console.error('Error fetching user:', error);

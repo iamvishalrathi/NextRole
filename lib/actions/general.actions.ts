@@ -366,6 +366,73 @@ export async function updateInterview({
   }
 }
 
+// Profile completion actions
+export async function saveProfile(userId: string, profileData: object) {
+  try {
+    // Create a profile document in a profiles collection
+    await db.collection('profiles').doc(userId).set({
+      ...profileData,
+      userId,
+      completedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    // Update the user document to mark profile as completed
+    await db.collection('users').doc(userId).update({
+      profileCompleted: true
+    });
+
+    return {
+      success: true,
+      message: 'Profile saved successfully'
+    };
+  } catch (error) {
+    console.error('Error saving profile:', error);
+    return {
+      success: false,
+      message: 'Failed to save profile'
+    };
+  }
+}
+
+export async function getProfileByUserId(userId: string) {
+  try {
+    const profileDoc = await db.collection('profiles').doc(userId).get();
+    
+    if (!profileDoc.exists) {
+      return null;
+    }
+
+    return {
+      id: profileDoc.id,
+      ...profileDoc.data()
+    };
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return null;
+  }
+}
+
+export async function updateProfile(userId: string, profileData: object) {
+  try {
+    await db.collection('profiles').doc(userId).update({
+      ...profileData,
+      updatedAt: new Date().toISOString()
+    });
+
+    return {
+      success: true,
+      message: 'Profile updated successfully'
+    };
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    return {
+      success: false,
+      message: 'Failed to update profile'
+    };
+  }
+}
+
 
 
 

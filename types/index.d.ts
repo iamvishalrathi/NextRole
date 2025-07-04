@@ -40,6 +40,7 @@ interface User {
   email: string;
   id: string;
   avatarColor?: string;
+  isRecruiter: boolean;
 }
 
 interface InterviewCardProps {
@@ -87,7 +88,7 @@ interface SignUpParams {
   name: string;
   email: string;
   password: string;
-  isRecuiter: boolean;
+  isRecruiter: boolean;
 }
 
 type FormType = "sign-in" | "sign-up";
