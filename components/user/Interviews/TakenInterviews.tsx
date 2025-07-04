@@ -1,20 +1,20 @@
-import React from 'react'
-import { Button } from '../ui/button'
-import InterviewCard from '../InterviewCard'
+import InterviewCard from '@/components/InterviewCard'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import React from 'react'
 
-const CreatedInterviews = ({createdInterviews, isOwnProfile}) => {
+const TakenInterviews = ({ takenInterviews }) => {
     return (
-        <div className="mb-12">
+        <div>
             <div className="flex items-center gap-4 mb-6">
                 <div className="flex-shrink-0">
-                    <h2 className="text-2xl font-semibold text-primary-100">Created Interviews</h2>
+                    <h2 className="text-2xl font-semibold text-primary-100">Taken Interviews</h2>
                 </div>
                 <div className="flex-grow h-px bg-gradient-to-r from-primary-500/20 to-transparent"></div>
             </div>
-            {createdInterviews && createdInterviews.length > 0 ? (
+            {takenInterviews.length > 0 ? (
                 <div className="interviews-section">
-                    {createdInterviews.map((interview) => (
+                    {takenInterviews.map((interview) => (
                         <InterviewCard
                             key={interview.id}
                             id={interview.id}
@@ -28,15 +28,14 @@ const CreatedInterviews = ({createdInterviews, isOwnProfile}) => {
                 </div>
             ) : (
                 <div className="blue-gradient-dark rounded-lg border-2 border-primary-200/30 p-8 text-center">
-                    <p className="text-light-400 mb-4">No interviews created yet.</p>
-                    {isOwnProfile && <Button asChild className="btn-primary">
-                        <Link href="/interview">Create an Interview</Link>
-                    </Button>}
-
+                    <p className="text-light-400 mb-4">No interviews taken yet.</p>
+                    <Button asChild className="btn-primary">
+                        <Link href="/">Find Interviews</Link>
+                    </Button>
                 </div>
             )}
         </div>
     )
 }
 
-export default CreatedInterviews
+export default TakenInterviews

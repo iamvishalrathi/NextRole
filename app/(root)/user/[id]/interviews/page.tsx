@@ -1,5 +1,5 @@
-import CreatedInterviews from '@/components/user/CreatedInterviews';
-import TakenInterviews from '@/components/user/TakenInterviews';
+import CreatedInterviews from '@/components/user/Interviews/CreatedInterviews';
+import TakenInterviews from '@/components/user/Interviews/TakenInterviews';
 import { getCurrentUser, getUserById } from '@/lib/actions/auth.action';
 import { getInterviewByUserId, getUserTakenInterviews } from '@/lib/actions/general.actions';
 import { redirect } from 'next/navigation';
