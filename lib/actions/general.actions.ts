@@ -69,6 +69,52 @@ export async function getInterviewById(id: string, requestingUserId?: string): P
     return { ...data, id: interview.id, visibility } as Interview;
 }
 
+export async function getUserTakenInterviews(userId: string): Promise<Interview[]> {
+    try {
+        // Get all feedback documents for this user
+        const feedbackSnapshot = await db.collection('feedback')
+            .where('userId', '==', userId)
+            .get();
+
+        if (feedbackSnapshot.empty) {
+            return [];
+        }
+
+        // Extract interview IDs from feedback
+        const interviewIds = feedbackSnapshot.docs.map(doc => {
+            const data = doc.data();
+            return data.interviewId;
+        });
+
+        // Get unique interview IDs
+        const uniqueInterviewIds = [...new Set(interviewIds)];
+
+        // Fetch all interviews
+        const interviews = await Promise.all(
+            uniqueInterviewIds.map(async (id) => {
+                const interviewDoc = await db.collection('interviews').doc(id).get();
+                if (interviewDoc.exists) {
+                    return { id: interviewDoc.id, ...interviewDoc.data() } as Interview;
+                }
+                return null;
+            })
+        );
+
+        // Filter out null values and interviews created by the user
+        return interviews
+            .filter((interview): interview is Interview =>
+                interview !== null && interview.userId !== userId
+            )
+            .sort((a, b) => {
+                // Sort by creation date (newest first)
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            });
+    } catch (error) {
+        console.error('Error fetching taken interviews:', error);
+        return [];
+    }
+}
+
 export async function createFeedback(params : CreateFeedbackParams){
     const {interviewId , userId , transcript} = params;
 console.log("here");

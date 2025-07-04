@@ -29,7 +29,7 @@ const RootLayout = async ({children}:{children:ReactNode}) => {
         </>
 
         <div className="flex items-center gap-4">
-          <Link href={`/user/${user?.id}`} className="flex items-center">
+          <Link href={`/user/${user?.id}/profile`} className="flex items-center">
             <div className={`w-10 h-10 rounded-full ${avatarColor} flex items-center justify-center text-white font-semibold cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 border-2 border-dark-100/20`}>
               {userInitial}
             </div>
