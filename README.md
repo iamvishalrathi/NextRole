@@ -45,7 +45,6 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 ![image](https://github.com/user-attachments/assets/24f52e77-48b6-4e24-90ef-3e6b2846db6a)
 
 ---
-
 ##  Features
 
 ### 1. Customized Interview Generation
