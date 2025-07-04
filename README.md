@@ -171,6 +171,7 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
         ├── index.d.ts
         └── vapi.d.ts
 ```
+---
 
 ## 🚀 Getting Started
 
