@@ -3,13 +3,13 @@
 </p>
 <p align="center"><h1 align="center">NextRole - AI-Powered Interview Platform</h1></p>
 <p align="center">
-	<em><code>❯ REPLACE-ME</code></em>
+	<em><code><a href="https://next-role-prep.vercel.app/" target="_blank" >❯ Live</a></code></em>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/iamvishalrathi/PrepWise?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/iamvishalrathi/PrepWise?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/iamvishalrathi/PrepWise?style=default&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/iamvishalrathi/PrepWise?style=default&color=0080ff" alt="repo-language-count">
+	<img src="https://img.shields.io/github/license/iamvishalrathi/NextRole?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+	<img src="https://img.shields.io/github/last-commit/iamvishalrathi/NextRole?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/iamvishalrathi/NextRole?style=default&color=0080ff" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/iamvishalrathi/NextRole?style=default&color=0080ff" alt="repo-language-count">
 </p>
 <p align="center"><!-- default option, no dependency badges. -->
 </p>
@@ -51,7 +51,7 @@
 ##  Project Structure
 
 ```sh
-└── PrepWise/
+└── NextRole/
     ├── README.md
     ├── app
     │   ├── (auth)
@@ -116,37 +116,37 @@
 
 ###  Project Index
 <details open>
-	<summary><b><code>PREPWISE/</code></b></summary>
+	<summary><b><code>NextRole/</code></b></summary>
 	<details> <!-- __root__ Submodule -->
 		<summary><b>__root__</b></summary>
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/package-lock.json'>package-lock.json</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/package-lock.json'>package-lock.json</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/next.config.ts'>next.config.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/next.config.ts'>next.config.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/tsconfig.json'>tsconfig.json</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/tsconfig.json'>tsconfig.json</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/eslint.config.mjs'>eslint.config.mjs</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/eslint.config.mjs'>eslint.config.mjs</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/postcss.config.mjs'>postcss.config.mjs</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/postcss.config.mjs'>postcss.config.mjs</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/package.json'>package.json</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/package.json'>package.json</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components.json'>components.json</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components.json'>components.json</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -157,11 +157,11 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/types/vapi.d.ts'>vapi.d.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/types/vapi.d.ts'>vapi.d.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/types/index.d.ts'>index.d.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/types/index.d.ts'>index.d.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -172,11 +172,11 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/lib/vapi.sdk.ts'>vapi.sdk.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/vapi.sdk.ts'>vapi.sdk.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/lib/utils.ts'>utils.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/utils.ts'>utils.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -185,11 +185,11 @@
 				<blockquote>
 					<table>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/lib/actions/auth.action.ts'>auth.action.ts</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/actions/auth.action.ts'>auth.action.ts</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/lib/actions/general.actions.ts'>general.actions.ts</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/lib/actions/general.actions.ts'>general.actions.ts</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					</table>
@@ -202,43 +202,43 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/Agent.tsx'>Agent.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/Agent.tsx'>Agent.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/EditInterview.tsx'>EditInterview.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/EditInterview.tsx'>EditInterview.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/InterviewForm.tsx'>InterviewForm.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/InterviewForm.tsx'>InterviewForm.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/SignOut.tsx'>SignOut.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/SignOut.tsx'>SignOut.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/FormField.tsx'>FormField.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/FormField.tsx'>FormField.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/FeedbackWithRating.tsx'>FeedbackWithRating.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/FeedbackWithRating.tsx'>FeedbackWithRating.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/AuthForm.tsx'>AuthForm.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/AuthForm.tsx'>AuthForm.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/InterviewCard.tsx'>InterviewCard.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/InterviewCard.tsx'>InterviewCard.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/RatingModal.tsx'>RatingModal.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/RatingModal.tsx'>RatingModal.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/DisplayTechIcons.tsx'>DisplayTechIcons.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/DisplayTechIcons.tsx'>DisplayTechIcons.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -247,27 +247,27 @@
 				<blockquote>
 					<table>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/label.tsx'>label.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/label.tsx'>label.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/input.tsx'>input.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/input.tsx'>input.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/form.tsx'>form.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/form.tsx'>form.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/button.tsx'>button.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/button.tsx'>button.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/switch.tsx'>switch.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/switch.tsx'>switch.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/components/ui/sonner.tsx'>sonner.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/components/ui/sonner.tsx'>sonner.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					</table>
@@ -280,7 +280,7 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/constants/index.ts'>index.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/constants/index.ts'>index.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -291,11 +291,11 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/layout.tsx'>layout.tsx</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/layout.tsx'>layout.tsx</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/globals.css'>globals.css</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/globals.css'>globals.css</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -304,7 +304,7 @@
 				<blockquote>
 					<table>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(auth)/layout.tsx'>layout.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/layout.tsx'>layout.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					</table>
@@ -313,7 +313,7 @@
 						<blockquote>
 							<table>
 							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(auth)/sign-in/page.tsx'>page.tsx</a></b></td>
+								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/sign-in/page.tsx'>page.tsx</a></b></td>
 								<td><code>❯ REPLACE-ME</code></td>
 							</tr>
 							</table>
@@ -324,7 +324,7 @@
 						<blockquote>
 							<table>
 							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(auth)/sign-up/page.tsx'>page.tsx</a></b></td>
+								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(auth)/sign-up/page.tsx'>page.tsx</a></b></td>
 								<td><code>❯ REPLACE-ME</code></td>
 							</tr>
 							</table>
@@ -337,11 +337,11 @@
 				<blockquote>
 					<table>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/layout.tsx'>layout.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/layout.tsx'>layout.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
-						<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/page.tsx'>page.tsx</a></b></td>
+						<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/page.tsx'>page.tsx</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					</table>
@@ -350,7 +350,7 @@
 						<blockquote>
 							<table>
 							<tr>
-								<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/interview/page.tsx'>page.tsx</a></b></td>
+								<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/page.tsx'>page.tsx</a></b></td>
 								<td><code>❯ REPLACE-ME</code></td>
 							</tr>
 							</table>
@@ -359,7 +359,7 @@
 								<blockquote>
 									<table>
 									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/interview/[id]/page.tsx'>page.tsx</a></b></td>
+										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/page.tsx'>page.tsx</a></b></td>
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
 									</table>
@@ -368,7 +368,7 @@
 										<blockquote>
 											<table>
 											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/interview/[id]/analytics/page.tsx'>page.tsx</a></b></td>
+												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/analytics/page.tsx'>page.tsx</a></b></td>
 												<td><code>❯ REPLACE-ME</code></td>
 											</tr>
 											</table>
@@ -379,7 +379,7 @@
 										<blockquote>
 											<table>
 											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/interview/[id]/edit/page.tsx'>page.tsx</a></b></td>
+												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/edit/page.tsx'>page.tsx</a></b></td>
 												<td><code>❯ REPLACE-ME</code></td>
 											</tr>
 											</table>
@@ -390,7 +390,7 @@
 										<blockquote>
 											<table>
 											<tr>
-												<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/interview/[id]/feedback/page.tsx'>page.tsx</a></b></td>
+												<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/interview/[id]/feedback/page.tsx'>page.tsx</a></b></td>
 												<td><code>❯ REPLACE-ME</code></td>
 											</tr>
 											</table>
@@ -408,7 +408,7 @@
 								<blockquote>
 									<table>
 									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/(root)/user/[id]/page.tsx'>page.tsx</a></b></td>
+										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/(root)/user/[id]/page.tsx'>page.tsx</a></b></td>
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
 									</table>
@@ -429,7 +429,7 @@
 								<blockquote>
 									<table>
 									<tr>
-										<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/app/api/vapi/generate/route.ts'>route.ts</a></b></td>
+										<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/app/api/vapi/generate/route.ts'>route.ts</a></b></td>
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
 									</table>
@@ -446,11 +446,11 @@
 		<blockquote>
 			<table>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/firebase/client.ts'>client.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/firebase/client.ts'>client.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
-				<td><b><a href='https://github.com/iamvishalrathi/PrepWise/blob/master/firebase/admin.ts'>admin.ts</a></b></td>
+				<td><b><a href='https://github.com/iamvishalrathi/NextRole/blob/master/firebase/admin.ts'>admin.ts</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
@@ -463,7 +463,7 @@
 
 ###  Prerequisites
 
-Before getting started with PrepWise, ensure your runtime environment meets the following requirements:
+Before getting started with NextRole, ensure your runtime environment meets the following requirements:
 
 - **Programming Language:** TypeScript
 - **Package Manager:** Npm
@@ -471,18 +471,18 @@ Before getting started with PrepWise, ensure your runtime environment meets the 
 
 ###  Installation
 
-Install PrepWise using one of the following methods:
+Install NextRole using one of the following methods:
 
 **Build from source:**
 
-1. Clone the PrepWise repository:
+1. Clone the NextRole repository:
 ```sh
-❯ git clone https://github.com/iamvishalrathi/PrepWise
+❯ git clone https://github.com/iamvishalrathi/NextRole
 ```
 
 2. Navigate to the project directory:
 ```sh
-❯ cd PrepWise
+❯ cd NextRole
 ```
 
 3. Install the project dependencies:
@@ -498,7 +498,7 @@ Install PrepWise using one of the following methods:
 
 
 ###  Usage
-Run PrepWise using the following command:
+Run NextRole using the following command:
 **Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
 
 ```sh
@@ -526,9 +526,9 @@ Run the test suite using the following command:
 
 ##  Contributing
 
-- **💬 [Join the Discussions](https://github.com/iamvishalrathi/PrepWise/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://github.com/iamvishalrathi/PrepWise/issues)**: Submit bugs found or log feature requests for the `PrepWise` project.
-- **💡 [Submit Pull Requests](https://github.com/iamvishalrathi/PrepWise/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **💬 [Join the Discussions](https://github.com/iamvishalrathi/NextRole/discussions)**: Share your insights, provide feedback, or ask questions.
+- **🐛 [Report Issues](https://github.com/iamvishalrathi/NextRole/issues)**: Submit bugs found or log feature requests for the `NextRole` project.
+- **💡 [Submit Pull Requests](https://github.com/iamvishalrathi/NextRole/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
 
 <details closed>
 <summary>Contributing Guidelines</summary>
@@ -536,7 +536,7 @@ Run the test suite using the following command:
 1. **Fork the Repository**: Start by forking the project repository to your github account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
    ```sh
-   git clone https://github.com/iamvishalrathi/PrepWise
+   git clone https://github.com/iamvishalrathi/NextRole
    ```
 3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
    ```sh
@@ -559,8 +559,8 @@ Run the test suite using the following command:
 <summary>Contributor Graph</summary>
 <br>
 <p align="left">
-   <a href="https://github.com{/iamvishalrathi/PrepWise/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=iamvishalrathi/PrepWise">
+   <a href="https://github.com{/iamvishalrathi/NextRole/}graphs/contributors">
+      <img src="https://contrib.rocks/image?repo=iamvishalrathi/NextRole">
    </a>
 </p>
 </details>
