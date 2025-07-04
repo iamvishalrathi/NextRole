@@ -1,7 +1,7 @@
 <p align="center">
     <img src="/public/logo.svg" align="center" width="30%">
 </p>
-<p align="center"><h1 align="center">NextRole - AI-Powered Interview Platform</h1></p>
+<p align="center"><h1 align="center">NextRole: AI-Powered Interview Platform</h1></p>
 <p align="center">
 	<em><code><a href="https://next-role-prep.vercel.app/" target="_blank" >❯ Live</a></code></em>
 </p>
@@ -11,11 +11,16 @@
 	<img src="https://img.shields.io/github/languages/top/iamvishalrathi/NextRole?style=default&color=0080ff" alt="repo-top-language">
 	<img src="https://img.shields.io/github/languages/count/iamvishalrathi/NextRole?style=default&color=0080ff" alt="repo-language-count">
 </p>
-<p align="center"><!-- default option, no dependency badges. -->
+<p align="center">
+		<em>Built with the tools and technologies:</em>
 </p>
 <p align="center">
-	<!-- default option, no dependency badges. -->
+    <img src="https://img.shields.io/badge/-Typescript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
+    <img src="https://img.shields.io/badge/-Next_._JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
+    <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
+    <img src="https://img.shields.io/badge/-OpenAI-black?style=for-the-badge&logoColor=white&logo=openai&color=412991" alt="openai" />
 </p>
+
 <br>
 
 ##  Table of Contents
@@ -26,37 +31,10 @@
 - [ Project Structure](#-project-structure)
   - [ Project Index](#-project-index)
 - [ Getting Started](#-getting-started)
-  - [ Prerequisites](#-prerequisites)
   - [ Installation](#-installation)
   - [ Usage](#-usage)
   - [ Testing](#-testing)
 - [Contact](#-contact)
-
-## Usage
-
-### Creating an Interview
-1. Sign in to your account
-2. Click on "Create an Interview" on the homepage
-3. Fill out the form with your desired parameters:
-   - Job role
-   - Experience level
-   - Interview type
-   - Tech stack
-   - Number of questions
-   - Visibility setting
-4. Click "Generate Interview"
-
-### Taking an Interview
-1. From the homepage, select an interview from "Your Interviews" or "Take an Interview"
-2. Click on the interview card to start
-3. Allow microphone access when prompted
-4. Respond to the AI interviewer's questions verbally
-5. After completing all questions, you'll receive detailed feedback
-
-### Viewing Feedback
-1. Access feedback from your completed interviews on your profile page
-2. Review your overall score, category scores, strengths, and areas for improvement
-3. Rate the interview experience to help improve the platform
 
 ---
 
