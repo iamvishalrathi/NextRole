@@ -11,7 +11,7 @@ interface Feedback {
   areasForImprovement: string[];
   finalAssessment: string;
   createdAt: string;
-  userId? :string;
+  userId?: string;
   userRating?: number;
 }
 
@@ -53,8 +53,8 @@ interface InterviewCardProps {
 }
 
 interface AgentProps {
-  userInitial : string;
-  avatarColor : string;
+  userInitial: string;
+  avatarColor: string;
   userName: string;
   userId?: string;
   interviewId?: string;

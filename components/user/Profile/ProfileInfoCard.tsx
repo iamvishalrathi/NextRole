@@ -74,14 +74,13 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                         <div className="flex flex-col items-center md:items-start">
                             <h1 className="text-3xl font-bold text-primary-100 mb-2">{profileUser.name}</h1>
                             {isOwnProfile && <p className="text-light-400 mb-4">{profileUser.email}</p>}
-                            
+
                             {/* Role Badge */}
                             <div className="mb-4">
-                                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                                    profileUser.isRecruiter 
-                                        ? 'bg-green-100 text-green-800' 
+                                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${profileUser.isRecruiter
+                                        ? 'bg-green-100 text-green-800'
                                         : 'bg-blue-100 text-blue-800'
-                                }`}>
+                                    }`}>
                                     {profileUser.isRecruiter ? 'Recruiter' : 'Candidate'}
                                 </span>
                             </div>
@@ -116,7 +115,7 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                 <div className="card-border w-full">
                     <div className="dark-gradient rounded-2xl p-8">
                         <h2 className="text-2xl font-bold text-primary-100 mb-6">Profile Details</h2>
-                        
+
                         {profileUser.isRecruiter ? (
                             <div className="space-y-6">
                                 {/* Company Description */}

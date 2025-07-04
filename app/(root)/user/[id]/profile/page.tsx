@@ -37,7 +37,7 @@ const UserProfilePage = async ({ params }: RouteParams) => {
                 Complete Your Profile
               </h3>
               <p className="text-yellow-700">
-                {currentUser.isRecruiter 
+                {currentUser.isRecruiter
                   ? "Complete your company profile to attract top talent"
                   : "Complete your profile to get better interview opportunities"
                 }
@@ -49,9 +49,9 @@ const UserProfilePage = async ({ params }: RouteParams) => {
           </div>
         </div>
       )}
-      
-      <ProfileInfoCard 
-        currentUser={currentUser} 
+
+      <ProfileInfoCard
+        currentUser={currentUser}
         profileUser={profileUser}
         profile={profile}
       />
