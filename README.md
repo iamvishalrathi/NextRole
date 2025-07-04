@@ -22,6 +22,7 @@
 
 - [ Overview](#-overview)
 - [ Features](#-features)
+- [Tech Stack](#-tech-stack)
 - [ Project Structure](#-project-structure)
   - [ Project Index](#-project-index)
 - [ Getting Started](#-getting-started)
@@ -29,22 +30,101 @@
   - [ Installation](#-installation)
   - [ Usage](#-usage)
   - [ Testing](#-testing)
-- [ Project Roadmap](#-project-roadmap)
-- [ Contributing](#-contributing)
-- [ License](#-license)
-- [ Acknowledgments](#-acknowledgments)
+- [Contact](#-contact)
+
+## Usage
+
+### Creating an Interview
+1. Sign in to your account
+2. Click on "Create an Interview" on the homepage
+3. Fill out the form with your desired parameters:
+   - Job role
+   - Experience level
+   - Interview type
+   - Tech stack
+   - Number of questions
+   - Visibility setting
+4. Click "Generate Interview"
+
+### Taking an Interview
+1. From the homepage, select an interview from "Your Interviews" or "Take an Interview"
+2. Click on the interview card to start
+3. Allow microphone access when prompted
+4. Respond to the AI interviewer's questions verbally
+5. After completing all questions, you'll receive detailed feedback
+
+### Viewing Feedback
+1. Access feedback from your completed interviews on your profile page
+2. Review your overall score, category scores, strengths, and areas for improvement
+3. Rate the interview experience to help improve the platform
 
 ---
 
 ##  Overview
 
-<code>❯ REPLACE-ME</code>
+PrepWise is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate customized interview questions, conduct realistic interview simulations, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
+
+![image](https://github.com/user-attachments/assets/24f52e77-48b6-4e24-90ef-3e6b2846db6a)
 
 ---
 
 ##  Features
 
-<code>❯ REPLACE-ME</code>
+### 1. Customized Interview Generation
+- Create personalized interview experiences based on:
+  - Job role (e.g., Frontend Developer, Data Scientist)
+  - Experience level (Entry, Mid, Senior)
+  - Interview type (Behavioral, Technical, Mixed)
+  - Tech stack (e.g., React, Node.js, MongoDB)
+  - Number of questions (1-20)
+  - Visibility settings (Public or Private)
+
+### 2. AI-Powered Interview Simulation
+- Voice-based interview conducted by an AI interviewer
+- Natural conversation flow with realistic questions
+- Real-time transcription of responses
+
+### 3. Comprehensive Feedback
+- Detailed performance analysis across multiple categories:
+  - Communication Skills
+  - Technical Knowledge
+  - Problem-Solving
+  - Cultural & Role Fit
+  - Confidence & Clarity
+- Overall score out of 100
+- Identified strengths and areas for improvement
+- Final assessment with actionable recommendations
+
+### 4. User Profiles & Interview Library
+- Personal user profiles with interview history
+- Access to public interviews created by other users
+- Rating system for interview quality
+- Analytics for interview creators
+
+### 5. Community Features
+- Discover and practice with interviews created by other users
+- Share your custom interviews with the community
+- View profiles of other users and their public interviews
+
+---
+### Tech Stack
+
+### Frontend
+- **Next.js**: React framework for server-rendered applications
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **React Hook Form**: Form validation and handling
+- **Zod**: TypeScript-first schema validation
+- **Sonner**: Toast notifications
+
+### Backend
+- **Next.js API Routes**: Server-side API endpoints
+- **Firebase**: Authentication and database
+- **Google Gemini AI**: AI model for interview question generation and feedback
+- **Vapi AI**: Voice interface for natural conversation
+
+### Authentication
+- Firebase Authentication for secure user management
+---
 
 ---
 
@@ -514,67 +594,8 @@ Run the test suite using the following command:
 ❯ npm test
 ```
 
-
----
-##  Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
-
 ---
 
-##  Contributing
-
-- **💬 [Join the Discussions](https://github.com/iamvishalrathi/NextRole/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://github.com/iamvishalrathi/NextRole/issues)**: Submit bugs found or log feature requests for the `NextRole` project.
-- **💡 [Submit Pull Requests](https://github.com/iamvishalrathi/NextRole/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-
-<details closed>
-<summary>Contributing Guidelines</summary>
-
-1. **Fork the Repository**: Start by forking the project repository to your github account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
-   ```sh
-   git clone https://github.com/iamvishalrathi/NextRole
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to github**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
-</details>
-
-<details closed>
-<summary>Contributor Graph</summary>
-<br>
-<p align="left">
-   <a href="https://github.com{/iamvishalrathi/NextRole/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=iamvishalrathi/NextRole">
-   </a>
-</p>
-</details>
-
----
-
-##  License
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
----
+## **📞 Contact**
+For any questions, suggestions, or feedback, feel free to reach out:
+- **Email:** [rajatrathi029@gmail.com](mailto:rajatrathi029@gmail.com)
