@@ -15,10 +15,13 @@
 		<em>Built with the tools and technologies:</em>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/-Typescript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
-    <img src="https://img.shields.io/badge/-Next_._JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
-    <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
-    <img src="https://img.shields.io/badge/-OpenAI-black?style=for-the-badge&logoColor=white&logo=openai&color=412991" alt="openai" />
+    <img src="https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="nextjs" />
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="typescript" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="tailwindcss" />
+    <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="firebase" />
+    <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="openai" />
+    <img src="https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="gemini" />
+    <img src="https://img.shields.io/badge/Vapi_AI-000000?style=for-the-badge&logo=voice&logoColor=white" alt="vapi" />
 </p>
 
 <br>
@@ -84,21 +87,24 @@ PrepWise is an AI-powered interview preparation platform designed to help job se
 
 ## ⚙️ Tech Stack
 
-### Frontend
+### 🖥️ Frontend
 - **Next.js**: React framework for server-rendered applications
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **React Hook Form**: Form validation and handling
 - **Zod**: TypeScript-first schema validation
 - **Sonner**: Toast notifications
 
-### Backend
+### 🛠️ Backend
 - **Next.js API Routes**: Server-side API endpoints
-- **Firebase**: Authentication and database
+- **Firebase**: Authentication and backend services
 - **Google Gemini AI**: AI model for interview question generation and feedback
 - **Vapi AI**: Voice interface for natural conversation
 
-### Authentication
-- Firebase Authentication for secure user management
+### 🗄️ Database
+- **Firebase Firestore**: NoSQL cloud database for storing user data, interviews, and analytics
+
+### 🔐 Authentication
+- **Firebase Authentication**: Secure user management
 
 ---
 
