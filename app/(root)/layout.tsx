@@ -24,7 +24,7 @@ const RootLayout = async ({children}:{children:ReactNode}) => {
           
           <Image src="/logo.svg" alt='Logo' width={38} height={32} />
 
-          <h2 className="text-primary-100" >PrepWise</h2>
+            <h2 className="text-primary-100" >NextRole</h2>
           </Link>
         </>
 
