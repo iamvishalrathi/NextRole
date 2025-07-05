@@ -25,7 +25,7 @@ const page = async () => {
       <p className="text-center text-primary-300 mb-12 max-w-2xl mx-auto">
         Create a customized interview experience tailored to your specific needs and requirements.
       </p>
-      <InterviewForm userId={user.id} />
+      <InterviewForm user={user} />
     </div>
   )
 }

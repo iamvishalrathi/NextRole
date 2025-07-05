@@ -19,9 +19,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
-// Define the form schema with validation
-const formSchema = z.object({
+// Base schema with common fields
+const baseSchema = z.object({
+  interviewCategory: z.enum(['mock', 'job']),
   role: z.string().min(2, { message: 'Role is required' }),
   level: z.enum(['entry', 'mid', 'senior'], {
     required_error: 'Please select an experience level',
@@ -34,35 +36,84 @@ const formSchema = z.object({
     .number()
     .min(1, { message: 'Minimum 1 question required' })
     .max(20, { message: 'Maximum 20 questions allowed' }),
-  visibility: z.boolean().default(false),
+  visibility: z.boolean(),
 });
+
+// Job-specific fields schema
+const jobSchema = z.object({
+  jobTitle: z.string().min(2, { message: 'Job title is required' }),
+  responsibilities: z.string().min(10, { message: 'Responsibilities must be at least 10 characters' }),
+  ctc: z.string().min(1, { message: 'CTC is required' }),
+  location: z.string().min(2, { message: 'Location is required' }),
+  designation: z.string().min(2, { message: 'Designation is required' }),
+});
+
+// Combined schema using discriminated union
+const formSchema = z.discriminatedUnion('interviewCategory', [
+  baseSchema.extend({
+    interviewCategory: z.literal('mock'),
+    jobTitle: z.string().optional(),
+    responsibilities: z.string().optional(),
+    ctc: z.string().optional(),
+    location: z.string().optional(),
+    designation: z.string().optional(),
+  }),
+  baseSchema.extend({
+    interviewCategory: z.literal('job'),
+  }).merge(jobSchema),
+]);
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface InterviewFormProps {
-  userId?: string;
+  user: User;
 }
 
-const InterviewForm = ({ userId }: InterviewFormProps) => {
+const InterviewForm = ({ user }: InterviewFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Initialize the form
+  const [interviewCategory, setInterviewCategory] = useState<'mock' | 'job'>('mock');
+  
+  const isRecruiter = user.isRecruiter;
+  
+  // Initialize the form with proper default values
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      interviewCategory: 'mock',
       role: '',
       level: 'mid',
       type: 'mixed',
       techstack: '',
       amount: 5,
       visibility: false,
+      jobTitle: '',
+      responsibilities: '',
+      ctc: '',
+      location: '',
+      designation: '',
     },
   });
 
+  // Handle interview category change
+  const handleCategoryChange = (category: 'mock' | 'job') => {
+    setInterviewCategory(category);
+    // Update the form with the new category
+    form.setValue('interviewCategory', category);
+    
+    // Clear job-specific fields when switching to mock
+    if (category === 'mock') {
+      form.setValue('jobTitle', '');
+      form.setValue('responsibilities', '');
+      form.setValue('ctc', '');
+      form.setValue('location', '');
+      form.setValue('designation', '');
+    }
+  };
+
   // Handle form submission
   const onSubmit = async (values: FormValues) => {
-    if (!userId) {
+    if (!user.id) {
       toast.error('You must be logged in to create an interview');
       return;
     }
@@ -77,7 +128,7 @@ const InterviewForm = ({ userId }: InterviewFormProps) => {
         },
         body: JSON.stringify({
           ...values,
-          userid: userId,
+          userid: user.id,
         }),
       });
 
@@ -109,8 +160,172 @@ const InterviewForm = ({ userId }: InterviewFormProps) => {
         <h2 className="text-3xl font-bold text-primary-100 mb-2 text-center">Create Your Interview</h2>
         <p className="text-primary-300 text-center mb-8">Customize your interview experience with the options below</p>
         
+        {/* Interview Category Selection - Only show for recruiters */}
+        {isRecruiter && (
+          <div className="mb-8 p-6 bg-dark-100/30 rounded-xl border border-dark-100">
+            <h3 className="text-primary-100 text-lg font-medium mb-4">Interview Category</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label
+                className={`flex items-center justify-center space-x-3 cursor-pointer p-4 rounded-xl border-2 transition-all ${interviewCategory === 'mock' ? 'border-primary-200 bg-dark-100/70' : 'border-dark-100 bg-dark-100/30 hover:bg-dark-100/50'}`}
+                onClick={() => handleCategoryChange('mock')}
+              >
+                <input
+                  type="radio"
+                  value="mock"
+                  checked={interviewCategory === 'mock'}
+                  onChange={() => handleCategoryChange('mock')}
+                  className="h-5 w-5 text-primary-200 focus:ring-primary-200 hidden"
+                />
+                <div className="text-center">
+                  <span className={`text-lg font-medium block ${interviewCategory === 'mock' ? 'text-primary-100' : 'text-primary-300'}`}>
+                    Mock Interview
+                  </span>
+                  <span className="text-sm text-primary-400">Practice interview for skill development</span>
+                </div>
+              </label>
+              
+              <label
+                className={`flex items-center justify-center space-x-3 cursor-pointer p-4 rounded-xl border-2 transition-all ${interviewCategory === 'job' ? 'border-primary-200 bg-dark-100/70' : 'border-dark-100 bg-dark-100/30 hover:bg-dark-100/50'}`}
+                onClick={() => handleCategoryChange('job')}
+              >
+                <input
+                  type="radio"
+                  value="job"
+                  checked={interviewCategory === 'job'}
+                  onChange={() => handleCategoryChange('job')}
+                  className="h-5 w-5 text-primary-200 focus:ring-primary-200 hidden"
+                />
+                <div className="text-center">
+                  <span className={`text-lg font-medium block ${interviewCategory === 'job' ? 'text-primary-100' : 'text-primary-300'}`}>
+                    Job Interview
+                  </span>
+                  <span className="text-sm text-primary-400">Actual job opening with requirements</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        )}
+
+        {/* Show category info for candidates */}
+        {!isRecruiter && (
+          <div className="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+            <div className="flex items-center gap-2">
+              <Info className="h-5 w-5 text-blue-600" />
+              <span className="text-blue-800 font-medium">Mock Interview</span>
+            </div>
+            <p className="text-blue-700 text-sm mt-1">
+              As a candidate, you can create mock interviews to practice and improve your interview skills.
+            </p>
+          </div>
+        )}
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 divide-y divide-dark-100">
+          
+          {/* Job-specific fields for recruiters creating job interviews */}
+          {isRecruiter && interviewCategory === 'job' && (
+            <div className="space-y-6 pb-8">
+              <h3 className="text-xl font-semibold text-primary-100">Job Details</h3>
+              
+              {/* Job Title */}
+              <FormField
+                control={form.control}
+                name="jobTitle"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-primary-100 text-lg font-medium">Job Title</FormLabel>
+                    <FormControl>
+                      <Input 
+                        className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
+                        placeholder="e.g. Senior Frontend Developer" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive-100" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Designation */}
+              <FormField
+                control={form.control}
+                name="designation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-primary-100 text-lg font-medium">Designation</FormLabel>
+                    <FormControl>
+                      <Input 
+                        className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
+                        placeholder="e.g. Software Engineer III" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive-100" />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* CTC */}
+                <FormField
+                  control={form.control}
+                  name="ctc"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-primary-100 text-lg font-medium">CTC (Annual)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
+                          placeholder="e.g. 12-15 LPA" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className="text-destructive-100" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Location */}
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-primary-100 text-lg font-medium">Location</FormLabel>
+                      <FormControl>
+                        <Input 
+                          className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
+                          placeholder="e.g. Bangalore, Remote" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className="text-destructive-100" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Responsibilities */}
+              <FormField
+                control={form.control}
+                name="responsibilities"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-primary-100 text-lg font-medium">Key Responsibilities</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-xl min-h-[120px]" 
+                        placeholder="Describe the key responsibilities and requirements for this role..."
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-destructive-100" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+
           <div className="pt-8">
             {/* Role Field */}
             <FormField
@@ -118,7 +333,9 @@ const InterviewForm = ({ userId }: InterviewFormProps) => {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-primary-100 text-lg font-medium">Job Role</FormLabel>
+                  <FormLabel className="text-primary-100 text-lg font-medium">
+                    {interviewCategory === 'job' ? 'Interview Focus Role' : 'Job Role'}
+                  </FormLabel>
                   <FormControl>
                     <Input 
                       className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
@@ -126,6 +343,12 @@ const InterviewForm = ({ userId }: InterviewFormProps) => {
                       {...field} 
                     />
                   </FormControl>
+                  <p className="text-sm text-primary-300 mt-2">
+                    {interviewCategory === 'job' 
+                      ? 'Role focus for interview questions (can be same as job title)' 
+                      : 'The role you want to practice for'
+                    }
+                  </p>
                   <FormMessage className="text-destructive-100" />
                 </FormItem>
               )}

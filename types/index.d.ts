@@ -26,6 +26,12 @@ interface Interview {
   type: string;
   finalized: boolean;
   visibility?: boolean; // Controls whether the interview is public (true) or private (false)
+  interviewCategory?: 'mock' | 'job';
+  jobTitle?: string;
+  responsibilities?: string;
+  ctc?: string;
+  location?: string;
+  designation?: string;
 }
 
 interface CreateFeedbackParams {

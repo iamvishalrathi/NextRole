@@ -2,7 +2,6 @@ import {generateText} from "ai";
 import {google} from "@ai-sdk/google"
 import { getRandomInterviewCover } from "@/lib/utils";
 import { db } from "@/firebase/admin";
-import { getCurrentUser } from "@/lib/actions/auth.action";
 
 export async function GET(){
     return Response.json({
@@ -11,13 +10,16 @@ export async function GET(){
 }
 
 
-export async function POST(request :Request){
-    // const user = await getCurrentUser();
-    const { type, role, level, techstack, amount, userid, visibility } = await request.json();
-    console.log("I am here-->",userid);
-    try{
-
-        const {text : questions} = await generateText({
+export async function POST(request: Request) {
+    const { 
+        type, role, level, techstack, amount, userid, visibility, 
+        interviewCategory, jobTitle, responsibilities, ctc, location, designation 
+    } = await request.json();
+    
+    console.log("I am here-->", userid);
+    
+    try {
+        const { text: questions } = await generateText({
             model: google("gemini-2.0-flash-001"),
             prompt: `Prepare questions for a job interview.
             The job role is ${role}.
@@ -25,6 +27,17 @@ export async function POST(request :Request){
             The tech stack used in the job is: ${techstack}.
             The focus between behavioural and technical questions should lean towards: ${type}.
             The amount of questions required is: ${amount}.
+            ${interviewCategory === 'job' ? `
+            This is for an actual job opening with these details:
+            - Job Title: ${jobTitle}
+            - Designation: ${designation}
+            - Location: ${location}
+            - CTC: ${ctc}
+            - Key Responsibilities: ${responsibilities}
+            
+            Please tailor the questions to be more specific to this job opening and its requirements.
+            ` : 'This is a mock interview for practice purposes.'}
+            
             Please return only the questions, without any additional text.
             The questions are going to be read by a voice assistant so do not use "/" or "*" or any other special characters which might break the voice assistant.
             Return the questions formatted like this:
@@ -35,19 +48,34 @@ export async function POST(request :Request){
         });
 
         const interview = {
-            role, level, type, techstack: techstack.split(','), questions: JSON.parse(questions),
-            userId: userid, finalized: true,
+            role, 
+            level, 
+            type, 
+            techstack: techstack.split(','), 
+            questions: JSON.parse(questions),
+            userId: userid, 
+            finalized: true,
             visibility: visibility !== undefined ? visibility : false,
             coverImage: getRandomInterviewCover(),
-            createdAt: new Date().toISOString()
-        }
+            createdAt: new Date().toISOString(),
+            // Add job-specific fields if it's a job interview
+            ...(interviewCategory === 'job' ? {
+                interviewCategory,
+                jobTitle,
+                responsibilities,
+                ctc,
+                location,
+                designation
+            } : {
+                interviewCategory: interviewCategory || 'mock'
+            })
+        };
 
         await db.collection("interviews").add(interview);
 
-        return Response.json({success : true} , {status:200})
-    }
-    catch(error){
+        return Response.json({ success: true }, { status: 200 });
+    } catch (error) {
         console.error(error);
-        return Response.json({success:false , error },{status:500});
+        return Response.json({ success: false, error }, { status: 500 });
     }
 }
