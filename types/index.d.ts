@@ -65,6 +65,9 @@ interface InterviewStructure {
   // Structure metadata
   isTemplate: true;
   questionCount: number;
+  compulsoryQuestions: number;
+  personalizedQuestions: number;
+  personalizedQuestionPrompt?: string;
   usageCount: number;
   lastUsed?: string;
 }

@@ -32,18 +32,15 @@ const baseSchema = z.object({
     required_error: 'Please select an interview type',
   }),
   techstack: z.string().min(2, { message: 'Tech stack is required' }),
-  amount: z.coerce
-    .number()
-    .min(1, { message: 'Minimum 1 question required' })
-    .max(20, { message: 'Maximum 20 questions allowed' }),
   compulsoryQuestions: z.coerce
     .number()
-    .min(1, { message: 'Minimum 1 compulsory question required' })
-    .max(15, { message: 'Maximum 15 compulsory questions allowed' }),
+    .min(0, { message: 'Minimum 0 compulsory questions' })
+    .max(20, { message: 'Maximum 20 compulsory questions allowed' }),
   personalizedQuestions: z.coerce
     .number()
     .min(0, { message: 'Minimum 0 personalized questions' })
-    .max(10, { message: 'Maximum 10 personalized questions allowed' }),
+    .max(20, { message: 'Maximum 20 personalized questions allowed' }),
+  personalizedQuestionPrompt: z.string().optional(),
   visibility: z.boolean(),
   confirmationChecked: z.boolean().refine((val) => val === true, {
     message: 'You must confirm that all information is correct and reviewed',
@@ -80,12 +77,35 @@ const formSchema = z.discriminatedUnion('interviewCategory', [
   message: "Total questions (compulsory + personalized) cannot exceed 20",
   path: ["compulsoryQuestions"]
 }).refine((data) => {
-  // Validate that compulsory + personalized questions match the total amount
+  // Validate that compulsory + personalized questions don't exceed 20 (personalized path)
   const total = data.compulsoryQuestions + data.personalizedQuestions;
-  return total === data.amount;
+  return total <= 20;
 }, {
-  message: "Total questions must equal compulsory + personalized questions",
-  path: ["amount"]
+  message: "Total questions (compulsory + personalized) cannot exceed 20",
+  path: ["personalizedQuestions"]
+}).refine((data) => {
+  // Validate that compulsory + personalized questions are at least 5
+  const total = data.compulsoryQuestions + data.personalizedQuestions;
+  return total >= 5;
+}, {
+  message: "Total questions (compulsory + personalized) must be at least 5",
+  path: ["compulsoryQuestions"]
+}).refine((data) => {
+  // Validate that compulsory + personalized questions are at least 5 (personalized path)
+  const total = data.compulsoryQuestions + data.personalizedQuestions;
+  return total >= 5;
+}, {
+  message: "Total questions (compulsory + personalized) must be at least 5",
+  path: ["personalizedQuestions"]
+}).refine((data) => {
+  // Validate that personalized question prompt is provided when there are personalized questions
+  if (data.personalizedQuestions > 0 && !data.personalizedQuestionPrompt?.trim()) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please provide a prompt for personalized questions",
+  path: ["personalizedQuestionPrompt"]
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -118,9 +138,9 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       level: 'mid',
       type: 'mixed',
       techstack: '',
-      amount: 5,
       compulsoryQuestions: 3,
       personalizedQuestions: 2,
+      personalizedQuestionPrompt: '',
       visibility: false,
       confirmationChecked: false,
       jobTitle: '',
@@ -157,7 +177,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
     const formData = form.getValues();
     
     // Validate required fields for question generation
-    const requiredFields: (keyof FormValues)[] = ['role', 'level', 'type', 'techstack', 'amount', 'compulsoryQuestions', 'personalizedQuestions'];
+    const requiredFields: (keyof FormValues)[] = ['role', 'level', 'type', 'techstack', 'compulsoryQuestions', 'personalizedQuestions'];
     const isValid = await form.trigger(requiredFields);
     
     if (!isValid) {
@@ -268,7 +288,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
     }
     
     // Update the amount field
-    form.setValue('amount', updatedQuestions.length);
+    // form.setValue('amount', updatedQuestions.length); // Removed as amount field no longer exists
     toast.success('Question deleted successfully!');
   };
 
@@ -310,7 +330,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       case 2:
         return ['role', 'level', 'type', 'techstack'];
       case 3:
-        return ['amount', 'compulsoryQuestions', 'personalizedQuestions'];
+        return ['compulsoryQuestions', 'personalizedQuestions', 'personalizedQuestionPrompt'];
       case 4:
         return ['visibility', 'confirmationChecked'];
       default:
@@ -359,7 +379,6 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
           userid: user.id,
           questions: generatedQuestions,
           categorizedQuestions,
-          amount: values.amount,
         }),
       });
 
@@ -711,61 +730,6 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
             {/* Step 3: Question Configuration */}
             {currentStep === 3 && (
               <div className="space-y-6">
-                {/* Total Questions Field */}
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-primary-100 text-lg font-medium">Total Number of Questions</FormLabel>
-                      <div className="flex items-center space-x-4">
-                        <FormControl>
-                          <Input 
-                            type="number" 
-                            className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl w-24 text-center" 
-                            min={1} 
-                            max={20} 
-                            {...field}
-                            onChange={(e) => {
-                              const newAmount = parseInt(e.target.value) || 0;
-                              field.onChange(e);
-                              
-                              // Auto-adjust compulsory and personalized questions to match total
-                              const currentCompulsory = form.getValues('compulsoryQuestions');
-                              const currentPersonalized = form.getValues('personalizedQuestions');
-                              const currentTotal = currentCompulsory + currentPersonalized;
-                              
-                              if (currentTotal !== newAmount) {
-                                // If total changed, adjust personalized questions
-                                const newPersonalized = Math.max(0, Math.min(10, newAmount - currentCompulsory));
-                                const newCompulsory = Math.max(1, newAmount - newPersonalized);
-                                
-                                form.setValue('compulsoryQuestions', newCompulsory);
-                                form.setValue('personalizedQuestions', newPersonalized);
-                              }
-                              
-                              // Reset questions when amount changes
-                              if (generatedQuestions.length > 0) {
-                                setGeneratedQuestions([]);
-                                setCategorizedQuestions(null);
-                                setQuestionsFinalized(false);
-                              }
-                            }}
-                          />
-                        </FormControl>
-                        <div className="flex-1 h-2 bg-dark-100 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-primary-200 to-primary-100" 
-                            style={{ width: `${(field.value / 20) * 100}%` }}
-                          />
-                        </div>
-                        <span className="text-sm text-primary-300 w-16 text-right">Max: 20</span>
-                      </div>
-                      <FormMessage className="text-destructive-100" />
-                    </FormItem>
-                  )}
-                />
-
                 {/* Question Type Breakdown */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Compulsory Questions */}
@@ -779,25 +743,19 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                           <Input 
                             type="number" 
                             className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl text-center" 
-                            min={1} 
-                            max={15} 
+                            min={0} 
+                            max={Math.min(20, 20 - form.watch('personalizedQuestions'))} 
                             {...field}
                             onChange={(e) => {
                               const newCompulsory = parseInt(e.target.value) || 0;
-                              field.onChange(e);
-                              
-                              // Auto-adjust total and personalized questions
                               const currentPersonalized = form.getValues('personalizedQuestions');
-                              const newTotal = newCompulsory + currentPersonalized;
                               
-                              if (newTotal <= 20) {
-                                form.setValue('amount', newTotal);
-                              } else {
-                                // If exceeds 20, adjust personalized questions
-                                const adjustedPersonalized = Math.max(0, 20 - newCompulsory);
-                                form.setValue('personalizedQuestions', adjustedPersonalized);
-                                form.setValue('amount', newCompulsory + adjustedPersonalized);
-                              }
+                              // Ensure the sum doesn't exceed 20
+                              const maxAllowed = 20 - currentPersonalized;
+                              const finalCompulsory = Math.min(newCompulsory, maxAllowed);
+                              const finalCompulsory2 = Math.max(0, finalCompulsory);
+                              
+                              field.onChange(finalCompulsory2);
                               
                               // Reset questions when amount changes
                               if (generatedQuestions.length > 0) {
@@ -809,7 +767,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                           />
                         </FormControl>
                         <p className="text-sm text-primary-300 mt-1">
-                          Questions asked to all candidates
+                          Questions asked to all candidates (Max: {Math.min(20, 20 - form.watch('personalizedQuestions'))})
                         </p>
                         <FormMessage className="text-destructive-100" />
                       </FormItem>
@@ -828,24 +786,18 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                             type="number" 
                             className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl text-center" 
                             min={0} 
-                            max={10} 
+                            max={Math.min(20, 20 - form.watch('compulsoryQuestions'))} 
                             {...field}
                             onChange={(e) => {
                               const newPersonalized = parseInt(e.target.value) || 0;
-                              field.onChange(e);
-                              
-                              // Auto-adjust total
                               const currentCompulsory = form.getValues('compulsoryQuestions');
-                              const newTotal = currentCompulsory + newPersonalized;
                               
-                              if (newTotal <= 20) {
-                                form.setValue('amount', newTotal);
-                              } else {
-                                // If exceeds 20, adjust compulsory questions
-                                const adjustedCompulsory = Math.max(1, 20 - newPersonalized);
-                                form.setValue('compulsoryQuestions', adjustedCompulsory);
-                                form.setValue('amount', adjustedCompulsory + newPersonalized);
-                              }
+                              // Ensure the sum doesn't exceed 20
+                              const maxAllowed = 20 - currentCompulsory;
+                              const finalPersonalized = Math.min(newPersonalized, maxAllowed);
+                              const finalPersonalized2 = Math.max(0, finalPersonalized);
+                              
+                              field.onChange(finalPersonalized2);
                               
                               // Reset questions when amount changes
                               if (generatedQuestions.length > 0) {
@@ -857,7 +809,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                           />
                         </FormControl>
                         <p className="text-sm text-primary-300 mt-1">
-                          Generated based on candidate&apos;s resume
+                          Generated based on candidate&apos;s resume when they take the interview (Max: {Math.min(20, 20 - form.watch('compulsoryQuestions'))})
                         </p>
                         <FormMessage className="text-destructive-100" />
                       </FormItem>
@@ -868,7 +820,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                 {/* Question Breakdown Summary */}
                 <div className="p-4 bg-dark-100/30 rounded-xl border border-dark-100">
                   <h4 className="text-primary-100 font-medium mb-3">Question Breakdown</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-primary-200">
                         {form.watch('compulsoryQuestions')}
@@ -881,14 +833,87 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                       </div>
                       <div className="text-primary-300">Personalized</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-100">
-                        {form.watch('amount')}
-                      </div>
-                      <div className="text-primary-300">Total</div>
+                  </div>
+                  
+                  {/* Total questions display */}
+                  <div className="mt-4 text-center">
+                    <div className={`text-lg font-semibold ${
+                      (form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) < 5 ? 'text-red-400' :
+                      (form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) === 20 ? 'text-yellow-400' : 
+                      (form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) > 20 ? 'text-red-400' : 'text-primary-100'
+                    }`}>
+                      Total: {form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')} questions
                     </div>
                   </div>
+                  
+                  {/* Warning messages */}
+                  {(form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) < 5 && (
+                    <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Info size={16} className="text-red-600" />
+                        <span className="text-red-800 text-sm font-medium">
+                          Total questions must be at least 5
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {(form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) === 20 && (
+                    <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Info size={16} className="text-yellow-600" />
+                        <span className="text-yellow-800 text-sm font-medium">
+                          Maximum limit reached (20 questions)
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {(form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')) > 20 && (
+                    <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Info size={16} className="text-red-600" />
+                        <span className="text-red-800 text-sm font-medium">
+                          Total exceeds maximum limit of 20 questions
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
+                {/* Personalized Question Prompt */}
+                {form.watch('personalizedQuestions') > 0 && (
+                  <FormField
+                    control={form.control}
+                    name="personalizedQuestionPrompt"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-primary-100 text-lg font-medium">
+                          Personalized Question Prompt
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Describe what kind of personalized questions should be generated based on the candidate's resume. For example: 'Focus on their project experience and technical skills related to the role' or 'Ask about their leadership experience and specific achievements mentioned in their resume'."
+                            className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-xl resize-none min-h-[100px]"
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="flex items-start gap-2 mt-2">
+                          <Info size={16} className="text-primary-300 mt-0.5 flex-shrink-0" />
+                          <div className="text-sm text-primary-300">
+                            <p className="mb-1">
+                              This prompt will be used to generate personalized questions for each candidate based on their resume.
+                            </p>
+                            <p className="text-xs text-primary-400">
+                              The more specific your prompt, the better the personalized questions will be.
+                            </p>
+                          </div>
+                        </div>
+                        <FormMessage className="text-destructive-100" />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 {/* Generate Questions Button */}
                 <div className="flex justify-center">
@@ -903,7 +928,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                       animation: 'gradientShift 3s ease infinite',
                     }}
                   >
-                    {isGeneratingQuestions ? 'Generating Questions...' : 'Generate Questions'}
+                    {isGeneratingQuestions ? 'Generating Questions...' : 'Generate Compulsory Questions'}
                   </Button>
                 </div>
 
@@ -911,7 +936,20 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                 {generatedQuestions.length > 0 && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-semibold text-primary-100">Generated Questions</h3>
+                      <div>
+                        <h3 className="text-xl font-semibold text-primary-100">Generated Compulsory Questions</h3>
+                        <p className="text-sm text-primary-300 mt-1">
+                          These questions will be asked to all candidates. 
+                          {form.watch('personalizedQuestions') > 0 && (
+                            <span className="block mt-1">
+                              <span className="font-medium text-primary-200">
+                                {form.watch('personalizedQuestions')} personalized questions
+                              </span>
+                              {' '}will be generated for each candidate when they take the interview.
+                            </span>
+                          )}
+                        </p>
+                      </div>
                       <div className="flex gap-2">
                         <Button 
                           type="button"
@@ -1240,11 +1278,25 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                             {form.watch('compulsoryQuestions')} compulsory + {form.watch('personalizedQuestions')} personalized
                           </p>
                           <p className="text-primary-300 text-sm">
-                            Total: {form.watch('amount')} questions
+                            Total: {form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')} questions
                           </p>
                         </div>
                       </div>
                     </div>
+
+                    {/* Personalized Question Prompt */}
+                    {form.watch('personalizedQuestions') > 0 && form.watch('personalizedQuestionPrompt') && (
+                      <div className="mt-4 p-4 bg-dark-100/50 rounded-lg border border-dark-100">
+                        <h4 className="text-primary-200 font-medium mb-2">Personalized Question Prompt</h4>
+                        <p className="text-primary-100 text-sm leading-relaxed">
+                          {form.watch('personalizedQuestionPrompt')}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-xs text-primary-300">
+                          <Info size={12} />
+                          <span>This prompt will be used to generate personalized questions for each candidate</span>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Job-specific details for job interviews */}
                     {form.watch('interviewCategory') === 'job' && (

@@ -6,7 +6,8 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, userid, visibility,
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            questions, categorizedQuestions, amount, compulsoryQuestions, personalizedQuestions
+            questions, categorizedQuestions, amount, compulsoryQuestions, personalizedQuestions,
+            personalizedQuestionPrompt
         } = await request.json();
 
         console.log("Creating interview structure for user:", userid);
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
             questionCount: amount || questions.length,
             compulsoryQuestions: compulsoryQuestions || 0,
             personalizedQuestions: personalizedQuestions || 0,
+            personalizedQuestionPrompt: personalizedQuestionPrompt || '',
             usageCount: 0, // Track how many times this template has been used
             
             // Add job-specific fields if it's a job interview
