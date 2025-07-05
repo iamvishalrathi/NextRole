@@ -9,6 +9,7 @@ import { getTechLogos } from '@/lib/utils'
 import Link from 'next/link'
 import { getFeedbackByInterviewId, getAverageInterviewRating } from '@/lib/actions/general.actions'
 import { getCurrentUser ,getUserById } from '@/lib/actions/auth.action'
+import ProfileCheckWrapper from './ProfileCheckWrapper'
 
 
 const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:InterviewCardProps) => {
@@ -128,11 +129,22 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
             <p className="text-sm font-medium">{averageRating}</p>
           </div>
           
-          <Button className={feedback? "btn-secondary":"btn-primary"} >
-            <Link href={feedback ? `/interview/${id}/feedback` : `/interview/${id}`}>
-              {feedback ?'Check Feedback' : 'Take Interview'}
-            </Link>
-          </Button>
+          {!feedback ? (
+            <ProfileCheckWrapper 
+              userId={user?.id || ''} 
+              targetUrl={`/interview/${id}`}
+            >
+              <Button className="btn-primary">
+                Take Interview
+              </Button>
+            </ProfileCheckWrapper>
+          ) : (
+            <Button className="btn-secondary">
+              <Link href={`/interview/${id}/feedback`}>
+                Check Feedback
+              </Link>
+            </Button>
+          )}
         </div>
 
       </div>

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/actions/auth.action';
+import { getProfileByUserId } from '@/lib/actions/general.actions';
 import CompleteProfileForm from '@/components/CompleteProfileForm';
 
 interface RouteParams {
@@ -18,6 +19,13 @@ const CompleteProfilePage = async ({ params }: RouteParams) => {
     // Only allow users to complete their own profile
     if (currentUser.id !== id) {
         redirect('/');
+    }
+
+    // Check if profile is already completed
+    const existingProfile = await getProfileByUserId(id);
+    if (existingProfile) {
+        // If profile is already completed, redirect to profile page
+        redirect(`/user/${id}/profile`);
     }
 
     return (

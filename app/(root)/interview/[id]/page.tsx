@@ -1,7 +1,7 @@
 import Agent from '@/components/Agent';
 import DisplayTechIcons from '@/components/DisplayTechIcons';
 import { getCurrentUser } from '@/lib/actions/auth.action';
-import { getInterviewById } from '@/lib/actions/general.actions';
+import { getInterviewById, checkProfileCompletion } from '@/lib/actions/general.actions';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import React from 'react'
@@ -14,7 +14,20 @@ const page = async ({params} : RouteParams) => {
     const interview = await getInterviewById(id);
     const user = await getCurrentUser();
     const techstack = interview?.techstack;
+    
     if(!interview) redirect('/');
+    
+    // Redirect if not authenticated
+    if (!user) {
+        redirect('/sign-in');
+    }
+
+    // Check if profile is completed before allowing interview taking
+    const isProfileCompleted = await checkProfileCompletion(user.id);
+    
+    if (!isProfileCompleted) {
+        redirect(`/user/${user.id}/profile/complete`);
+    }
 
     // Get user's initial for avatar and color
     const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : '?';

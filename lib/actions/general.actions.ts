@@ -493,3 +493,31 @@ export async function updateProfile(userId: string, profileData: object) {
     };
   }
 }
+
+// Profile completion check utility
+export async function checkProfileCompletion(userId: string) {
+  try {
+    const profile = await getProfileByUserId(userId);
+    return !!profile; // Returns true if profile exists, false otherwise
+  } catch (error) {
+    console.error("Error checking profile completion:", error);
+    return false;
+  }
+}
+
+// Add profile completion notification for better UX
+export async function getProfileCompletionStatus(userId: string) {
+  try {
+    const profile = await getProfileByUserId(userId);
+    return {
+      isCompleted: !!profile,
+      profile: profile,
+    };
+  } catch (error) {
+    console.error("Error checking profile completion status:", error);
+    return {
+      isCompleted: false,
+      profile: null,
+    };
+  }
+}

@@ -1,5 +1,6 @@
 import InterviewForm from '@/components/InterviewForm'
 import { getCurrentUser } from '@/lib/actions/auth.action'
+import { checkProfileCompletion } from '@/lib/actions/general.actions'
 import React from 'react'
 import { redirect } from 'next/navigation'
 
@@ -9,6 +10,13 @@ const page = async () => {
   // Redirect if not authenticated
   if (!user) {
     redirect('/sign-in');
+  }
+
+  // Check if profile is completed
+  const isProfileCompleted = await checkProfileCompletion(user.id);
+  
+  if (!isProfileCompleted) {
+    redirect(`/user/${user.id}/profile/complete`);
   }
 
   return (

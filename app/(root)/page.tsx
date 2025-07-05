@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import Link from 'next/link'
-
 import Image from "next/image"
 import InterviewCard from '@/components/InterviewCard'
 import { getCurrentUser } from '@/lib/actions/auth.action'
+import ProfileCheckWrapper from '@/components/ProfileCheckWrapper'
 
 import {getInterviewByUserId, getLatestInterviews} from '@/lib/actions/general.actions'
 
@@ -14,16 +12,20 @@ const page = async () => {
   
   const user = await getCurrentUser();
 
+  if (!user) {
+    return <div>Please sign in to view interviews</div>;
+  }
+
   const [userInterviews, latestInterviews] = await Promise.all([
-    await getInterviewByUserId(user?.id!),
-    await getLatestInterviews({userId:user?.id!})
+    getInterviewByUserId(user.id),
+    getLatestInterviews({userId: user.id})
   ])
 
   // console.log(userInterviews);
   // console.log(latestInterviews);
 
-  const hasPastInterviews = userInterviews?.length > 0;
-  const hasUpcomingInterviews = latestInterviews?.length > 0;
+  const hasPastInterviews = userInterviews && userInterviews.length > 0;
+  const hasUpcomingInterviews = latestInterviews && latestInterviews.length > 0;
 
   return (
     <>
@@ -35,9 +37,15 @@ const page = async () => {
             Practice real interview questions & get instant feedback
           </p>
 
-          <Button asChild className="btn-primary max-sm:w-full">
-            <Link href="/interview">Create an Interview</Link>
-          </Button>
+          <ProfileCheckWrapper 
+            userId={user.id} 
+            targetUrl="/interview"
+            className="max-sm:w-full"
+          >
+            <Button className="btn-primary max-sm:w-full">
+              Create an Interview
+            </Button>
+          </ProfileCheckWrapper>
         </div>
 
         <Image
