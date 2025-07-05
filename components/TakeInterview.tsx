@@ -25,9 +25,11 @@ interface InterviewStructure {
 
 interface TakeInterviewProps {
   user: User;
+  structureId?: string;
+  isStructureBased?: boolean;
 }
 
-const TakeInterview = ({ user }: TakeInterviewProps) => {
+const TakeInterview = ({ user, structureId, isStructureBased = false }: TakeInterviewProps) => {
   const router = useRouter();
   const [structures] = useState<InterviewStructure[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,8 +38,41 @@ const TakeInterview = ({ user }: TakeInterviewProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    fetchInterviewStructures();
-  }, []);
+    if (isStructureBased && structureId) {
+      // If we have a structureId, fetch that specific structure
+      fetchSpecificStructure(structureId);
+    } else {
+      fetchInterviewStructures();
+    }
+  }, [isStructureBased, structureId]);
+
+  const fetchSpecificStructure = async (id: string) => {
+    try {
+      setLoading(true);
+      // Create a mock structure for now - in a real app, this would fetch from the API
+      const mockStructure: InterviewStructure = {
+        id: id,
+        role: 'Software Engineer',
+        level: 'mid',
+        type: 'mixed',
+        techstack: ['React', 'Node.js', 'JavaScript'],
+        interviewCategory: 'mock',
+        compulsoryQuestions: 8,
+        personalizedQuestions: 2,
+        usageCount: 0,
+        createdAt: new Date().toISOString(),
+        userId: 'system'
+      };
+      
+      setSelectedStructure(mockStructure);
+      setLoading(false);
+      toast.info('Interview structure loaded. Please provide your resume for personalized questions.');
+    } catch (error) {
+      console.error('Error fetching specific structure:', error);
+      setLoading(false);
+      toast.error('Failed to load interview structure');
+    }
+  };
 
   const fetchInterviewStructures = async () => {
     try {
@@ -121,86 +156,168 @@ const TakeInterview = ({ user }: TakeInterviewProps) => {
         />
       </div>
 
-      {/* Demo Section - Since we don't have structures loaded yet */}
-      <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
-        <h3 className="text-yellow-800 font-semibold mb-2">Demo Mode</h3>
-        <p className="text-yellow-700 text-sm mb-4">
-          The interview structure browsing feature is being implemented. 
-          For now, you can create interview structures using the Create Interview page.
-        </p>
-        <div className="space-y-2">
-          <p className="text-yellow-700 text-sm">
-            <strong>Next steps to implement:</strong>
-          </p>
-          <ul className="list-disc list-inside text-yellow-700 text-sm space-y-1">
-            <li>API endpoint to fetch public interview structures</li>
-            <li>Structure browsing and filtering interface</li>
-            <li>Integration with actual interview taking flow</li>
-            <li>Resume parsing and analysis for better personalization</li>
-          </ul>
-        </div>
-        
-        <div className="mt-4 flex gap-2">
-          <Button 
-            onClick={() => router.push('/interview')}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            Create Interview Structure
-          </Button>
-          <Button 
-            onClick={() => router.push('/')}
-            variant="outline"
-            className="text-primary-100 border-primary-200"
-          >
-            Go to Dashboard
-          </Button>
-        </div>
-      </div>
-
-      {/* Future: Interview structures list would go here */}
-      {structures.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-primary-100">Available Interview Structures</h3>
-          {structures.map((structure) => (
-            <div
-              key={structure.id}
-              className={`p-4 bg-dark-100/30 rounded-xl border transition-all cursor-pointer ${
-                selectedStructure?.id === structure.id
-                  ? 'border-primary-200 bg-dark-100/50'
-                  : 'border-dark-100 hover:border-primary-200/50'
-              }`}
-              onClick={() => setSelectedStructure(structure)}
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h4 className="text-primary-100 font-medium">{structure.role}</h4>
-                  <p className="text-primary-300 text-sm">
-                    {structure.level} • {structure.type} • {structure.compulsoryQuestions + structure.personalizedQuestions} questions
-                  </p>
-                  <p className="text-primary-400 text-xs mt-1">
-                    Used {structure.usageCount} times
-                  </p>
-                </div>
-                <span className={`px-2 py-1 rounded text-xs ${
-                  structure.interviewCategory === 'job'
+      {/* Structure-based flow */}
+      {isStructureBased && selectedStructure ? (
+        <div className="space-y-6">
+          {/* Selected Structure Display */}
+          <div className="p-6 bg-dark-100/30 rounded-xl border border-primary-200">
+            <h3 className="text-xl font-semibold text-primary-100 mb-4">Selected Interview Structure</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-primary-100 font-medium text-lg">{selectedStructure.role}</h4>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  selectedStructure.interviewCategory === 'job'
                     ? 'bg-blue-100 text-blue-800'
                     : 'bg-green-100 text-green-800'
                 }`}>
-                  {structure.interviewCategory === 'job' ? 'Job' : 'Mock'}
+                  {selectedStructure.interviewCategory === 'job' ? 'Job Interview' : 'Mock Interview'}
                 </span>
               </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="text-primary-400">Level:</span>
+                  <span className="text-primary-200 ml-2 capitalize">
+                    {selectedStructure.level === 'entry' ? 'Entry Level' : 
+                     selectedStructure.level === 'mid' ? 'Mid Level' : 'Senior Level'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-primary-400">Type:</span>
+                  <span className="text-primary-200 ml-2 capitalize">{selectedStructure.type}</span>
+                </div>
+                <div>
+                  <span className="text-primary-400">Questions:</span>
+                  <span className="text-primary-200 ml-2">
+                    {selectedStructure.compulsoryQuestions + selectedStructure.personalizedQuestions} total
+                  </span>
+                </div>
+              </div>
+              
+              <div className="text-sm text-primary-300">
+                <strong>Question Breakdown:</strong> {selectedStructure.compulsoryQuestions} compulsory + {selectedStructure.personalizedQuestions} personalized
+              </div>
+              
+              {selectedStructure.techstack && selectedStructure.techstack.length > 0 && (
+                <div className="text-sm">
+                  <span className="text-primary-400">Tech Stack:</span>
+                  <span className="text-primary-200 ml-2">
+                    {selectedStructure.techstack.join(', ')}
+                  </span>
+                </div>
+              )}
             </div>
-          ))}
-
+          </div>
+          
+          {/* Start Interview Button */}
           <Button
             onClick={handleTakeInterview}
-            disabled={!selectedStructure || isGenerating}
+            disabled={isGenerating}
             className="w-full mt-6 text-dark-300 font-bold py-4 rounded-xl text-lg"
             style={{
               background: 'linear-gradient(90deg, #cac5fe 0%, #8a82d8 50%, #dddfff 100%)',
             }}
           >
             {isGenerating ? 'Generating Personalized Interview...' : 'Start Interview'}
+          </Button>
+        </div>
+      ) : !isStructureBased ? (
+        <>
+          {/* Demo Section - Since we don't have structures loaded yet */}
+          <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
+            <h3 className="text-yellow-800 font-semibold mb-2">Demo Mode</h3>
+            <p className="text-yellow-700 text-sm mb-4">
+              The interview structure browsing feature is being implemented. 
+              For now, you can create interview structures using the Create Interview page.
+            </p>
+            <div className="space-y-2">
+              <p className="text-yellow-700 text-sm">
+                <strong>Next steps to implement:</strong>
+              </p>
+              <ul className="list-disc list-inside text-yellow-700 text-sm space-y-1">
+                <li>API endpoint to fetch public interview structures</li>
+                <li>Structure browsing and filtering interface</li>
+                <li>Integration with actual interview taking flow</li>
+                <li>Resume parsing and analysis for better personalization</li>
+              </ul>
+            </div>
+            
+            <div className="mt-4 flex gap-2">
+              <Button 
+                onClick={() => router.push('/interview')}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Create Interview Structure
+              </Button>
+              <Button 
+                onClick={() => router.push('/')}
+                variant="outline"
+                className="text-primary-100 border-primary-200"
+              >
+                Go to Dashboard
+              </Button>
+            </div>
+          </div>
+
+          {/* Future: Interview structures list would go here */}
+          {structures.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-primary-100">Available Interview Structures</h3>
+              {structures.map((structure) => (
+                <div
+                  key={structure.id}
+                  className={`p-4 bg-dark-100/30 rounded-xl border transition-all cursor-pointer ${
+                    selectedStructure?.id === structure.id
+                      ? 'border-primary-200 bg-dark-100/50'
+                      : 'border-dark-100 hover:border-primary-200/50'
+                  }`}
+                  onClick={() => setSelectedStructure(structure)}
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="text-primary-100 font-medium">{structure.role}</h4>
+                      <p className="text-primary-300 text-sm">
+                        {structure.level} • {structure.type} • {structure.compulsoryQuestions + structure.personalizedQuestions} questions
+                      </p>
+                      <p className="text-primary-400 text-xs mt-1">
+                        Used {structure.usageCount} times
+                      </p>
+                    </div>
+                    <span className={`px-2 py-1 rounded text-xs ${
+                      structure.interviewCategory === 'job'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}>
+                      {structure.interviewCategory === 'job' ? 'Job' : 'Mock'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              <Button
+                onClick={handleTakeInterview}
+                disabled={!selectedStructure || isGenerating}
+                className="w-full mt-6 text-dark-300 font-bold py-4 rounded-xl text-lg"
+                style={{
+                  background: 'linear-gradient(90deg, #cac5fe 0%, #8a82d8 50%, #dddfff 100%)',
+                }}
+              >
+                {isGenerating ? 'Generating Personalized Interview...' : 'Start Interview'}
+              </Button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="p-6 bg-red-50 border border-red-200 rounded-xl">
+          <h3 className="text-red-800 font-semibold mb-2">Error Loading Interview Structure</h3>
+          <p className="text-red-700 text-sm mb-4">
+            Unable to load the requested interview structure. Please try again.
+          </p>
+          <Button 
+            onClick={() => router.push('/')}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
+            Go to Dashboard
           </Button>
         </div>
       )}

@@ -521,3 +521,74 @@ export async function getProfileCompletionStatus(userId: string) {
     };
   }
 }
+
+// Get public mock interview structures
+export async function getPublicMockInterviewStructures(
+  limit: number = 10
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("mock_interview_structures")
+      .where("visibility", "==", true)
+      .orderBy("createdAt", "desc")
+      .limit(limit)
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching public mock interview structures:", error);
+    return null;
+  }
+}
+
+// Get public job interview structures
+export async function getPublicJobInterviewStructures(
+  limit: number = 10
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("job_interview_structures")
+      .where("visibility", "==", true)
+      .orderBy("createdAt", "desc")
+      .limit(limit)
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching public job interview structures:", error);
+    return null;
+  }
+}
+
+// Get all public interview structures (both mock and job)
+export async function getPublicInterviewStructures(
+  mockLimit: number = 10,
+  jobLimit: number = 10
+): Promise<{
+  mockStructures: InterviewStructure[] | null;
+  jobStructures: InterviewStructure[] | null;
+}> {
+  try {
+    const [mockStructures, jobStructures] = await Promise.all([
+      getPublicMockInterviewStructures(mockLimit),
+      getPublicJobInterviewStructures(jobLimit),
+    ]);
+
+    return {
+      mockStructures,
+      jobStructures,
+    };
+  } catch (error) {
+    console.error("Error fetching public interview structures:", error);
+    return {
+      mockStructures: null,
+      jobStructures: null,
+    };
+  }
+}

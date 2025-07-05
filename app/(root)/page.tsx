@@ -2,11 +2,11 @@ import React from 'react'
 
 import { Button } from '@/components/ui/button'
 import Image from "next/image"
-import InterviewCard from '@/components/InterviewCard'
+import InterviewStructureCard from '@/components/InterviewStructureCard'
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import ProfileCheckWrapper from '@/components/ProfileCheckWrapper'
 
-import {getInterviewByUserId, getLatestInterviews} from '@/lib/actions/general.actions'
+import {getPublicInterviewStructures} from '@/lib/actions/general.actions'
 
 const page = async () => {
   
@@ -16,16 +16,10 @@ const page = async () => {
     return <div>Please sign in to view interviews</div>;
   }
 
-  const [userInterviews, latestInterviews] = await Promise.all([
-    getInterviewByUserId(user.id),
-    getLatestInterviews({userId: user.id})
-  ])
+  const publicStructures = await getPublicInterviewStructures(6, 6); // Limit to 6 each for better UI
 
-  // console.log(userInterviews);
-  // console.log(latestInterviews);
-
-  const hasPastInterviews = userInterviews && userInterviews.length > 0;
-  const hasUpcomingInterviews = latestInterviews && latestInterviews.length > 0;
+  const hasMockStructures = publicStructures.mockStructures && publicStructures.mockStructures.length > 0;
+  const hasJobStructures = publicStructures.jobStructures && publicStructures.jobStructures.length > 0;
 
   return (
     <>
@@ -57,29 +51,48 @@ const page = async () => {
         />
       </section>
 
-      
+      {/* Public Mock Interview Structures */}
       <section className='flex flex-col gap-6 mt-8'>
-        <h2>Your Interviews</h2>
+        <div className="flex items-center justify-between">
+          <h2>Mock Interview Practice</h2>
+          <p className="text-primary-300 text-sm">Practice with realistic scenarios</p>
+        </div>
         <div className='interviews-section'>
-          {hasPastInterviews ? (
-            userInterviews?.map((interview) => (
-              <InterviewCard key={interview.id} {...interview} />
+          {hasMockStructures ? (
+            publicStructures.mockStructures?.map((structure) => (
+              <InterviewStructureCard 
+                key={structure.id} 
+                {...structure}
+                interviewCategory="mock"
+                usageCount={structure.usageCount || 0}
+                createdAt={structure.createdAt}
+              />
             ))
           ) : (
-              <p>You haven&apos;t taken any interviews yet</p>
+            <p className="text-primary-400">No mock interview structures available at the moment</p>
           )}
         </div>
       </section>
 
+      {/* Public Job Interview Structures */}
       <section className='flex flex-col gap-6 mt-8'>
-        <h2>Take an Interview</h2>
+        <div className="flex items-center justify-between">
+          <h2>Job Interview Preparation</h2>
+          <p className="text-primary-300 text-sm">Prepare for real job opportunities</p>
+        </div>
         <div className='interviews-section'>
-          {hasUpcomingInterviews ? (
-            latestInterviews?.map((interview) => (
-              <InterviewCard key={interview.id} {...interview} />
+          {hasJobStructures ? (
+            publicStructures.jobStructures?.map((structure) => (
+              <InterviewStructureCard 
+                key={structure.id} 
+                {...structure}
+                interviewCategory="job"
+                usageCount={structure.usageCount || 0}
+                createdAt={structure.createdAt}
+              />
             ))
           ) : (
-            <p>There are no new interviews available</p>
+            <p className="text-primary-400">No job interview structures available at the moment</p>
           )}
         </div>
       </section>
