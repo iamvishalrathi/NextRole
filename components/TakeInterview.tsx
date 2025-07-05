@@ -13,7 +13,8 @@ interface InterviewStructure {
   type: string;
   techstack: string[];
   interviewCategory: 'mock' | 'job';
-  questionCount: number;
+  compulsoryQuestions: number;
+  personalizedQuestions: number;
   usageCount: number;
   jobTitle?: string;
   location?: string;
@@ -174,7 +175,7 @@ const TakeInterview = ({ user }: TakeInterviewProps) => {
                 <div>
                   <h4 className="text-primary-100 font-medium">{structure.role}</h4>
                   <p className="text-primary-300 text-sm">
-                    {structure.level} • {structure.type} • {structure.questionCount} questions
+                    {structure.level} • {structure.type} • {structure.compulsoryQuestions + structure.personalizedQuestions} questions
                   </p>
                   <p className="text-primary-400 text-xs mt-1">
                     Used {structure.usageCount} times

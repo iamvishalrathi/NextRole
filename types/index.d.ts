@@ -46,7 +46,7 @@ interface InterviewStructure {
   id: string;
   role: string;
   level: string;
-  templateQuestions: string[];
+  questions: string[];
   categorizedQuestions?: {
     behavioral: string[];
     technical: string[];
@@ -64,7 +64,6 @@ interface InterviewStructure {
   designation?: string;
   // Structure metadata
   isTemplate: true;
-  questionCount: number;
   compulsoryQuestions: number;
   personalizedQuestions: number;
   personalizedQuestionPrompt?: string;
@@ -146,7 +145,6 @@ interface InterviewFormProps {
   level: string;
   type: string;
   techstack: string[];
-  amount: number;
 }
 
 interface TechIconProps {

@@ -4,7 +4,7 @@ import { google } from "@ai-sdk/google";
 export async function POST(request: Request) {
     try {
         const { 
-            type, role, level, techstack, amount, 
+            type, role, level, techstack, 
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
             compulsoryQuestions, personalizedQuestions, regenerate,
             technicalQuestions: technicalCount, behavioralQuestions: behavioralCount
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         let categorizedQuestions = null;
         
         // Only generate compulsory questions since personalized ones will be generated during interview
-        const questionsToGenerate = compulsoryQuestions || amount;
+        const questionsToGenerate = compulsoryQuestions;
 
         if (type === 'mixed') {
             // For mixed interviews, use the specific technical and behavioral counts

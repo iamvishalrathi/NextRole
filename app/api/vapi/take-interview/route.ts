@@ -50,7 +50,7 @@ INTERVIEW STRUCTURE:
 - Experience Level: ${structure.level}
 - Tech Stack: ${structure.techstack.join(', ')}
 - Interview Type: ${structure.type}
-- Question Count: ${structure.questionCount}
+- Question Count: ${structure.compulsoryQuestions + structure.personalizedQuestions}
 
 ${structure.interviewCategory === 'job' ? `
 JOB DETAILS:
@@ -69,7 +69,7 @@ Please tailor the questions to be relevant to the candidate's background and exp
 ` : 'No resume provided. Generate general questions for the role.'}
 
 TEMPLATE QUESTIONS FOR REFERENCE:
-${structure.templateQuestions ? structure.templateQuestions.join('\n') : ''}
+${structure.questions ? structure.questions.join('\n') : ''}
 
 ${structure.categorizedQuestions ? `
 CATEGORIZED TEMPLATE QUESTIONS:
@@ -78,7 +78,7 @@ Technical: ${structure.categorizedQuestions.technical?.join('\n') || 'None'}
 ` : ''}
 
 Instructions:
-1. Generate exactly ${structure.questionCount} questions
+1. Generate exactly ${structure.compulsoryQuestions + structure.personalizedQuestions} questions
 2. Make questions relevant to the candidate's experience and the job requirements
 3. Follow the interview type preference: ${structure.type}
 4. Return questions in JSON format: {"questions": ["Question 1", "Question 2", ...]}
@@ -99,7 +99,7 @@ Generate personalized, relevant questions now:`,
             questions = personalizedQuestions
                 .split('\n')
                 .filter(line => line.trim().length > 10)
-                .slice(0, structure.questionCount);
+                .slice(0, structure.compulsoryQuestions + structure.personalizedQuestions);
         }
 
         // Create the actual interview instance

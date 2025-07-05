@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, userid, visibility,
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            questions, categorizedQuestions, amount, compulsoryQuestions, personalizedQuestions,
+            questions, categorizedQuestions, compulsoryQuestions, personalizedQuestions,
             personalizedQuestionPrompt, technicalQuestions, behavioralQuestions
         } = await request.json();
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
             level, 
             type, 
             techstack: techstack.split(',').map((tech: string) => tech.trim()), 
-            templateQuestions: questions,
+            questions: questions,
             ...(categorizedQuestions && { categorizedQuestions }),
             userId: userid, 
             visibility: visibility !== undefined ? visibility : false,
@@ -35,7 +35,6 @@ export async function POST(request: Request) {
             
             // Template metadata
             isTemplate: true,
-            questionCount: amount || questions.length,
             compulsoryQuestions: compulsoryQuestions || 0,
             personalizedQuestions: personalizedQuestions || 0,
             personalizedQuestionPrompt: personalizedQuestionPrompt || '',
