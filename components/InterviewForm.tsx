@@ -41,6 +41,17 @@ const baseSchema = z.object({
     .min(0, { message: 'Minimum 0 personalized questions' })
     .max(20, { message: 'Maximum 20 personalized questions allowed' }),
   personalizedQuestionPrompt: z.string().optional(),
+  // Mixed interview breakdown fields
+  technicalQuestions: z.coerce
+    .number()
+    .min(0, { message: 'Minimum 0 technical questions' })
+    .max(20, { message: 'Maximum 20 technical questions allowed' })
+    .optional(),
+  behavioralQuestions: z.coerce
+    .number()
+    .min(0, { message: 'Minimum 0 behavioral questions' })
+    .max(20, { message: 'Maximum 20 behavioral questions allowed' })
+    .optional(),
   visibility: z.boolean(),
   confirmationChecked: z.boolean().refine((val) => val === true, {
     message: 'You must confirm that all information is correct and reviewed',
@@ -98,6 +109,28 @@ const formSchema = z.discriminatedUnion('interviewCategory', [
   message: "Total questions (compulsory + personalized) must be at least 5",
   path: ["personalizedQuestions"]
 }).refine((data) => {
+  // For mixed interviews, validate that technical + behavioral questions equal compulsory questions
+  if (data.type === 'mixed') {
+    const technicalCount = data.technicalQuestions || 0;
+    const behavioralCount = data.behavioralQuestions || 0;
+    return technicalCount + behavioralCount === data.compulsoryQuestions;
+  }
+  return true;
+}, {
+  message: "Technical + Behavioral questions must equal the number of compulsory questions",
+  path: ["technicalQuestions"]
+}).refine((data) => {
+  // For mixed interviews, validate that technical + behavioral questions equal compulsory questions (behavioral path)
+  if (data.type === 'mixed') {
+    const technicalCount = data.technicalQuestions || 0;
+    const behavioralCount = data.behavioralQuestions || 0;
+    return technicalCount + behavioralCount === data.compulsoryQuestions;
+  }
+  return true;
+}, {
+  message: "Technical + Behavioral questions must equal the number of compulsory questions",
+  path: ["behavioralQuestions"]
+}).refine((data) => {
   // Validate that personalized question prompt is provided when there are personalized questions
   if (data.personalizedQuestions > 0 && !data.personalizedQuestionPrompt?.trim()) {
     return false;
@@ -141,6 +174,8 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       compulsoryQuestions: 3,
       personalizedQuestions: 2,
       personalizedQuestionPrompt: '',
+      technicalQuestions: 2,
+      behavioralQuestions: 1,
       visibility: false,
       confirmationChecked: false,
       jobTitle: '',
@@ -166,10 +201,42 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       form.setValue('designation', '');
     }
     
-    // Reset questions when category changes
+    // Reset questions and mixed breakdown when category changes
     setGeneratedQuestions([]);
     setCategorizedQuestions(null);
     setQuestionsFinalized(false);
+    
+    // Reset mixed interview breakdown
+    if (form.watch('type') === 'mixed') {
+      const compulsoryCount = form.getValues('compulsoryQuestions');
+      const halfCompulsory = Math.floor(compulsoryCount / 2);
+      const remainder = compulsoryCount - halfCompulsory;
+      form.setValue('technicalQuestions', halfCompulsory);
+      form.setValue('behavioralQuestions', remainder);
+    }
+  };
+
+  // Handle interview type change
+  const handleTypeChange = (type: 'behavioural' | 'technical' | 'mixed') => {
+    form.setValue('type', type);
+    
+    // Reset questions when type changes
+    setGeneratedQuestions([]);
+    setCategorizedQuestions(null);
+    setQuestionsFinalized(false);
+    
+    // Set up mixed interview breakdown when switching to mixed
+    if (type === 'mixed') {
+      const compulsoryCount = form.getValues('compulsoryQuestions');
+      const halfCompulsory = Math.floor(compulsoryCount / 2);
+      const remainder = compulsoryCount - halfCompulsory;
+      form.setValue('technicalQuestions', halfCompulsory);
+      form.setValue('behavioralQuestions', remainder);
+    } else {
+      // Reset the breakdown fields for non-mixed interviews
+      form.setValue('technicalQuestions', 0);
+      form.setValue('behavioralQuestions', 0);
+    }
   };
 
   // Generate questions function
@@ -330,7 +397,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       case 2:
         return ['role', 'level', 'type', 'techstack'];
       case 3:
-        return ['compulsoryQuestions', 'personalizedQuestions', 'personalizedQuestionPrompt'];
+        return ['compulsoryQuestions', 'personalizedQuestions', 'personalizedQuestionPrompt', ...(form.watch('type') === 'mixed' ? ['technicalQuestions', 'behavioralQuestions'] as (keyof FormValues)[] : [])];
       case 4:
         return ['visibility', 'confirmationChecked'];
       default:
@@ -744,11 +811,13 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                       <label
                         key={type}
                         className={`flex items-center justify-center space-x-3 cursor-pointer p-4 rounded-xl border-2 transition-all ${form.watch('type') === type ? 'border-primary-200 bg-dark-100/70' : 'border-dark-100 bg-dark-100/30 hover:bg-dark-100/50'}`}
+                        onClick={() => handleTypeChange(type as 'behavioural' | 'technical' | 'mixed')}
                       >
                         <input
                           type="radio"
                           value={type}
-                          {...form.register('type')}
+                          checked={form.watch('type') === type}
+                          onChange={() => handleTypeChange(type as 'behavioural' | 'technical' | 'mixed')}
                           className="h-5 w-5 text-primary-200 focus:ring-primary-200 hidden"
                         />
                         <span className={`text-lg capitalize ${form.watch('type') === type ? 'text-primary-100 font-medium' : 'text-primary-300'}`}>
@@ -817,6 +886,15 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                               
                               field.onChange(finalCompulsory2);
                               
+                              // Reset breakdown for mixed interviews when compulsory changes
+                              if (form.watch('type') === 'mixed') {
+                                // Reset technical and behavioral to default proportions
+                                const halfCompulsory = Math.floor(finalCompulsory2 / 2);
+                                const remainder = finalCompulsory2 - halfCompulsory;
+                                form.setValue('technicalQuestions', halfCompulsory);
+                                form.setValue('behavioralQuestions', remainder);
+                              }
+                              
                               // Reset questions when amount changes
                               if (generatedQuestions.length > 0) {
                                 setGeneratedQuestions([]);
@@ -876,6 +954,159 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                     )}
                   />
                 </div>
+
+                {/* Mixed Interview Breakdown - Show only for mixed interviews */}
+                {form.watch('type') === 'mixed' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-6 bg-primary-200 rounded-full"></div>
+                      <h4 className="text-lg font-medium text-primary-100">Mixed Interview Breakdown</h4>
+                    </div>
+                    <p className="text-sm text-primary-300 mb-4">
+                      Specify how many technical and behavioral questions should be included in the {form.watch('compulsoryQuestions')} compulsory questions.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Technical Questions */}
+                      <FormField
+                        control={form.control}
+                        name="technicalQuestions"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-primary-100 text-lg font-medium">Technical Questions</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl text-center" 
+                                min={0} 
+                                max={form.watch('compulsoryQuestions') || 0} 
+                                {...field}
+                                onChange={(e) => {
+                                  const newTechnical = parseInt(e.target.value) || 0;
+                                  const currentBehavioral = form.getValues('behavioralQuestions') || 0;
+                                  const compulsoryTotal = form.getValues('compulsoryQuestions');
+                                  
+                                  // Ensure technical + behavioral doesn't exceed compulsory
+                                  const maxAllowed = compulsoryTotal - currentBehavioral;
+                                  const finalTechnical = Math.min(newTechnical, maxAllowed);
+                                  const finalTechnical2 = Math.max(0, finalTechnical);
+                                  
+                                  field.onChange(finalTechnical2);
+                                  
+                                  // Reset questions when breakdown changes
+                                  if (generatedQuestions.length > 0) {
+                                    setGeneratedQuestions([]);
+                                    setCategorizedQuestions(null);
+                                    setQuestionsFinalized(false);
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            <p className="text-sm text-primary-300 mt-1">
+                              Technical questions from the compulsory set (Max: {Math.max(0, (form.watch('compulsoryQuestions') || 0) - (form.watch('behavioralQuestions') || 0))})
+                            </p>
+                            <FormMessage className="text-destructive-100" />
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Behavioral Questions */}
+                      <FormField
+                        control={form.control}
+                        name="behavioralQuestions"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-primary-100 text-lg font-medium">Behavioral Questions</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl text-center" 
+                                min={0} 
+                                max={form.watch('compulsoryQuestions') || 0} 
+                                {...field}
+                                onChange={(e) => {
+                                  const newBehavioral = parseInt(e.target.value) || 0;
+                                  const currentTechnical = form.getValues('technicalQuestions') || 0;
+                                  const compulsoryTotal = form.getValues('compulsoryQuestions');
+                                  
+                                  // Ensure technical + behavioral doesn't exceed compulsory
+                                  const maxAllowed = compulsoryTotal - currentTechnical;
+                                  const finalBehavioral = Math.min(newBehavioral, maxAllowed);
+                                  const finalBehavioral2 = Math.max(0, finalBehavioral);
+                                  
+                                  field.onChange(finalBehavioral2);
+                                  
+                                  // Reset questions when breakdown changes
+                                  if (generatedQuestions.length > 0) {
+                                    setGeneratedQuestions([]);
+                                    setCategorizedQuestions(null);
+                                    setQuestionsFinalized(false);
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            <p className="text-sm text-primary-300 mt-1">
+                              Behavioral questions from the compulsory set (Max: {Math.max(0, (form.watch('compulsoryQuestions') || 0) - (form.watch('technicalQuestions') || 0))})
+                            </p>
+                            <FormMessage className="text-destructive-100" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    {/* Mixed Interview Breakdown Summary */}
+                    <div className="p-4 bg-dark-100/30 rounded-xl border border-dark-100">
+                      <h5 className="text-primary-100 font-medium mb-3">Mixed Interview Summary</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-400">
+                            {form.watch('technicalQuestions') || 0}
+                          </div>
+                          <div className="text-primary-300">Technical</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-400">
+                            {form.watch('behavioralQuestions') || 0}
+                          </div>
+                          <div className="text-primary-300">Behavioral</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary-200">
+                            {(form.watch('technicalQuestions') || 0) + (form.watch('behavioralQuestions') || 0)}
+                          </div>
+                          <div className="text-primary-300">Total Compulsory</div>
+                        </div>
+                      </div>
+                      
+                      {/* Validation messages for mixed breakdown */}
+                      {form.watch('type') === 'mixed' && (
+                        <>
+                          {((form.watch('technicalQuestions') || 0) + (form.watch('behavioralQuestions') || 0)) !== form.watch('compulsoryQuestions') && (
+                            <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <Info size={16} className="text-red-600" />
+                                <span className="text-red-800 text-sm font-medium">
+                                  Technical + Behavioral questions must equal {form.watch('compulsoryQuestions')} compulsory questions
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {((form.watch('technicalQuestions') || 0) + (form.watch('behavioralQuestions') || 0)) === form.watch('compulsoryQuestions') && (
+                            <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span className="text-green-800 text-sm font-medium">
+                                  Mixed interview breakdown is valid
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Question Breakdown Summary */}
                 <div className="p-4 bg-dark-100/30 rounded-xl border border-dark-100">
@@ -1340,6 +1571,11 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                           <p className="text-primary-300 text-sm">
                             Total: {form.watch('compulsoryQuestions') + form.watch('personalizedQuestions')} questions
                           </p>
+                          {form.watch('type') === 'mixed' && (
+                            <p className="text-primary-300 text-sm">
+                              Mixed: {form.watch('technicalQuestions')} technical + {form.watch('behavioralQuestions')} behavioral
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

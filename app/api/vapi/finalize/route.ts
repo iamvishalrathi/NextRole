@@ -7,7 +7,7 @@ export async function POST(request: Request) {
             type, role, level, techstack, userid, visibility,
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
             questions, categorizedQuestions, amount, compulsoryQuestions, personalizedQuestions,
-            personalizedQuestionPrompt
+            personalizedQuestionPrompt, technicalQuestions, behavioralQuestions
         } = await request.json();
 
         console.log("Creating interview structure for user:", userid);
@@ -39,6 +39,13 @@ export async function POST(request: Request) {
             compulsoryQuestions: compulsoryQuestions || 0,
             personalizedQuestions: personalizedQuestions || 0,
             personalizedQuestionPrompt: personalizedQuestionPrompt || '',
+            
+            // Mixed interview breakdown
+            ...(type === 'mixed' && {
+                technicalQuestions: technicalQuestions || 0,
+                behavioralQuestions: behavioralQuestions || 0
+            }),
+            
             usageCount: 0, // Track how many times this template has been used
             
             // Add job-specific fields if it's a job interview

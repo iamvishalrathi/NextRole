@@ -6,7 +6,8 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, amount, 
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            compulsoryQuestions, personalizedQuestions, regenerate 
+            compulsoryQuestions, personalizedQuestions, regenerate,
+            technicalQuestions: technicalCount, behavioralQuestions: behavioralCount
         } = await request.json();
 
         let questions;
@@ -16,9 +17,9 @@ export async function POST(request: Request) {
         const questionsToGenerate = compulsoryQuestions || amount;
 
         if (type === 'mixed') {
-            // For mixed interviews, generate both behavioral and technical questions
-            const behavioralAmount = Math.ceil(questionsToGenerate / 2);
-            const technicalAmount = Math.floor(questionsToGenerate / 2);
+            // For mixed interviews, use the specific technical and behavioral counts
+            const behavioralAmount = behavioralCount || Math.ceil(questionsToGenerate / 2);
+            const technicalAmount = technicalCount || Math.floor(questionsToGenerate / 2);
 
             // Generate behavioral questions
             const { text: behavioralQuestionsText } = await generateText({

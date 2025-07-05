@@ -68,6 +68,9 @@ interface InterviewStructure {
   compulsoryQuestions: number;
   personalizedQuestions: number;
   personalizedQuestionPrompt?: string;
+  // Mixed interview breakdown
+  technicalQuestions?: number;
+  behavioralQuestions?: number;
   usageCount: number;
   lastUsed?: string;
 }
