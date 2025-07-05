@@ -40,6 +40,20 @@ interface Interview {
   structureId?: string; // References the structure this interview was generated from
   personalizedForResume?: boolean;
   status?: 'ready' | 'in_progress' | 'completed';
+  
+  // New fields for refactored interview system
+  preGeneratedQuestions?: string[];     // Compulsory questions from structure
+  personalizedQuestions?: string[];     // Generated personalized questions
+  userProfile?: {
+    id: string;
+    currentRole?: string;
+    experience?: string;
+    skills?: string;
+    education?: string;
+    location?: string;
+    phone?: string;
+    resume?: string;
+  } | null;
 }
 
 // Simplified interview type that stores only essential data

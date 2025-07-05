@@ -67,7 +67,17 @@ export async function getInterviewById(
   id: string,
   requestingUserId?: string
 ): Promise<Interview | null> {
-  const interview = await db.collection("interviews").doc(id).get();
+  // Try to find the interview in both job_interviews and mock_interviews collections
+  let interview = await db.collection("job_interviews").doc(id).get();
+  
+  if (!interview.exists) {
+    interview = await db.collection("mock_interviews").doc(id).get();
+  }
+
+  // Fallback to old interviews collection for backward compatibility
+  if (!interview.exists) {
+    interview = await db.collection("interviews").doc(id).get();
+  }
 
   if (!interview.exists) return null;
 

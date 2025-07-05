@@ -5,9 +5,9 @@ import { checkProfileCompletion } from '@/lib/actions/general.actions'
 import TakeInterview from '@/components/TakeInterview'
 
 interface TakeInterviewPageProps {
-  searchParams: {
+  searchParams: Promise<{
     structureId?: string;
-  }
+  }>
 }
 
 const TakeInterviewPage = async ({ searchParams }: TakeInterviewPageProps) => {
@@ -25,8 +25,9 @@ const TakeInterviewPage = async ({ searchParams }: TakeInterviewPageProps) => {
     redirect(`/user/${user.id}/profile/complete`);
   }
 
-  // Check if structureId is provided
-  if (!searchParams.structureId) {
+  // Await searchParams and check if structureId is provided
+  const { structureId } = await searchParams;
+  if (!structureId) {
     redirect('/interview');
   }
 
@@ -38,7 +39,7 @@ const TakeInterviewPage = async ({ searchParams }: TakeInterviewPageProps) => {
       </p>
       <TakeInterview 
         user={user} 
-        structureId={searchParams.structureId}
+        structureId={structureId}
         isStructureBased={true}
       />
     </div>

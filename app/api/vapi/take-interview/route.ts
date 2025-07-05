@@ -294,7 +294,7 @@ Remember: Generate EXACTLY ${structure.personalizedQuestions} questions based on
         const interviewId = `${userId}_${structureId}_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
         
         // Clean user profile data to avoid undefined values in Firestore
-        const cleanUserProfile = userProfile ? cleanObjectForFirestore({
+        const cleanUserProfile = userProfile ? {
             id: userId,
             currentRole: userProfile.currentRole || '',
             experience: userProfile.experience || '',
@@ -303,7 +303,7 @@ Remember: Generate EXACTLY ${structure.personalizedQuestions} questions based on
             location: userProfile.location || '',
             phone: userProfile.phone || '',
             resume: userProfile.resume || ''
-        }) : {
+        } : {
             id: userId,
             currentRole: '',
             experience: '',
@@ -327,10 +327,17 @@ Remember: Generate EXACTLY ${structure.personalizedQuestions} questions based on
             // User data who is taking the interview
             userProfile: cleanUserProfile,
             
+            // Fields needed for UI components (from structure)
+            role: structure.role || 'Interview',
+            level: structure.level || 'Entry',
+            type: structure.type || 'Technical',
+            techstack: structure.techstack || [],
+            
             // Minimal metadata for functionality
             createdAt: new Date().toISOString(),
             status: 'ready',
             interviewCategory: actualInterviewCategory,
+            finalized: true,
             
             // Request tracking
             requestId

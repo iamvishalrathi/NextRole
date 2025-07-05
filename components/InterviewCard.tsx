@@ -30,7 +30,7 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
     const isOwner = user?.id === userId;
 
     // Get tech icons for the tech stack
-    const techIcons = await getTechLogos(techstack);
+    const techIcons = await getTechLogos(techstack || []);
 
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96" >
@@ -93,7 +93,7 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
           )}
 
           <Image 
-            src={techstack.length > 0 ? (await getTechLogos([techstack[Math.floor(Math.random() * techstack.length)]]))[0].url : '/tech.svg'} 
+            src={techstack && techstack.length > 0 ? (await getTechLogos([techstack[Math.floor(Math.random() * techstack.length)]]))[0].url : '/tech.svg'} 
             alt="tech logo" 
             width={90} 
             height={90} 
