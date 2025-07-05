@@ -5,9 +5,9 @@ import { checkProfileCompletion, getProfileByUserId } from '@/lib/actions/genera
 import ProfileSummaryConfirmation from '@/components/ProfileSummaryConfirmation'
 
 interface ConfirmProfilePageProps {
-  searchParams: {
+  searchParams: Promise<{
     structureId?: string;
-  }
+  }>
 }
 
 const ConfirmProfilePage = async ({ searchParams }: ConfirmProfilePageProps) => {
@@ -25,8 +25,9 @@ const ConfirmProfilePage = async ({ searchParams }: ConfirmProfilePageProps) => 
     redirect(`/user/${user.id}/profile/complete`);
   }
 
-  // Check if structureId is provided
-  if (!searchParams.structureId) {
+  // Await searchParams and check if structureId is provided
+  const { structureId } = await searchParams;
+  if (!structureId) {
     redirect('/');
   }
 
@@ -44,7 +45,7 @@ const ConfirmProfilePage = async ({ searchParams }: ConfirmProfilePageProps) => 
         <ProfileSummaryConfirmation 
           user={user} 
           userProfile={userProfile}
-          structureId={searchParams.structureId}
+          structureId={structureId}
         />
       </div>
     </div>

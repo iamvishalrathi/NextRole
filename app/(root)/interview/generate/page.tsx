@@ -5,10 +5,10 @@ import { checkProfileCompletion } from '@/lib/actions/general.actions'
 import InterviewGenerationLoader from '@/components/InterviewGenerationLoader'
 
 interface GenerateInterviewPageProps {
-  searchParams: {
+  searchParams: Promise<{
     structureId?: string;
     confirmed?: string;
-  }
+  }>
 }
 
 const GenerateInterviewPage = async ({ searchParams }: GenerateInterviewPageProps) => {
@@ -26,8 +26,9 @@ const GenerateInterviewPage = async ({ searchParams }: GenerateInterviewPageProp
     redirect(`/user/${user.id}/profile/complete`);
   }
 
-  // Check if structureId and confirmation are provided
-  if (!searchParams.structureId || !searchParams.confirmed) {
+  // Await searchParams and check if structureId and confirmation are provided
+  const { structureId, confirmed } = await searchParams;
+  if (!structureId || !confirmed) {
     redirect('/');
   }
 
@@ -35,7 +36,7 @@ const GenerateInterviewPage = async ({ searchParams }: GenerateInterviewPageProp
     <div className="w-full mx-auto py-12 px-4 bg-dark-300 min-h-screen">
       <InterviewGenerationLoader 
         user={user} 
-        structureId={searchParams.structureId}
+        structureId={structureId}
       />
     </div>
   )

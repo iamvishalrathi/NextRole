@@ -42,6 +42,35 @@ interface Interview {
   status?: 'ready' | 'in_progress' | 'completed';
 }
 
+// Simplified interview type that stores only essential data
+interface GeneratedInterview {
+  id: string;
+  structureId: string;
+  userId: string;
+  
+  // Only the questions data
+  preGeneratedQuestions: string[];     // Compulsory questions from structure
+  personalizedQuestions: string[];     // Generated personalized questions
+  
+  // User data who is taking the interview
+  userProfile: {
+    id: string;
+    currentRole?: string;
+    experience?: string;
+    skills?: string;
+    education?: string;
+    location?: string;
+    phone?: string;
+    resume?: string;
+  } | null;
+  
+  // Minimal metadata for functionality
+  createdAt: string;
+  status: 'ready' | 'in_progress' | 'completed';
+  interviewCategory: 'mock' | 'job';
+  requestId: string;
+}
+
 interface InterviewStructure {
   id: string;
   role: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Image from 'next/image';
@@ -14,25 +14,47 @@ const InterviewGenerationLoader = ({ user, structureId }: InterviewGenerationLoa
   const router = useRouter();
   const [loadingStage, setLoadingStage] = useState(1);
   const [loadingText, setLoadingText] = useState('Fetching interview structure...');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const hasGeneratedRef = useRef(false);
 
   const loadingStagesData = [
     { stage: 1, text: 'Fetching interview structure...', duration: 2000 },
-    { stage: 2, text: 'Analyzing your profile...', duration: 3000 },
-    { stage: 3, text: 'Generating personalized questions...', duration: 4000 },
-    { stage: 4, text: 'Setting up your interview...', duration: 2000 },
-    { stage: 5, text: 'Almost ready...', duration: 1000 }
+    { stage: 2, text: 'Analyzing your profile and role requirements...', duration: 3000 },
+    { stage: 3, text: 'Generating personalized questions using custom prompt...', duration: 4000 },
+    { stage: 4, text: 'Validating question count and quality...', duration: 2000 },
+    { stage: 5, text: 'Finalizing your interview...', duration: 1000 }
   ];
 
   useEffect(() => {
+    // Prevent duplicate generation using ref
+    if (hasGeneratedRef.current) return;
+    
+    // Check sessionStorage to prevent duplicate generation on page refresh/navigation
+    const generationKey = `generating_${structureId}_${user.id}`;
+    const isAlreadyGenerating = sessionStorage.getItem(generationKey);
+    
+    if (isAlreadyGenerating) {
+      console.log('Interview generation already in progress');
+      return;
+    }
+    
+    // Mark as generating in sessionStorage
+    sessionStorage.setItem(generationKey, 'true');
+    hasGeneratedRef.current = true;
+
     const loadingStages = [
       { stage: 1, text: 'Fetching interview structure...', duration: 2000 },
-      { stage: 2, text: 'Analyzing your profile...', duration: 3000 },
-      { stage: 3, text: 'Generating personalized questions...', duration: 4000 },
-      { stage: 4, text: 'Setting up your interview...', duration: 2000 },
-      { stage: 5, text: 'Almost ready...', duration: 1000 }
+      { stage: 2, text: 'Analyzing your profile and role requirements...', duration: 3000 },
+      { stage: 3, text: 'Generating personalized questions using custom prompt...', duration: 4000 },
+      { stage: 4, text: 'Validating question count and quality...', duration: 2000 },
+      { stage: 5, text: 'Finalizing your interview...', duration: 1000 }
     ];
 
     const generateInterview = async () => {
+      // Additional check to prevent duplicate calls
+      if (isGenerating) return;
+      setIsGenerating(true);
+      
       try {
         // Simulate loading stages
         for (const { stage, text, duration } of loadingStages) {
@@ -57,21 +79,30 @@ const InterviewGenerationLoader = ({ user, structureId }: InterviewGenerationLoa
         const data = await response.json();
 
         if (data.success) {
+          // Clear the generation flag on success
+          sessionStorage.removeItem(generationKey);
           toast.success('Interview generated successfully!');
           router.push(`/interview/${data.interviewId}`);
         } else {
+          // Clear the generation flag on error
+          sessionStorage.removeItem(generationKey);
           toast.error(data.error || 'Failed to generate interview');
           router.push('/');
         }
       } catch (error) {
+        // Clear the generation flag on error
+        sessionStorage.removeItem(generationKey);
         console.error('Error generating interview:', error);
         toast.error('An error occurred while generating the interview');
         router.push('/');
+      } finally {
+        setIsGenerating(false);
       }
     };
 
     generateInterview();
-  }, [structureId, user.id, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array to prevent re-runs
 
   return (
     <div className="max-w-2xl mx-auto text-center">
@@ -150,9 +181,9 @@ const InterviewGenerationLoader = ({ user, structureId }: InterviewGenerationLoa
             <div className="text-left">
               <h4 className="text-blue-800 font-medium mb-1">What&apos;s happening?</h4>
               <p className="text-blue-700 text-sm">
-                Our AI is analyzing your profile and the interview structure to create questions that are 
-                specifically tailored to your background, skills, and experience level. This ensures a 
-                realistic and relevant interview experience.
+                Our AI is analyzing your profile, the interview structure&apos;s personalized prompt, and role requirements to create questions that are 
+                specifically tailored to your background, skills, and the exact number specified in the interview structure. This ensures a 
+                highly relevant and customized interview experience.
               </p>
             </div>
           </div>
