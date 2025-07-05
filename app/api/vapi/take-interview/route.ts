@@ -1,0 +1,163 @@
+import { generateText } from "ai";
+import { google } from "@ai-sdk/google";
+import { getRandomInterviewCover } from "@/lib/utils";
+import { db } from "@/firebase/admin";
+
+export async function POST(request: Request) {
+    try {
+        const { structureId, userId, resume, interviewCategory } = await request.json();
+
+        console.log("Generating personalized interview for user:", userId, "from structure:", structureId);
+
+        // Validate required fields
+        if (!structureId || !userId) {
+            return Response.json({
+                success: false,
+                error: 'Structure ID and User ID are required'
+            }, { status: 400 });
+        }
+
+        // Get the interview structure from the appropriate collection
+        const collectionName = interviewCategory === 'job' 
+            ? 'job_interview_structures' 
+            : 'mock_interview_structures';
+            
+        const structureDoc = await db.collection(collectionName).doc(structureId).get();
+        
+        if (!structureDoc.exists) {
+            return Response.json({
+                success: false,
+                error: 'Interview structure not found'
+            }, { status: 404 });
+        }
+
+        const structure = structureDoc.data();
+        
+        if (!structure) {
+            return Response.json({
+                success: false,
+                error: 'Invalid interview structure data'
+            }, { status: 400 });
+        }
+        
+        // Generate personalized questions based on resume and structure
+        const { text: personalizedQuestions } = await generateText({
+            model: google("gemini-2.0-flash-001"),
+            prompt: `Generate personalized interview questions based on the following:
+
+INTERVIEW STRUCTURE:
+- Role: ${structure.role}
+- Experience Level: ${structure.level}
+- Tech Stack: ${structure.techstack.join(', ')}
+- Interview Type: ${structure.type}
+- Question Count: ${structure.questionCount}
+
+${structure.interviewCategory === 'job' ? `
+JOB DETAILS:
+- Job Title: ${structure.jobTitle}
+- Designation: ${structure.designation}
+- Location: ${structure.location}
+- CTC: ${structure.ctc}
+- Responsibilities: ${structure.responsibilities}
+` : ''}
+
+${resume ? `
+CANDIDATE'S RESUME/PROFILE:
+${resume}
+
+Please tailor the questions to be relevant to the candidate's background and experience as shown in their resume.
+` : 'No resume provided. Generate general questions for the role.'}
+
+TEMPLATE QUESTIONS FOR REFERENCE:
+${structure.templateQuestions ? structure.templateQuestions.join('\n') : ''}
+
+${structure.categorizedQuestions ? `
+CATEGORIZED TEMPLATE QUESTIONS:
+Behavioral: ${structure.categorizedQuestions.behavioral?.join('\n') || 'None'}
+Technical: ${structure.categorizedQuestions.technical?.join('\n') || 'None'}
+` : ''}
+
+Instructions:
+1. Generate exactly ${structure.questionCount} questions
+2. Make questions relevant to the candidate's experience and the job requirements
+3. Follow the interview type preference: ${structure.type}
+4. Return questions in JSON format: {"questions": ["Question 1", "Question 2", ...]}
+5. Do not use special characters that might break voice assistants
+6. Make questions conversational and natural
+
+Generate personalized, relevant questions now:`,
+        });
+
+        // Parse the generated questions
+        let questions;
+        try {
+            const parsed = JSON.parse(personalizedQuestions);
+            questions = parsed.questions || [];
+        } catch (parseError) {
+            console.error('Error parsing generated questions:', parseError);
+            // Fallback: try to extract questions from text
+            questions = personalizedQuestions
+                .split('\n')
+                .filter(line => line.trim().length > 10)
+                .slice(0, structure.questionCount);
+        }
+
+        // Create the actual interview instance
+        const actualInterview = {
+            structureId,
+            userId,
+            
+            // Copy structure data
+            role: structure.role,
+            level: structure.level,
+            type: structure.type,
+            techstack: structure.techstack,
+            interviewCategory: structure.interviewCategory,
+            
+            // Personalized content
+            questions,
+            personalizedForResume: !!resume,
+            
+            // Interview metadata
+            createdAt: new Date().toISOString(),
+            status: 'ready', // ready, in_progress, completed
+            coverImage: structure.coverImage || getRandomInterviewCover(),
+            
+            // Copy job-specific fields if applicable
+            ...(structure.interviewCategory === 'job' ? {
+                jobTitle: structure.jobTitle,
+                responsibilities: structure.responsibilities,
+                ctc: structure.ctc,
+                location: structure.location,
+                designation: structure.designation
+            } : {})
+        };
+
+        // Save to actual interview collection
+        const actualInterviewCollection = interviewCategory === 'job' 
+            ? 'job_interviews' 
+            : 'mock_interviews';
+            
+        const interviewDoc = await db.collection(actualInterviewCollection).add(actualInterview);
+
+        // Update structure usage count
+        await db.collection(collectionName).doc(structureId).update({
+            usageCount: (structure.usageCount || 0) + 1,
+            lastUsed: new Date().toISOString()
+        });
+
+        return Response.json({
+            success: true,
+            interviewId: interviewDoc.id,
+            questions,
+            message: 'Personalized interview generated successfully!'
+        }, { status: 200 });
+
+    } catch (error) {
+        console.error('Error generating personalized interview:', error);
+        return Response.json({
+            success: false,
+            error: 'Failed to generate personalized interview'
+        }, { status: 500 });
+    }
+}

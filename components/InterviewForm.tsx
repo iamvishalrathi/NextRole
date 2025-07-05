@@ -310,10 +310,10 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
     }
   };
 
-  // Handle form submission - create the interview with finalized questions
+  // Handle form submission - create the interview structure
   const onSubmit = async (values: FormValues) => {
     if (!user.id) {
-      toast.error('You must be logged in to create an interview');
+      toast.error('You must be logged in to create an interview structure');
       return;
     }
 
@@ -335,19 +335,20 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
           userid: user.id,
           questions: generatedQuestions,
           categorizedQuestions,
+          amount: values.amount,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        toast.success('Interview created successfully!');
+        toast.success(data.message || 'Interview structure created successfully!');
         router.push('/');
       } else {
-        toast.error('Failed to create interview. Please try again.');
+        toast.error('Failed to create interview structure. Please try again.');
       }
     } catch (error) {
-      console.error('Error creating interview:', error);
+      console.error('Error creating interview structure:', error);
       toast.error('An error occurred. Please try again later.');
     } finally {
       setIsSubmitting(false);
@@ -363,8 +364,8 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-200 via-light-400 to-primary-100 rounded-t-2xl"></div>
       
       <div className="max-w-4xl mx-auto relative z-10">
-        <h2 className="text-3xl font-bold text-primary-100 mb-2 text-center">Create Your Interview</h2>
-        <p className="text-primary-300 text-center mb-8">Customize your interview experience with the options below</p>
+        <h2 className="text-3xl font-bold text-primary-100 mb-2 text-center">Create Interview Structure</h2>
+        <p className="text-primary-300 text-center mb-8">Create a reusable interview template that can be personalized for each candidate</p>
         
         {/* Step Progress Indicator */}
         <div className="flex justify-center mb-8">
@@ -429,9 +430,9 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                         />
                         <div className="text-center">
                           <span className={`text-lg font-medium block ${interviewCategory === 'mock' ? 'text-primary-100' : 'text-primary-300'}`}>
-                            Mock Interview
+                            Mock Interview Structure
                           </span>
-                          <span className="text-sm text-primary-400">Practice interview for skill development</span>
+                          <span className="text-sm text-primary-400">Create reusable practice interview templates</span>
                         </div>
                       </label>
                       
@@ -448,9 +449,9 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                         />
                         <div className="text-center">
                           <span className={`text-lg font-medium block ${interviewCategory === 'job' ? 'text-primary-100' : 'text-primary-300'}`}>
-                            Job Interview
+                            Job Interview Structure
                           </span>
-                          <span className="text-sm text-primary-400">Actual job opening with requirements</span>
+                          <span className="text-sm text-primary-400">Create templates for actual job openings</span>
                         </div>
                       </label>
                     </div>
@@ -462,10 +463,10 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
                     <div className="flex items-center gap-2">
                       <Info className="h-5 w-5 text-blue-600" />
-                      <span className="text-blue-800 font-medium">Mock Interview</span>
+                      <span className="text-blue-800 font-medium">Mock Interview Structure</span>
                     </div>
                     <p className="text-blue-700 text-sm mt-1">
-                      As a candidate, you can create mock interviews to practice and improve your interview skills.
+                      As a candidate, you can create mock interview structures that will be personalized when you take them.
                     </p>
                   </div>
                 )}
@@ -1235,7 +1236,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                     }
                   `}</style>
                   <span className="relative z-10 group-hover:scale-105 transition-transform duration-300 inline-block">
-                    {isSubmitting ? 'Creating Interview...' : 'Create Interview'}
+                    {isSubmitting ? 'Creating Structure...' : 'Create Interview Structure'}
                   </span>
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-white"></div>
                 </Button>

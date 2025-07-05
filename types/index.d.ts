@@ -36,6 +36,37 @@ interface Interview {
   ctc?: string;
   location?: string;
   designation?: string;
+  // For actual interviews
+  structureId?: string; // References the structure this interview was generated from
+  personalizedForResume?: boolean;
+  status?: 'ready' | 'in_progress' | 'completed';
+}
+
+interface InterviewStructure {
+  id: string;
+  role: string;
+  level: string;
+  templateQuestions: string[];
+  categorizedQuestions?: {
+    behavioral: string[];
+    technical: string[];
+  };
+  techstack: string[];
+  createdAt: string;
+  userId: string;
+  type: string;
+  visibility?: boolean;
+  interviewCategory?: 'mock' | 'job';
+  jobTitle?: string;
+  responsibilities?: string;
+  ctc?: string;
+  location?: string;
+  designation?: string;
+  // Structure metadata
+  isTemplate: true;
+  questionCount: number;
+  usageCount: number;
+  lastUsed?: string;
 }
 
 interface CreateFeedbackParams {

@@ -6,10 +6,10 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, userid, visibility,
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            questions, categorizedQuestions
+            questions, categorizedQuestions, amount
         } = await request.json();
 
-        console.log("Finalizing interview for user:", userid);
+        console.log("Creating interview structure for user:", userid);
 
         // Validate required fields
         if (!questions || questions.length === 0) {
@@ -19,18 +19,24 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
 
-        const interview = {
+        // Create interview structure (template)
+        const interviewStructure = {
             role, 
             level, 
             type, 
             techstack: techstack.split(',').map((tech: string) => tech.trim()), 
-            questions: questions,
+            templateQuestions: questions,
             ...(categorizedQuestions && { categorizedQuestions }),
             userId: userid, 
-            finalized: true,
             visibility: visibility !== undefined ? visibility : false,
             coverImage: getRandomInterviewCover(),
             createdAt: new Date().toISOString(),
+            
+            // Template metadata
+            isTemplate: true,
+            questionCount: amount || questions.length,
+            usageCount: 0, // Track how many times this template has been used
+            
             // Add job-specific fields if it's a job interview
             ...(interviewCategory === 'job' ? {
                 interviewCategory,
@@ -44,19 +50,23 @@ export async function POST(request: Request) {
             })
         };
 
-        // Use different collections for mock and job interviews
-        const collectionName = interviewCategory === 'job' ? 'jobInterviews' : 'mockInterviews';
-        const docRef = await db.collection(collectionName).add(interview);
+        // Use structure collections instead of actual interview collections
+        const collectionName = interviewCategory === 'job' 
+            ? 'job_interview_structures' 
+            : 'mock_interview_structures';
+            
+        const docRef = await db.collection(collectionName).add(interviewStructure);
         
         return Response.json({
             success: true,
-            interviewId: docRef.id
+            structureId: docRef.id,
+            message: `${interviewCategory === 'job' ? 'Job' : 'Mock'} interview structure created successfully!`
         }, { status: 200 });
     } catch (error) {
-        console.error('Error finalizing interview:', error);
+        console.error('Error creating interview structure:', error);
         return Response.json({
             success: false,
-            error: 'Failed to create interview'
+            error: 'Failed to create interview structure'
         }, { status: 500 });
     }
 }
