@@ -5,7 +5,7 @@ import { db } from "@/firebase/admin";
 
 export async function POST(request: Request) {
     try {
-        const { structureId, userId, resume, interviewCategory } = await request.json();
+        const { structureId, userId, resume, generatePersonalized } = await request.json();
 
         console.log("Generating personalized interview for user:", userId, "from structure:", structureId);
 
@@ -17,12 +17,29 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
 
+        // Get user profile if generatePersonalized is true
+        let userProfile = null;
+        if (generatePersonalized) {
+            try {
+                const profileDoc = await db.collection("profiles").doc(userId).get();
+                if (profileDoc.exists) {
+                    userProfile = profileDoc.data();
+                }
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                // Continue without profile data
+            }
+        }
+
         // Get the interview structure from the appropriate collection
-        const collectionName = interviewCategory === 'job' 
-            ? 'job_interview_structures' 
-            : 'mock_interview_structures';
-            
-        const structureDoc = await db.collection(collectionName).doc(structureId).get();
+        // First try mock, then job interview structures
+        let structureDoc = await db.collection('mock_interview_structures').doc(structureId).get();
+        let actualInterviewCategory = 'mock';
+        
+        if (!structureDoc.exists) {
+            structureDoc = await db.collection('job_interview_structures').doc(structureId).get();
+            actualInterviewCategory = 'job';
+        }
         
         if (!structureDoc.exists) {
             return Response.json({
@@ -40,7 +57,21 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
         
-        // Generate personalized questions based on resume and structure
+        // Generate personalized questions based on resume, profile, and structure
+        const profileData = userProfile ? `
+USER PROFILE DATA:
+- Current Role: ${userProfile.currentRole || 'Not specified'}
+- Experience: ${userProfile.experience || 'Not specified'}
+- Skills: ${userProfile.skills || 'Not specified'}
+- Education: ${userProfile.education || 'Not specified'}
+- Location: ${userProfile.location || 'Not specified'}
+- Phone: ${userProfile.phone || 'Not specified'}
+${userProfile.resume ? `
+Resume/Background:
+${userProfile.resume}
+` : ''}
+` : '';
+
         const { text: personalizedQuestions } = await generateText({
             model: google("gemini-2.0-flash-001"),
             prompt: `Generate personalized interview questions based on the following:
@@ -61,12 +92,12 @@ JOB DETAILS:
 - Responsibilities: ${structure.responsibilities}
 ` : ''}
 
-${resume ? `
-CANDIDATE'S RESUME/PROFILE:
-${resume}
+${profileData}
 
-Please tailor the questions to be relevant to the candidate's background and experience as shown in their resume.
-` : 'No resume provided. Generate general questions for the role.'}
+${resume ? `
+ADDITIONAL RESUME/PROFILE PROVIDED:
+${resume}
+` : ''}
 
 TEMPLATE QUESTIONS FOR REFERENCE:
 ${structure.questions ? structure.questions.join('\n') : ''}
@@ -79,11 +110,13 @@ Technical: ${structure.categorizedQuestions.technical?.join('\n') || 'None'}
 
 Instructions:
 1. Generate exactly ${structure.compulsoryQuestions + structure.personalizedQuestions} questions
-2. Make questions relevant to the candidate's experience and the job requirements
-3. Follow the interview type preference: ${structure.type}
-4. Return questions in JSON format: {"questions": ["Question 1", "Question 2", ...]}
-5. Do not use special characters that might break voice assistants
-6. Make questions conversational and natural
+2. Make questions highly relevant to the candidate's experience, skills, and the job requirements
+3. Use the user's profile data to create personalized questions about their specific background
+4. Follow the interview type preference: ${structure.type}
+5. Return questions in JSON format: {"questions": ["Question 1", "Question 2", ...]}
+6. Do not use special characters that might break voice assistants
+7. Make questions conversational and natural
+8. Reference specific skills, experiences, or projects from their profile when possible
 
 Generate personalized, relevant questions now:`,
         });
@@ -112,7 +145,7 @@ Generate personalized, relevant questions now:`,
             level: structure.level,
             type: structure.type,
             techstack: structure.techstack,
-            interviewCategory: structure.interviewCategory,
+            interviewCategory: actualInterviewCategory,
             
             // Personalized content
             questions,
@@ -124,7 +157,7 @@ Generate personalized, relevant questions now:`,
             coverImage: structure.coverImage || getRandomInterviewCover(),
             
             // Copy job-specific fields if applicable
-            ...(structure.interviewCategory === 'job' ? {
+            ...(actualInterviewCategory === 'job' ? {
                 jobTitle: structure.jobTitle,
                 responsibilities: structure.responsibilities,
                 ctc: structure.ctc,
@@ -134,14 +167,18 @@ Generate personalized, relevant questions now:`,
         };
 
         // Save to actual interview collection
-        const actualInterviewCollection = interviewCategory === 'job' 
+        const actualInterviewCollection = actualInterviewCategory === 'job' 
             ? 'job_interviews' 
             : 'mock_interviews';
             
         const interviewDoc = await db.collection(actualInterviewCollection).add(actualInterview);
 
         // Update structure usage count
-        await db.collection(collectionName).doc(structureId).update({
+        const structureCollection = actualInterviewCategory === 'job' 
+            ? 'job_interview_structures' 
+            : 'mock_interview_structures';
+        
+        await db.collection(structureCollection).doc(structureId).update({
             usageCount: (structure.usageCount || 0) + 1,
             lastUsed: new Date().toISOString()
         });

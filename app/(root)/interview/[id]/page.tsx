@@ -33,6 +33,9 @@ const page = async ({params} : RouteParams) => {
     const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : '?';
     const avatarColor = user?.avatarColor || 'bg-blue-500'; // Default to blue if no color is set
 
+    // Get tech icons for the tech stack
+    const techIcons = await getTechLogos(interview.techstack);
+
 
   return (
     <>
@@ -49,7 +52,7 @@ const page = async ({params} : RouteParams) => {
                     <h3 className='capitalize' >{interview.role} </h3>
                 </div>
 
-                <DisplayTechIcons techStack={interview.techstack}  />
+                <DisplayTechIcons techIcons={techIcons} />
 
             </div>
 

@@ -39,23 +39,30 @@ const InterviewStructureCard = ({
   ctc
 }: InterviewStructureCardProps) => {
   const [techLogo, setTechLogo] = useState('/tech.svg');
+  const [techIcons, setTechIcons] = useState<Array<{ tech: string; url: string }>>([]);
 
   useEffect(() => {
-    const loadTechLogo = async () => {
+    const loadTechData = async () => {
       if (techstack.length > 0) {
         try {
+          // Load tech logo
           const logos = await getTechLogos([techstack[Math.floor(Math.random() * techstack.length)]]);
           if (logos.length > 0) {
             setTechLogo(logos[0].url);
           }
+
+          // Load tech icons
+          const icons = await getTechLogos(techstack);
+          setTechIcons(icons);
         } catch (error) {
-          console.error('Error loading tech logo:', error);
+          console.error('Error loading tech data:', error);
           setTechLogo('/tech.svg');
+          setTechIcons([]);
         }
       }
     };
 
-    loadTechLogo();
+    loadTechData();
   }, [techstack]);
 
   const totalQuestions = compulsoryQuestions + personalizedQuestions;
@@ -63,7 +70,7 @@ const InterviewStructureCard = ({
   const formattedDate = dayjs(createdAt).format("MMM D, YYYY");
 
   const handleTakeInterview = () => {
-    window.location.href = `/interview/take?structureId=${id}`;
+    window.location.href = `/interview/confirm-profile?structureId=${id}`;
   };
 
   return (
@@ -124,7 +131,7 @@ const InterviewStructureCard = ({
 
         {/* Footer */}
         <div className='flex flex-row justify-between items-center'>
-          <DisplayTechIcons techStack={techstack} />
+          <DisplayTechIcons techIcons={techIcons} />
           
           {/* Usage Count */}
           <div className="flex flex-row items-center gap-1 mx-2">

@@ -29,6 +29,9 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
     // Check if user is the owner of this interview
     const isOwner = user?.id === userId;
 
+    // Get tech icons for the tech stack
+    const techIcons = await getTechLogos(techstack);
+
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96" >
       <div className="card-interview" >
@@ -121,7 +124,7 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
         </div>
 
         <div className='flex flex-row justify-between' >
-          <DisplayTechIcons techStack={techstack} />
+          <DisplayTechIcons techIcons={techIcons} />
           
           {/* Average Rating Display */}
           <div className="flex flex-row items-center gap-1 mx-2">

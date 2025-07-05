@@ -147,6 +147,21 @@ interface InterviewFormProps {
   techstack: string[];
 }
 
-interface TechIconProps {
-  techStack: string[];
+interface Education {
+  institution: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  endDate: string;
+  grade?: string;
+}
+
+interface UserProfile {
+  currentRole?: string;
+  experience?: string;
+  skills?: string;
+  education?: string | Education | Education[];
+  location?: string;
+  phone?: string;
+  resume?: string;
 }
