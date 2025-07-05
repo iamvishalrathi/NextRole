@@ -514,6 +514,66 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                   </div>
                 )}
 
+                {/* Optional fields for mock interviews */}
+                {interviewCategory === 'mock' && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-semibold text-primary-100">Additional Details (Optional)</h3>
+                      <span className="text-sm text-primary-300 bg-dark-100/30 px-3 py-1 rounded-full">Optional</span>
+                    </div>
+                    
+                    {/* Designation */}
+                    <FormField
+                      control={form.control}
+                      name="designation"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-primary-100 text-lg font-medium">
+                            Target Job Designation
+                            <span className="text-primary-300 text-sm font-normal ml-2">(Optional)</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 h-12 rounded-xl" 
+                              placeholder="e.g. Software Engineer III, Senior Developer" 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <p className="text-sm text-primary-300 mt-2">
+                            The specific job designation you&apos;re preparing for. This helps tailor the interview experience.
+                          </p>
+                          <FormMessage className="text-destructive-100" />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Responsibilities */}
+                    <FormField
+                      control={form.control}
+                      name="responsibilities"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-primary-100 text-lg font-medium">
+                            Key Responsibilities
+                            <span className="text-primary-300 text-sm font-normal ml-2">(Optional)</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-xl min-h-[120px]" 
+                              placeholder="Describe the key responsibilities and requirements for the role you&apos;re preparing for..."
+                              {...field} 
+                            />
+                          </FormControl>
+                          <p className="text-sm text-primary-300 mt-2">
+                            Adding responsibilities helps generate more relevant and targeted interview questions.
+                          </p>
+                          <FormMessage className="text-destructive-100" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+
                 {/* Job-specific fields for recruiters creating job interviews */}
                 {isRecruiter && interviewCategory === 'job' && (
                   <div className="space-y-6">
@@ -1294,6 +1354,27 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                         <div className="mt-2 flex items-center gap-2 text-xs text-primary-300">
                           <Info size={12} />
                           <span>This prompt will be used to generate personalized questions for each candidate</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Optional Mock Interview Details */}
+                    {form.watch('interviewCategory') === 'mock' && (form.watch('designation') || form.watch('responsibilities')) && (
+                      <div className="mt-4 p-4 bg-dark-100/50 rounded-lg border border-dark-100">
+                        <h4 className="text-primary-200 font-medium mb-3">Additional Details</h4>
+                        <div className="space-y-3">
+                          {form.watch('designation') && (
+                            <div>
+                              <h5 className="text-primary-300 text-sm font-medium mb-1">Target Job Designation</h5>
+                              <p className="text-primary-100 text-sm">{form.watch('designation')}</p>
+                            </div>
+                          )}
+                          {form.watch('responsibilities') && (
+                            <div>
+                              <h5 className="text-primary-300 text-sm font-medium mb-1">Key Responsibilities</h5>
+                              <p className="text-primary-100 text-sm leading-relaxed">{form.watch('responsibilities')}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
