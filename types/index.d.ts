@@ -20,6 +20,10 @@ interface Interview {
   role: string;
   level: string;
   questions: string[];
+  categorizedQuestions?: {
+    behavioral: string[];
+    technical: string[];
+  };
   techstack: string[];
   createdAt: string;
   userId: string;

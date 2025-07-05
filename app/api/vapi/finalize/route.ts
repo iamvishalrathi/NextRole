@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, userid, visibility,
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            questions
+            questions, categorizedQuestions
         } = await request.json();
 
         console.log("Finalizing interview for user:", userid);
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
             type, 
             techstack: techstack.split(',').map((tech: string) => tech.trim()), 
             questions: questions,
+            ...(categorizedQuestions && { categorizedQuestions }),
             userId: userid, 
             finalized: true,
             visibility: visibility !== undefined ? visibility : false,
@@ -43,7 +44,9 @@ export async function POST(request: Request) {
             })
         };
 
-        const docRef = await db.collection("interviews").add(interview);
+        // Use different collections for mock and job interviews
+        const collectionName = interviewCategory === 'job' ? 'jobInterviews' : 'mockInterviews';
+        const docRef = await db.collection(collectionName).add(interview);
         
         return Response.json({
             success: true,

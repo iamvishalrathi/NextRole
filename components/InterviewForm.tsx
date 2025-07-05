@@ -79,6 +79,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps] = useState(4);
   const [generatedQuestions, setGeneratedQuestions] = useState<string[]>([]);
+  const [categorizedQuestions, setCategorizedQuestions] = useState<{behavioral: string[], technical: string[]} | null>(null);
   const [isGeneratingQuestions, setIsGeneratingQuestions] = useState(false);
   const [questionsFinalized, setQuestionsFinalized] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<number | null>(null);
@@ -123,6 +124,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
     
     // Reset questions when category changes
     setGeneratedQuestions([]);
+    setCategorizedQuestions(null);
     setQuestionsFinalized(false);
   };
 
@@ -158,6 +160,11 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
 
       if (data.success && data.questions) {
         setGeneratedQuestions(data.questions);
+        if (data.categorizedQuestions) {
+          setCategorizedQuestions(data.categorizedQuestions);
+        } else {
+          setCategorizedQuestions(null);
+        }
         toast.success('Questions generated successfully!');
       } else {
         toast.error('Failed to generate questions. Please try again.');
@@ -187,6 +194,22 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
       const updatedQuestions = [...generatedQuestions];
       updatedQuestions[editingQuestion] = tempQuestionText.trim();
       setGeneratedQuestions(updatedQuestions);
+      
+      // Update categorized questions if they exist
+      if (categorizedQuestions) {
+        const behavioralCount = categorizedQuestions.behavioral.length;
+        const updatedCategorized = { ...categorizedQuestions };
+        
+        if (editingQuestion < behavioralCount) {
+          // Editing a behavioral question
+          updatedCategorized.behavioral[editingQuestion] = tempQuestionText.trim();
+        } else {
+          // Editing a technical question
+          updatedCategorized.technical[editingQuestion - behavioralCount] = tempQuestionText.trim();
+        }
+        setCategorizedQuestions(updatedCategorized);
+      }
+      
       setEditingQuestion(null);
       setTempQuestionText('');
       toast.success('Question updated successfully!');
@@ -203,6 +226,23 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
   const deleteQuestion = (index: number) => {
     const updatedQuestions = generatedQuestions.filter((_, i) => i !== index);
     setGeneratedQuestions(updatedQuestions);
+    
+    // Update categorized questions if they exist
+    if (categorizedQuestions) {
+      const behavioralCount = categorizedQuestions.behavioral.length;
+      const updatedCategorized = { ...categorizedQuestions };
+      
+      if (index < behavioralCount) {
+        // Deleting a behavioral question
+        updatedCategorized.behavioral = updatedCategorized.behavioral.filter((_, i) => i !== index);
+      } else {
+        // Deleting a technical question
+        const technicalIndex = index - behavioralCount;
+        updatedCategorized.technical = updatedCategorized.technical.filter((_, i) => i !== technicalIndex);
+      }
+      setCategorizedQuestions(updatedCategorized);
+    }
+    
     // Update the amount field
     form.setValue('amount', updatedQuestions.length);
     toast.success('Question deleted successfully!');
@@ -294,6 +334,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
           ...values,
           userid: user.id,
           questions: generatedQuestions,
+          categorizedQuestions,
         }),
       });
 
@@ -665,6 +706,7 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                               // Reset questions when amount changes
                               if (generatedQuestions.length > 0) {
                                 setGeneratedQuestions([]);
+                                setCategorizedQuestions(null);
                                 setQuestionsFinalized(false);
                               }
                             }}
@@ -742,77 +784,249 @@ const InterviewForm = ({ user }: InterviewFormProps) => {
                     )}
 
                     <div className="space-y-3">
-                      {generatedQuestions.map((question, index) => (
-                        <div key={index} className="p-4 bg-dark-100/30 rounded-lg border border-dark-100">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-primary-200 font-medium">Q{index + 1}.</span>
-                                {questionsFinalized && (
-                                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-                                    Finalized
-                                  </span>
+                      {categorizedQuestions ? (
+                        // Display categorized questions for mixed interviews
+                        <>
+                          {categorizedQuestions.behavioral.length > 0 && (
+                            <div className="space-y-3">
+                              <h4 className="text-lg font-medium text-primary-100 flex items-center gap-2">
+                                <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                Behavioral Questions ({categorizedQuestions.behavioral.length})
+                              </h4>
+                              {categorizedQuestions.behavioral.map((question, index) => {
+                                const globalIndex = index;
+                                return (
+                                  <div key={`behavioral-${index}`} className="p-4 bg-blue-50/10 rounded-lg border border-blue-200/20">
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-2">
+                                          <span className="text-primary-200 font-medium">BQ{index + 1}.</span>
+                                          {questionsFinalized && (
+                                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                                              Finalized
+                                            </span>
+                                          )}
+                                        </div>
+                                        
+                                        {editingQuestion === globalIndex ? (
+                                          <div className="space-y-2">
+                                            <Textarea
+                                              value={tempQuestionText}
+                                              onChange={(e) => setTempQuestionText(e.target.value)}
+                                              className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-lg"
+                                              rows={3}
+                                            />
+                                            <div className="flex gap-2">
+                                              <Button
+                                                type="button"
+                                                size="sm"
+                                                onClick={saveEditedQuestion}
+                                                className="bg-green-600 hover:bg-green-700 text-white"
+                                              >
+                                                Save
+                                              </Button>
+                                              <Button
+                                                type="button"
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={cancelEditing}
+                                                className="text-primary-100 border-primary-200"
+                                              >
+                                                Cancel
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <p className="text-primary-100 leading-relaxed">{question}</p>
+                                        )}
+                                      </div>
+                                      
+                                      {editingQuestion !== globalIndex && !questionsFinalized && (
+                                        <div className="flex gap-1">
+                                          <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => startEditingQuestion(globalIndex)}
+                                            className="text-primary-100 border-primary-200 hover:bg-primary-200/10"
+                                          >
+                                            Edit
+                                          </Button>
+                                          <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => deleteQuestion(globalIndex)}
+                                            className="text-red-400 border-red-400 hover:bg-red-400/10"
+                                          >
+                                            Delete
+                                          </Button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {categorizedQuestions.technical.length > 0 && (
+                            <div className="space-y-3">
+                              <h4 className="text-lg font-medium text-primary-100 flex items-center gap-2">
+                                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                                Technical Questions ({categorizedQuestions.technical.length})
+                              </h4>
+                              {categorizedQuestions.technical.map((question, index) => {
+                                const globalIndex = categorizedQuestions.behavioral.length + index;
+                                return (
+                                  <div key={`technical-${index}`} className="p-4 bg-green-50/10 rounded-lg border border-green-200/20">
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-2">
+                                          <span className="text-primary-200 font-medium">TQ{index + 1}.</span>
+                                          {questionsFinalized && (
+                                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                                              Finalized
+                                            </span>
+                                          )}
+                                        </div>
+                                        
+                                        {editingQuestion === globalIndex ? (
+                                          <div className="space-y-2">
+                                            <Textarea
+                                              value={tempQuestionText}
+                                              onChange={(e) => setTempQuestionText(e.target.value)}
+                                              className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-lg"
+                                              rows={3}
+                                            />
+                                            <div className="flex gap-2">
+                                              <Button
+                                                type="button"
+                                                size="sm"
+                                                onClick={saveEditedQuestion}
+                                                className="bg-green-600 hover:bg-green-700 text-white"
+                                              >
+                                                Save
+                                              </Button>
+                                              <Button
+                                                type="button"
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={cancelEditing}
+                                                className="text-primary-100 border-primary-200"
+                                              >
+                                                Cancel
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <p className="text-primary-100 leading-relaxed">{question}</p>
+                                        )}
+                                      </div>
+                                      
+                                      {editingQuestion !== globalIndex && !questionsFinalized && (
+                                        <div className="flex gap-1">
+                                          <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => startEditingQuestion(globalIndex)}
+                                            className="text-primary-100 border-primary-200 hover:bg-primary-200/10"
+                                          >
+                                            Edit
+                                          </Button>
+                                          <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => deleteQuestion(globalIndex)}
+                                            className="text-red-400 border-red-400 hover:bg-red-400/10"
+                                          >
+                                            Delete
+                                          </Button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        // Display regular questions for single-type interviews
+                        generatedQuestions.map((question, index) => (
+                          <div key={index} className="p-4 bg-dark-100/30 rounded-lg border border-dark-100">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className="text-primary-200 font-medium">Q{index + 1}.</span>
+                                  {questionsFinalized && (
+                                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                                      Finalized
+                                    </span>
+                                  )}
+                                </div>
+                                
+                                {editingQuestion === index ? (
+                                  <div className="space-y-2">
+                                    <Textarea
+                                      value={tempQuestionText}
+                                      onChange={(e) => setTempQuestionText(e.target.value)}
+                                      className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-lg"
+                                      rows={3}
+                                    />
+                                    <div className="flex gap-2">
+                                      <Button
+                                        type="button"
+                                        size="sm"
+                                        onClick={saveEditedQuestion}
+                                        className="bg-green-600 hover:bg-green-700 text-white"
+                                      >
+                                        Save
+                                      </Button>
+                                      <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={cancelEditing}
+                                        className="text-primary-100 border-primary-200"
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <p className="text-primary-100 leading-relaxed">{question}</p>
                                 )}
                               </div>
                               
-                              {editingQuestion === index ? (
-                                <div className="space-y-2">
-                                  <Textarea
-                                    value={tempQuestionText}
-                                    onChange={(e) => setTempQuestionText(e.target.value)}
-                                    className="bg-dark-100/50 border-dark-100 focus:border-primary-200 text-primary-100 rounded-lg"
-                                    rows={3}
-                                  />
-                                  <div className="flex gap-2">
-                                    <Button
-                                      type="button"
-                                      size="sm"
-                                      onClick={saveEditedQuestion}
-                                      className="bg-green-600 hover:bg-green-700 text-white"
-                                    >
-                                      Save
-                                    </Button>
-                                    <Button
-                                      type="button"
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={cancelEditing}
-                                      className="text-primary-100 border-primary-200"
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </div>
+                              {editingQuestion !== index && !questionsFinalized && (
+                                <div className="flex gap-1">
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => startEditingQuestion(index)}
+                                    className="text-primary-100 border-primary-200 hover:bg-primary-200/10"
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => deleteQuestion(index)}
+                                    className="text-red-400 border-red-400 hover:bg-red-400/10"
+                                  >
+                                    Delete
+                                  </Button>
                                 </div>
-                              ) : (
-                                <p className="text-primary-100 leading-relaxed">{question}</p>
                               )}
                             </div>
-                            
-                            {editingQuestion !== index && !questionsFinalized && (
-                              <div className="flex gap-1">
-                                <Button
-                                  type="button"
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => startEditingQuestion(index)}
-                                  className="text-primary-100 border-primary-200 hover:bg-primary-200/10"
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  type="button"
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => deleteQuestion(index)}
-                                  className="text-red-400 border-red-400 hover:bg-red-400/10"
-                                >
-                                  Delete
-                                </Button>
-                              </div>
-                            )}
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      )}
                     </div>
                   </div>
                 )}
