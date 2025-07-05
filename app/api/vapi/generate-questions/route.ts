@@ -6,16 +6,19 @@ export async function POST(request: Request) {
         const { 
             type, role, level, techstack, amount, 
             interviewCategory, jobTitle, responsibilities, ctc, location, designation,
-            regenerate 
+            compulsoryQuestions, personalizedQuestions, regenerate 
         } = await request.json();
 
         let questions;
         let categorizedQuestions = null;
+        
+        // Only generate compulsory questions since personalized ones will be generated during interview
+        const questionsToGenerate = compulsoryQuestions || amount;
 
         if (type === 'mixed') {
             // For mixed interviews, generate both behavioral and technical questions
-            const behavioralAmount = Math.ceil(amount / 2);
-            const technicalAmount = Math.floor(amount / 2);
+            const behavioralAmount = Math.ceil(questionsToGenerate / 2);
+            const technicalAmount = Math.floor(questionsToGenerate / 2);
 
             // Generate behavioral questions
             const { text: behavioralQuestionsText } = await generateText({
@@ -94,7 +97,7 @@ export async function POST(request: Request) {
                 The job role is ${role}.
                 The job experience level is ${level}.
                 ${type === 'technical' ? `The tech stack used in the job is: ${techstack}.` : ''}
-                The amount of questions required is: ${amount}.
+                The amount of questions required is: ${questionsToGenerate}.
                 ${interviewCategory === 'job' ? `
                 This is for an actual job opening with these details:
                 - Job Title: ${jobTitle}
@@ -127,7 +130,10 @@ export async function POST(request: Request) {
         return Response.json({
             success: true,
             questions,
-            categorizedQuestions
+            categorizedQuestions,
+            compulsoryCount: questionsToGenerate,
+            personalizedCount: personalizedQuestions || 0,
+            message: `Generated ${questionsToGenerate} compulsory questions${personalizedQuestions > 0 ? ` (${personalizedQuestions} personalized questions will be generated during interview)` : ''}`
         }, { status: 200 });
     } catch (error) {
         console.error('Error generating questions:', error);
