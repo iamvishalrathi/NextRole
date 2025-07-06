@@ -19,11 +19,17 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
   const router = useRouter()
   const params = useSearchParams()
   const [searchTerm, setSearchTerm] = useState(searchParams.search || '')
+  const [currentCategory, setCurrentCategory] = useState<'mock' | 'job' | 'all'>(searchParams.category || 'all')
+  const [currentType, setCurrentType] = useState<'technical' | 'behavioral' | 'mixed' | 'all'>(searchParams.type || 'all')
+  const [currentLevel, setCurrentLevel] = useState<'entry' | 'mid' | 'senior' | 'all'>(searchParams.level || 'all')
 
-  // Update search term when searchParams changes
+  // Update all states when searchParams changes
   useEffect(() => {
     setSearchTerm(searchParams.search || '')
-  }, [searchParams.search])
+    setCurrentCategory(searchParams.category || 'all')
+    setCurrentType(searchParams.type || 'all')
+    setCurrentLevel(searchParams.level || 'all')
+  }, [searchParams.search, searchParams.category, searchParams.type, searchParams.level])
 
   // Debounced search
   useEffect(() => {
@@ -45,6 +51,11 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
   }, [searchTerm, params, router])
 
   const updateFilter = (key: string, value: string) => {
+    // Update local state immediately with proper typing
+    if (key === 'category') setCurrentCategory(value as 'mock' | 'job' | 'all')
+    if (key === 'type') setCurrentType(value as 'technical' | 'behavioral' | 'mixed' | 'all')
+    if (key === 'level') setCurrentLevel(value as 'entry' | 'mid' | 'senior' | 'all')
+    
     const current = new URLSearchParams(Array.from(params.entries()))
     
     if (value === 'all' || value === '') {
@@ -60,31 +71,15 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
 
   const clearFilters = () => {
     setSearchTerm('')
+    setCurrentCategory('all')
+    setCurrentType('all')
+    setCurrentLevel('all')
     router.push('/discover')
   }
 
-  // Generate placeholder text based on selected filters
+  // Static placeholder text for search input
   const getSearchPlaceholder = () => {
-    let placeholder = 'Search by role...'
-    
-    if (searchParams.category && searchParams.category !== 'all') {
-      placeholder = `Search ${searchParams.category} interview roles...`
-    }
-    
-    if (searchParams.type && searchParams.type !== 'all') {
-      placeholder = `Search ${searchParams.type} roles...`
-    }
-    
-    if (searchParams.level && searchParams.level !== 'all') {
-      placeholder = `Search ${searchParams.level} level roles...`
-    }
-    
-    if (searchParams.category && searchParams.category !== 'all' && 
-        searchParams.type && searchParams.type !== 'all') {
-      placeholder = `Search ${searchParams.type} ${searchParams.category} roles...`
-    }
-    
-    return placeholder
+    return 'Search by role...'
   }
 
   return (
@@ -129,7 +124,7 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
               Category
             </label>
             <select
-              value={searchParams.category || 'all'}
+              value={currentCategory}
               onChange={(e) => updateFilter('category', e.target.value)}
               className="w-full h-12 px-4 bg-dark-200 border border-primary-500/30 text-primary-100 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             >
@@ -145,7 +140,7 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
               Interview Type
             </label>
             <select
-              value={searchParams.type || 'all'}
+              value={currentType}
               onChange={(e) => updateFilter('type', e.target.value)}
               className="w-full h-12 px-4 bg-dark-200 border border-primary-500/30 text-primary-100 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             >
@@ -162,7 +157,7 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
               Experience Level
             </label>
             <select
-              value={searchParams.level || 'all'}
+              value={currentLevel}
               onChange={(e) => updateFilter('level', e.target.value)}
               className="w-full h-12 px-4 bg-dark-200 border border-primary-500/30 text-primary-100 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             >
