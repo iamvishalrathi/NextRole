@@ -7,7 +7,7 @@ interface RouteParams {
     params: Promise<{ id: string }>;
 }
 
-const CompleteProfilePage = async ({ params }: RouteParams) => {
+const EditProfilePage = async ({ params }: RouteParams) => {
     const { id } = await params;
     const currentUser = await getCurrentUser();
 
@@ -16,16 +16,16 @@ const CompleteProfilePage = async ({ params }: RouteParams) => {
         redirect('/sign-in');
     }
 
-    // Only allow users to complete their own profile
+    // Only allow users to edit their own profile
     if (currentUser.id !== id) {
         redirect('/');
     }
 
-    // Check if profile is already completed
+    // Check if profile exists
     const existingProfile = await getProfileByUserId(id);
-    if (existingProfile) {
-        // If profile is already completed, redirect to profile page
-        redirect(`/user/${id}/profile`);
+    if (!existingProfile) {
+        // If profile doesn't exist, redirect to complete profile page
+        redirect(`/user/${id}/profile/complete`);
     }
 
     return (
@@ -33,23 +33,24 @@ const CompleteProfilePage = async ({ params }: RouteParams) => {
             <div className="max-w-4xl mx-auto">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-primary-100 mb-2">
-                        Complete Your Profile
+                        Edit Your Profile
                     </h1>
                     <p className="text-muted-foreground">
                         {currentUser.isRecruiter
-                            ? "Help candidates find your organization by completing your profile"
-                            : "Build your professional profile to get better interview opportunities"
+                            ? "Update your company information to attract top talent"
+                            : "Keep your professional profile up to date"
                         }
                     </p>
                 </div>
 
                 <EditProfileForm 
                     user={currentUser} 
-                    mode="create"
+                    existingProfile={existingProfile} 
+                    mode="edit"
                 />
             </div>
         </div>
     );
 };
 
-export default CompleteProfilePage;
+export default EditProfilePage;

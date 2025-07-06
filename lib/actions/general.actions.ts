@@ -231,8 +231,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
       success: true,
       feedbackId: feedback.id,
     };
-  } catch (e) {
-    console.error("Error saving feedback");
+  } catch (error) {
+    console.error("Error saving feedback:", error);
 
     return { success: false };
   }
@@ -406,7 +406,7 @@ export async function updateInterview({
     }
 
     // Prepare update object
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       role,
       questions,
     };
@@ -508,7 +508,10 @@ export async function updateProfile(userId: string, profileData: object) {
 export async function checkProfileCompletion(userId: string) {
   try {
     const profile = await getProfileByUserId(userId);
-    return !!profile; // Returns true if profile exists, false otherwise
+    if (!profile) return false;
+    
+    // Check if profile has completion percentage and is 100%
+    return profile.completionPercentage === 100;
   } catch (error) {
     console.error("Error checking profile completion:", error);
     return false;

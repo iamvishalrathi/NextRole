@@ -1,5 +1,7 @@
 import { getInterviewByUserId, getUserTakenInterviews } from '@/lib/actions/general.actions';
 import React from 'react'
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface ProfileInfoCardProps {
     currentUser: User;
@@ -10,6 +12,7 @@ interface ProfileInfoCardProps {
         workExperience?: Array<{
             company: string;
             position: string;
+            location?: string;
             startDate: string;
             endDate?: string;
             description: string;
@@ -30,17 +33,37 @@ interface ProfileInfoCardProps {
             liveUrl?: string;
             githubUrl?: string;
         }>;
+        certifications?: Array<{
+            name: string;
+            issuer: string;
+            issueDate: string;
+            expiryDate?: string;
+            credentialId?: string;
+            credentialUrl?: string;
+        }>;
+        achievements?: Array<{
+            title: string;
+            description: string;
+            date: string;
+            organization: string;
+            url?: string;
+        }>;
+        languages?: string[];
         socialLinks?: {
             linkedin?: string;
             github?: string;
             portfolio?: string;
             twitter?: string;
         };
+        // Basic contact information
+        currentRole?: string;
+        experience?: string;
+        // Shared fields
+        location?: string;
         // Recruiter specific fields
         companyDescription?: string;
         sector?: string;
         companySize?: string;
-        location?: string;
         founded?: string;
         website?: string;
         specialties?: string[];
@@ -71,8 +94,17 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                         <div className={`w-28 h-28 rounded-full ${avatarColor} flex items-center justify-center text-white text-4xl font-semibold shadow-lg border-4 border-primary-500/30`}>
                             {userInitial}
                         </div>
-                        <div className="flex flex-col items-center md:items-start">
-                            <h1 className="text-3xl font-bold text-primary-100 mb-2">{profileUser.name}</h1>
+                        <div className="flex flex-col items-center md:items-start flex-1">
+                            <div className="flex items-center gap-4 mb-2">
+                                <h1 className="text-3xl font-bold text-primary-100">{profileUser.name}</h1>
+                                {isOwnProfile && profile && (
+                                    <Link href={`/user/${profileUser.id}/profile/edit`}>
+                                        <Button variant="outline" size="sm">
+                                            Edit Profile
+                                        </Button>
+                                    </Link>
+                                )}
+                            </div>
                             {isOwnProfile && <p className="text-light-400 mb-4">{profileUser.email}</p>}
 
                             {/* Role Badge */}
@@ -186,6 +218,38 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                             </div>
                         ) : (
                             <div className="space-y-6">
+                                {/* Basic Information */}
+                                {(profile.currentRole || profile.experience || profile.location) && (
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-primary-100 mb-4">Basic Information</h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {profile.currentRole && (
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-primary-300 mb-1">Current Role</h4>
+                                                    <p className="text-light-400">{profile.currentRole}</p>
+                                                </div>
+                                            )}
+                                            {profile.experience && (
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-primary-300 mb-1">Experience</h4>
+                                                    <p className="text-light-400">{profile.experience} {parseInt(profile.experience) === 1 ? 'year' : 'years'}</p>
+                                                </div>
+                                            )}
+                                            {profile.location && (
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-primary-300 mb-1">Location</h4>
+                                                    <p className="text-light-400">{profile.location}</p>
+                                                </div>
+                                            )}
+                                            {/* Email is always shown from user object */}
+                                            <div>
+                                                <h4 className="text-sm font-medium text-primary-300 mb-1">Email</h4>
+                                                <p className="text-light-400">{profileUser.email}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Summary */}
                                 <div>
                                     <h3 className="text-lg font-semibold text-primary-100 mb-2">Professional Summary</h3>
@@ -213,11 +277,11 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                         <div className="space-y-4">
                                             {profile.workExperience.map((exp, index) => (
                                                 <div key={index} className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20">
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <div>
-                                                            <h4 className="font-semibold text-primary-100">{exp.position}</h4>
-                                                            <p className="text-primary-300">{exp.company}</p>
-                                                        </div>
+                                                    <div className="flex justify-between items-start mb-2">                                        <div>
+                                            <h4 className="font-semibold text-primary-100">{exp.position}</h4>
+                                            <p className="text-primary-300">{exp.company}</p>
+                                            {exp.location && <p className="text-light-400 text-sm">{exp.location}</p>}
+                                        </div>
                                                         <span className="text-sm text-light-400">
                                                             {exp.startDate} - {exp.isCurrentJob ? 'Present' : exp.endDate}
                                                         </span>
@@ -283,9 +347,34 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                                             {project.technologies.map((tech: string, techIndex: number) => (
                                                                 <span key={techIndex} className="bg-primary-500/20 text-primary-200 px-2 py-1 rounded text-xs">
                                                                     {tech}
-                                                                </span>
-                                                            ))}
+                                                                </span>                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}                                {/* Achievements */}
+                                {profile.achievements && profile.achievements.length > 0 && (
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-primary-100 mb-4">Achievements</h3>
+                                        <div className="space-y-4">
+                                            {profile.achievements.map((achievement, index) => (
+                                                <div key={index} className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20">
+                                                    <div className="flex justify-between items-start mb-2">
+                                                        <div>
+                                                            <h4 className="font-semibold text-primary-100">{achievement.title}</h4>
+                                                            <p className="text-primary-300">{achievement.organization}</p>
                                                         </div>
+                                                        <div className="text-right">
+                                                            <span className="text-sm text-light-400">{achievement.date}</span>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-light-400 text-sm mb-2">{achievement.description}</p>
+                                                    {achievement.url && (
+                                                        <a href={achievement.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 text-sm">
+                                                            View Details
+                                                        </a>
                                                     )}
                                                 </div>
                                             ))}
@@ -293,7 +382,21 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                     </div>
                                 )}
 
-                                {/* Social Links */}
+                {/* Languages */}
+                {profile.languages && profile.languages.length > 0 && (
+                    <div>
+                        <h3 className="text-lg font-semibold text-primary-100 mb-2">Languages</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {profile.languages.map((language: string, index: number) => (
+                                <span key={index} className="bg-primary-500/20 text-primary-200 px-3 py-1 rounded-full text-sm">
+                                    {language}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Social Links */}
                                 {(profile.socialLinks?.linkedin || profile.socialLinks?.github || profile.socialLinks?.portfolio || profile.socialLinks?.twitter) && (
                                     <div>
                                         <h3 className="text-lg font-semibold text-primary-100 mb-2">Social Links</h3>
