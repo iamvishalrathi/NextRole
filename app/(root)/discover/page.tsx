@@ -11,6 +11,58 @@ interface SearchParams {
   level?: 'entry' | 'mid' | 'senior' | 'all'
 }
 
+interface InterviewStructure {
+  id: string
+  role: string
+  level: string
+  type: string
+  techstack: string[]
+  compulsoryQuestions: number
+  personalizedQuestions: number
+  usageCount?: number
+  createdAt: string
+  jobTitle?: string
+  location?: string
+  ctc?: string
+  interviewCategory: 'mock' | 'job'
+}
+
+// Utility function to filter interviews
+const filterInterviews = (interviews: InterviewStructure[], searchParams: SearchParams) => {
+  let filtered = interviews
+
+  // Filter by search term (only in role field)
+  if (searchParams.search) {
+    const searchTerm = searchParams.search.toLowerCase()
+    filtered = filtered.filter(interview => 
+      interview.role.toLowerCase().includes(searchTerm)
+    )
+  }
+
+  // Filter by category
+  if (searchParams.category && searchParams.category !== 'all') {
+    filtered = filtered.filter(interview => 
+      interview.interviewCategory === searchParams.category
+    )
+  }
+
+  // Filter by type
+  if (searchParams.type && searchParams.type !== 'all') {
+    filtered = filtered.filter(interview => 
+      interview.type.toLowerCase() === searchParams.type
+    )
+  }
+
+  // Filter by level
+  if (searchParams.level && searchParams.level !== 'all') {
+    filtered = filtered.filter(interview => 
+      interview.level.toLowerCase() === searchParams.level
+    )
+  }
+
+  return filtered
+}
+
 const DiscoverPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   const user = await getCurrentUser()
 
@@ -33,15 +85,19 @@ const DiscoverPage = async ({ searchParams }: { searchParams: SearchParams }) =>
     }))
   ]
 
+  // Filter interviews based on search parameters
+  const filteredInterviews = filterInterviews(allInterviews, searchParams)
+
   return (
     <div className="pattern">
       <SearchFilters 
         searchParams={searchParams}
-        totalCount={allInterviews.length}
+        totalCount={filteredInterviews.length}
       />
 
       <InterviewGrid 
-        interviews={allInterviews}
+        interviews={filteredInterviews}
+        totalCount={allInterviews.length}
         searchParams={searchParams}
       />
     </div>

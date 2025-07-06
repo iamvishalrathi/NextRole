@@ -20,6 +20,11 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
   const params = useSearchParams()
   const [searchTerm, setSearchTerm] = useState(searchParams.search || '')
 
+  // Update search term when searchParams changes
+  useEffect(() => {
+    setSearchTerm(searchParams.search || '')
+  }, [searchParams.search])
+
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,6 +63,30 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
     router.push('/discover')
   }
 
+  // Generate placeholder text based on selected filters
+  const getSearchPlaceholder = () => {
+    let placeholder = 'Search by role...'
+    
+    if (searchParams.category && searchParams.category !== 'all') {
+      placeholder = `Search ${searchParams.category} interview roles...`
+    }
+    
+    if (searchParams.type && searchParams.type !== 'all') {
+      placeholder = `Search ${searchParams.type} roles...`
+    }
+    
+    if (searchParams.level && searchParams.level !== 'all') {
+      placeholder = `Search ${searchParams.level} level roles...`
+    }
+    
+    if (searchParams.category && searchParams.category !== 'all' && 
+        searchParams.type && searchParams.type !== 'all') {
+      placeholder = `Search ${searchParams.type} ${searchParams.category} roles...`
+    }
+    
+    return placeholder
+  }
+
   return (
     <div className="card-border w-full mb-8">
       <div className="dark-gradient rounded-2xl p-8">
@@ -84,10 +113,10 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
           {/* Search Input */}
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-primary-300">
-              Search Interviews
+              Search Roles
             </label>
             <Input
-              placeholder="Search by role, tech stack..."
+              placeholder={getSearchPlaceholder()}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full h-12 px-4 bg-dark-200 border-primary-500/30 text-primary-100 placeholder:text-light-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React from 'react'
 import InterviewStructureCard from '@/components/InterviewStructureCard'
 import DiscoverEmptyState from './DiscoverEmptyState'
 import ResultsStats from './ResultsStats'
@@ -23,6 +23,7 @@ interface InterviewStructure {
 
 interface InterviewGridProps {
   interviews: InterviewStructure[]
+  totalCount: number
   searchParams: {
     search?: string
     category?: 'mock' | 'job' | 'all'
@@ -31,56 +32,16 @@ interface InterviewGridProps {
   }
 }
 
-const InterviewGrid = ({ interviews, searchParams }: InterviewGridProps) => {
-  const filteredInterviews = useMemo(() => {
-    let filtered = interviews
-
-    // Filter by search term
-    if (searchParams.search) {
-      const searchTerm = searchParams.search.toLowerCase()
-      filtered = filtered.filter(interview => 
-        interview.role.toLowerCase().includes(searchTerm) ||
-        interview.type.toLowerCase().includes(searchTerm) ||
-        interview.level.toLowerCase().includes(searchTerm) ||
-        interview.techstack.some(tech => tech.toLowerCase().includes(searchTerm)) ||
-        (interview.jobTitle && interview.jobTitle.toLowerCase().includes(searchTerm)) ||
-        (interview.location && interview.location.toLowerCase().includes(searchTerm))
-      )
-    }
-
-    // Filter by category
-    if (searchParams.category && searchParams.category !== 'all') {
-      filtered = filtered.filter(interview => 
-        interview.interviewCategory === searchParams.category
-      )
-    }
-
-    // Filter by type
-    if (searchParams.type && searchParams.type !== 'all') {
-      filtered = filtered.filter(interview => 
-        interview.type.toLowerCase() === searchParams.type
-      )
-    }
-
-    // Filter by level
-    if (searchParams.level && searchParams.level !== 'all') {
-      filtered = filtered.filter(interview => 
-        interview.level.toLowerCase() === searchParams.level
-      )
-    }
-
-    return filtered
-  }, [interviews, searchParams])
-
+const InterviewGrid = ({ interviews, totalCount, searchParams }: InterviewGridProps) => {
   return (
     <div>
       <ResultsStats 
-        filteredCount={filteredInterviews.length}
-        totalCount={interviews.length}
+        filteredCount={interviews.length}
+        totalCount={totalCount}
         filters={searchParams}
       />
       
-      {filteredInterviews.length === 0 ? (
+      {interviews.length === 0 ? (
         <div className="card-border w-full">
           <div className="dark-gradient rounded-2xl p-8">
             <DiscoverEmptyState 
@@ -91,7 +52,7 @@ const InterviewGrid = ({ interviews, searchParams }: InterviewGridProps) => {
         </div>
       ) : (
         <div className="interviews-section">
-          {filteredInterviews.map((interview) => (
+          {interviews.map((interview) => (
             <InterviewStructureCard
               key={interview.id}
               id={interview.id}
