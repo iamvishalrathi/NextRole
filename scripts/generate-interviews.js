@@ -35,29 +35,29 @@ const mockInterviews = [
     type: 'Technical',
     techstack: ['React', 'Node.js', 'TypeScript', 'MongoDB', 'AWS'],
     questions: [
-      'Explain the difference between SQL and NoSQL databases.',
-      'How do you handle state management in React applications?',
-      'What is the difference between REST and GraphQL APIs?',
-      'Explain the concept of microservices architecture.',
-      'How do you ensure code quality and maintainability?',
-      'What are the key principles of responsive web design?',
-      'Explain the concept of JWT tokens and their use cases.',
-      'How do you optimize React application performance?',
-      'What is the difference between server-side and client-side rendering?',
-      'Explain the concept of containerization with Docker.'
+      'Walk me through a full-stack application you built from scratch - what technologies did you choose and why?',
+      'Describe a complex React component you developed - how did you handle state management and performance?',
+      'Tell me about a database design decision you made in one of your projects - SQL vs NoSQL and your reasoning.',
+      'Explain a challenging API integration you implemented - REST, GraphQL, or custom solutions?',
+      'Share your experience with deployment and DevOps - how do you handle CI/CD in your projects?',
+      'Describe a performance optimization you implemented in a full-stack application.',
+      'Tell me about your experience with authentication and authorization in your applications.',
+      'How do you handle error handling and logging across your full-stack applications?',
+      'Describe your testing strategy for both frontend and backend components.',
+      'Walk me through your development workflow and tools you use for full-stack development.'
     ],
     categorizedQuestions: {
       technical: [
-        'Explain the difference between SQL and NoSQL databases.',
-        'How do you handle state management in React applications?',
-        'What is the difference between REST and GraphQL APIs?',
-        'Explain the concept of microservices architecture.',
-        'How do you ensure code quality and maintainability?',
-        'What are the key principles of responsive web design?',
-        'Explain the concept of JWT tokens and their use cases.',
-        'How do you optimize React application performance?',
-        'What is the difference between server-side and client-side rendering?',
-        'Explain the concept of containerization with Docker.'
+        'Walk me through a full-stack application you built from scratch - what technologies did you choose and why?',
+        'Describe a complex React component you developed - how did you handle state management and performance?',
+        'Tell me about a database design decision you made in one of your projects - SQL vs NoSQL and your reasoning.',
+        'Explain a challenging API integration you implemented - REST, GraphQL, or custom solutions?',
+        'Share your experience with deployment and DevOps - how do you handle CI/CD in your projects?',
+        'Describe a performance optimization you implemented in a full-stack application.',
+        'Tell me about your experience with authentication and authorization in your applications.',
+        'How do you handle error handling and logging across your full-stack applications?',
+        'Describe your testing strategy for both frontend and backend components.',
+        'Walk me through your development workflow and tools you use for full-stack development.'
       ],
       behavioral: []
     },
@@ -67,7 +67,7 @@ const mockInterviews = [
     isTemplate: true,
     compulsoryQuestions: 6,
     personalizedQuestions: 4,
-    personalizedQuestionPrompt: 'Generate technical questions based on the candidate\'s experience with React, Node.js, and full-stack development.',
+    personalizedQuestionPrompt: 'Generate highly personalized technical questions based on the candidate\'s specific full-stack projects, technologies they\'ve worked with, challenges they\'ve faced, and their actual coding experience. Focus on their project architecture decisions, problem-solving approaches, and technical implementations they\'ve built.',
     usageCount: 0
   },
   {
@@ -206,31 +206,31 @@ const jobInterviews = [
     type: 'Mixed',
     techstack: ['JavaScript', 'React', 'Node.js', 'Express', 'MongoDB'],
     questions: [
-      'Explain the difference between var, let, and const in JavaScript.',
-      'How do you handle asynchronous operations in JavaScript?',
-      'What is the difference between SQL and NoSQL databases?',
-      'Describe the concept of RESTful APIs.',
-      'How do you handle state management in React?',
-      'Tell me about a project you built from scratch.',
-      'How do you approach debugging when your code doesn\'t work?',
-      'Describe a time when you had to learn a new technology quickly.',
-      'How do you stay updated with new web development trends?',
-      'What challenges did you face in your most recent project?'
+      'Tell me about your first full-stack project - what did you build and what challenges did you face?',
+      'Walk me through your portfolio website or a personal project you\'re most proud of.',
+      'Describe a bug you encountered in your React application and how you debugged it.',
+      'Tell me about your experience with APIs - have you built any REST endpoints or consumed third-party APIs?',
+      'Share your experience with databases - have you worked with SQL, NoSQL, or both in your projects?',
+      'Describe a time when you had to learn a new technology or framework quickly for a project.',
+      'Tell me about your development setup and the tools you use for coding.',
+      'How do you approach building a new feature from scratch in your projects?',
+      'Describe your experience with version control and any collaborative coding projects.',
+      'What\'s the most challenging aspect of full-stack development you\'ve encountered in your projects so far?'
     ],
     categorizedQuestions: {
       technical: [
-        'Explain the difference between var, let, and const in JavaScript.',
-        'How do you handle asynchronous operations in JavaScript?',
-        'What is the difference between SQL and NoSQL databases?',
-        'Describe the concept of RESTful APIs.',
-        'How do you handle state management in React?'
+        'Tell me about your first full-stack project - what did you build and what challenges did you face?',
+        'Walk me through your portfolio website or a personal project you\'re most proud of.',
+        'Describe a bug you encountered in your React application and how you debugged it.',
+        'Tell me about your experience with APIs - have you built any REST endpoints or consumed third-party APIs?',
+        'Share your experience with databases - have you worked with SQL, NoSQL, or both in your projects?'
       ],
       behavioral: [
-        'Tell me about a project you built from scratch.',
-        'How do you approach debugging when your code doesn\'t work?',
-        'Describe a time when you had to learn a new technology quickly.',
-        'How do you stay updated with new web development trends?',
-        'What challenges did you face in your most recent project?'
+        'Describe a time when you had to learn a new technology or framework quickly for a project.',
+        'Tell me about your development setup and the tools you use for coding.',
+        'How do you approach building a new feature from scratch in your projects?',
+        'Describe your experience with version control and any collaborative coding projects.',
+        'What\'s the most challenging aspect of full-stack development you\'ve encountered in your projects so far?'
       ]
     },
     userId: USER_ID,
@@ -244,7 +244,7 @@ const jobInterviews = [
     isTemplate: true,
     compulsoryQuestions: 5,
     personalizedQuestions: 5,
-    personalizedQuestionPrompt: 'Generate questions based on the candidate\'s personal projects, internship experience, and technical skills. Focus on their hands-on experience with web development, specific projects they\'ve worked on, technologies they\'ve used, and challenges they\'ve overcome in their learning journey.',
+    personalizedQuestionPrompt: 'Generate highly personalized questions based on the candidate\'s personal projects, internship experience, college projects, and coding experiments. Ask about specific technologies they\'ve used, features they\'ve implemented, problems they\'ve solved, and their hands-on development experience. Focus on their actual coding journey and project-building skills.',
     technicalQuestions: 3,
     behavioralQuestions: 2,
     usageCount: 0
@@ -255,31 +255,31 @@ const jobInterviews = [
     type: 'Mixed',
     techstack: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'MySQL'],
     questions: [
-      'How do you ensure your web applications are responsive?',
-      'Explain the concept of CRUD operations in web development.',
-      'What is the difference between HTTP and HTTPS?',
-      'How do you handle form validation in web applications?',
-      'Describe your experience with version control systems like Git.',
-      'Walk me through a web application you\'ve built.',
-      'How do you approach solving a complex programming problem?',
-      'Tell me about a time you collaborated with others on a coding project.',
-      'What motivates you to pursue a career in full stack development?',
-      'How do you handle feedback and criticism on your code?'
+      'Show me a responsive web application you\'ve built - walk me through your design and development process.',
+      'Tell me about a CRUD application you developed - what was the tech stack and what key features did you implement?',
+      'Describe your experience with database design - can you walk me through a database schema you created for a project?',
+      'Share your experience with form handling and validation in your web applications.',
+      'Tell me about your Git workflow and any collaborative projects you\'ve worked on with other developers.',
+      'Walk me through the architecture of your most complex web application - how did you structure it?',
+      'Describe a coding challenge or bug that took you a while to solve - what was your debugging approach?',
+      'Tell me about a time you worked with teammates on a development project - how did you collaborate and divide tasks?',
+      'What drew you to full-stack development and how do you stay motivated to keep learning new technologies?',
+      'Describe how you handle constructive feedback on your code and implement improvements in your projects.'
     ],
     categorizedQuestions: {
       technical: [
-        'How do you ensure your web applications are responsive?',
-        'Explain the concept of CRUD operations in web development.',
-        'What is the difference between HTTP and HTTPS?',
-        'How do you handle form validation in web applications?',
-        'Describe your experience with version control systems like Git.'
+        'Show me a responsive web application you\'ve built - walk me through your design and development process.',
+        'Tell me about a CRUD application you developed - what was the tech stack and what key features did you implement?',
+        'Describe your experience with database design - can you walk me through a database schema you created for a project?',
+        'Share your experience with form handling and validation in your web applications.',
+        'Tell me about your Git workflow and any collaborative projects you\'ve worked on with other developers.'
       ],
       behavioral: [
-        'Walk me through a web application you\'ve built.',
-        'How do you approach solving a complex programming problem?',
-        'Tell me about a time you collaborated with others on a coding project.',
-        'What motivates you to pursue a career in full stack development?',
-        'How do you handle feedback and criticism on your code?'
+        'Walk me through the architecture of your most complex web application - how did you structure it?',
+        'Describe a coding challenge or bug that took you a while to solve - what was your debugging approach?',
+        'Tell me about a time you worked with teammates on a development project - how did you collaborate and divide tasks?',
+        'What drew you to full-stack development and how do you stay motivated to keep learning new technologies?',
+        'Describe how you handle constructive feedback on your code and implement improvements in your projects.'
       ]
     },
     userId: USER_ID,
@@ -293,7 +293,7 @@ const jobInterviews = [
     isTemplate: true,
     compulsoryQuestions: 6,
     personalizedQuestions: 4,
-    personalizedQuestionPrompt: 'Generate questions based on the candidate\'s portfolio projects, academic projects, internship experience, and technical skills. Ask about specific technologies they\'ve worked with, problems they\'ve solved, and their approach to learning new concepts in web development.',
+    personalizedQuestionPrompt: 'Generate highly personalized questions based on the candidate\'s portfolio projects, academic capstone projects, internship work, and personal coding experiments. Ask about specific features they\'ve implemented, technologies they\'ve explored, coding practices they follow, and their hands-on development experience. Focus on their problem-solving mindset and practical project experience.',
     technicalQuestions: 4,
     behavioralQuestions: 2,
     usageCount: 0
