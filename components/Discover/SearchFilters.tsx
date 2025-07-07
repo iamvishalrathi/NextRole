@@ -22,32 +22,72 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
   const [currentCategory, setCurrentCategory] = useState<'mock' | 'job' | 'all'>(searchParams.category || 'all')
   const [currentType, setCurrentType] = useState<'technical' | 'behavioral' | 'mixed' | 'all'>(searchParams.type || 'all')
   const [currentLevel, setCurrentLevel] = useState<'entry' | 'mid' | 'senior' | 'all'>(searchParams.level || 'all')
+  const [isSearching, setIsSearching] = useState(false)
 
-  // Update all states when searchParams changes
+  // Update all states when URL params change
   useEffect(() => {
-    setSearchTerm(searchParams.search || '')
-    setCurrentCategory(searchParams.category || 'all')
-    setCurrentType(searchParams.type || 'all')
-    setCurrentLevel(searchParams.level || 'all')
-  }, [searchParams.search, searchParams.category, searchParams.type, searchParams.level])
+    const urlCategory = params.get('category') || 'all'
+    const urlType = params.get('type') || 'all'
+    const urlLevel = params.get('level') || 'all'
+    const urlSearch = params.get('search') || ''
 
-  // Debounced search
+    setSearchTerm(urlSearch)
+    setCurrentCategory(urlCategory as 'mock' | 'job' | 'all')
+    setCurrentType(urlType as 'technical' | 'behavioral' | 'mixed' | 'all')
+    setCurrentLevel(urlLevel as 'entry' | 'mid' | 'senior' | 'all')
+    
+    // Clear loading state when URL updates (search completed)
+    setIsSearching(false)
+  }, [params])
+
+  // Extract stable values for dependencies
+  const searchValue = searchParams.search || ''
+  const categoryValue = searchParams.category || 'all'
+  const typeValue = searchParams.type || 'all'
+  const levelValue = searchParams.level || 'all'
+
+  // Also update when searchParams prop changes (for server-side initial load)
   useEffect(() => {
+    setSearchTerm(searchValue)
+    setCurrentCategory(categoryValue)
+    setCurrentType(typeValue)
+    setCurrentLevel(levelValue)
+  }, [searchValue, categoryValue, typeValue, levelValue])
+
+  // Debounced search with properly synchronized loading state
+  useEffect(() => {
+    const currentSearch = params.get('search') || ''
+    
+    // Only show loading if search term is different and not empty
+    if (searchTerm !== currentSearch && searchTerm.trim() !== '') {
+      setIsSearching(true)
+    } else if (searchTerm.trim() === '' && currentSearch === '') {
+      setIsSearching(false)
+    }
+
     const timer = setTimeout(() => {
-      const current = new URLSearchParams(Array.from(params.entries()))
-      
-      if (searchTerm === '') {
-        current.delete('search')
-      } else {
-        current.set('search', searchTerm)
+      // Only update URL if the search term actually changed from what's in the URL
+      if (searchTerm !== currentSearch) {
+        const current = new URLSearchParams(Array.from(params.entries()))
+        
+        if (searchTerm.trim() === '') {
+          current.delete('search')
+        } else {
+          current.set('search', searchTerm.trim())
+        }
+        
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`/discover${query}`)
       }
-      
-      const search = current.toString()
-      const query = search ? `?${search}` : ''
-      router.push(`/discover${query}`)
-    }, 300)
+      // Always clear loading state when debounce completes
+      setIsSearching(false)
+    }, 2000) // 2 seconds debounce
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      // Don't clear loading state in cleanup - let it complete naturally
+    }
   }, [searchTerm, params, router])
 
   const updateFilter = (key: string, value: string) => {
@@ -110,12 +150,19 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
             <label className="block text-sm font-semibold text-primary-300">
               Search Roles
             </label>
-            <Input
-              placeholder={getSearchPlaceholder()}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-12 px-4 bg-dark-200 border-primary-500/30 text-primary-100 placeholder:text-light-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
-            />
+            <div className="relative">
+              <Input
+                placeholder={getSearchPlaceholder()}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full h-12 px-4 bg-dark-200 border-primary-500/30 text-primary-100 placeholder:text-light-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+              />
+              {isSearching && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-4 h-4 border-2 border-primary-400 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Category Filter */}

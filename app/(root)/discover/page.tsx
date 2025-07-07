@@ -63,12 +63,15 @@ const filterInterviews = (interviews: InterviewStructure[], searchParams: Search
   return filtered
 }
 
-const DiscoverPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+const DiscoverPage = async ({ searchParams }: { searchParams: Promise<SearchParams> }) => {
   const user = await getCurrentUser()
 
   if (!user) {
     return <div>Please sign in to view interviews</div>
   }
+
+  // Await searchParams before using its properties
+  const resolvedSearchParams = await searchParams
 
   // Get all public interview structures (no limit for discover page)
   const publicStructures = await getPublicInterviewStructures(100, 100)
@@ -86,19 +89,19 @@ const DiscoverPage = async ({ searchParams }: { searchParams: SearchParams }) =>
   ]
 
   // Filter interviews based on search parameters
-  const filteredInterviews = filterInterviews(allInterviews, searchParams)
+  const filteredInterviews = filterInterviews(allInterviews, resolvedSearchParams)
 
   return (
     <div className="pattern">
       <SearchFilters 
-        searchParams={searchParams}
+        searchParams={resolvedSearchParams}
         totalCount={filteredInterviews.length}
       />
 
       <InterviewGrid 
         interviews={filteredInterviews}
         totalCount={allInterviews.length}
-        searchParams={searchParams}
+        searchParams={resolvedSearchParams}
       />
     </div>
   )
