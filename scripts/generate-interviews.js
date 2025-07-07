@@ -201,6 +201,104 @@ const mockInterviews = [
 // Job Interview Structures
 const jobInterviews = [
   {
+    role: 'Junior Full Stack Developer',
+    level: 'Entry',
+    type: 'Mixed',
+    techstack: ['JavaScript', 'React', 'Node.js', 'Express', 'MongoDB'],
+    questions: [
+      'Explain the difference between var, let, and const in JavaScript.',
+      'How do you handle asynchronous operations in JavaScript?',
+      'What is the difference between SQL and NoSQL databases?',
+      'Describe the concept of RESTful APIs.',
+      'How do you handle state management in React?',
+      'Tell me about a project you built from scratch.',
+      'How do you approach debugging when your code doesn\'t work?',
+      'Describe a time when you had to learn a new technology quickly.',
+      'How do you stay updated with new web development trends?',
+      'What challenges did you face in your most recent project?'
+    ],
+    categorizedQuestions: {
+      technical: [
+        'Explain the difference between var, let, and const in JavaScript.',
+        'How do you handle asynchronous operations in JavaScript?',
+        'What is the difference between SQL and NoSQL databases?',
+        'Describe the concept of RESTful APIs.',
+        'How do you handle state management in React?'
+      ],
+      behavioral: [
+        'Tell me about a project you built from scratch.',
+        'How do you approach debugging when your code doesn\'t work?',
+        'Describe a time when you had to learn a new technology quickly.',
+        'How do you stay updated with new web development trends?',
+        'What challenges did you face in your most recent project?'
+      ]
+    },
+    userId: USER_ID,
+    visibility: true,
+    interviewCategory: 'job',
+    jobTitle: 'Junior Full Stack Developer',
+    responsibilities: 'Develop and maintain web applications, collaborate with senior developers, write clean and maintainable code, and participate in code reviews.',
+    ctc: '₹4-8 LPA',
+    location: 'Pune, India',
+    designation: 'Junior Full Stack Developer',
+    isTemplate: true,
+    compulsoryQuestions: 5,
+    personalizedQuestions: 5,
+    personalizedQuestionPrompt: 'Generate questions based on the candidate\'s personal projects, internship experience, and technical skills. Focus on their hands-on experience with web development, specific projects they\'ve worked on, technologies they\'ve used, and challenges they\'ve overcome in their learning journey.',
+    technicalQuestions: 3,
+    behavioralQuestions: 2,
+    usageCount: 0
+  },
+  {
+    role: 'Associate Full Stack Developer',
+    level: 'Entry',
+    type: 'Mixed',
+    techstack: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'MySQL'],
+    questions: [
+      'How do you ensure your web applications are responsive?',
+      'Explain the concept of CRUD operations in web development.',
+      'What is the difference between HTTP and HTTPS?',
+      'How do you handle form validation in web applications?',
+      'Describe your experience with version control systems like Git.',
+      'Walk me through a web application you\'ve built.',
+      'How do you approach solving a complex programming problem?',
+      'Tell me about a time you collaborated with others on a coding project.',
+      'What motivates you to pursue a career in full stack development?',
+      'How do you handle feedback and criticism on your code?'
+    ],
+    categorizedQuestions: {
+      technical: [
+        'How do you ensure your web applications are responsive?',
+        'Explain the concept of CRUD operations in web development.',
+        'What is the difference between HTTP and HTTPS?',
+        'How do you handle form validation in web applications?',
+        'Describe your experience with version control systems like Git.'
+      ],
+      behavioral: [
+        'Walk me through a web application you\'ve built.',
+        'How do you approach solving a complex programming problem?',
+        'Tell me about a time you collaborated with others on a coding project.',
+        'What motivates you to pursue a career in full stack development?',
+        'How do you handle feedback and criticism on your code?'
+      ]
+    },
+    userId: USER_ID,
+    visibility: true,
+    interviewCategory: 'job',
+    jobTitle: 'Associate Full Stack Developer',
+    responsibilities: 'Build responsive web applications, work with databases, implement user interfaces, collaborate with team members, and contribute to the full software development lifecycle.',
+    ctc: '₹3-6 LPA',
+    location: 'Chennai, India',
+    designation: 'Associate Full Stack Developer',
+    isTemplate: true,
+    compulsoryQuestions: 6,
+    personalizedQuestions: 4,
+    personalizedQuestionPrompt: 'Generate questions based on the candidate\'s portfolio projects, academic projects, internship experience, and technical skills. Ask about specific technologies they\'ve worked with, problems they\'ve solved, and their approach to learning new concepts in web development.',
+    technicalQuestions: 4,
+    behavioralQuestions: 2,
+    usageCount: 0
+  },
+  {
     role: 'Senior Frontend Developer',
     level: 'Senior',
     type: 'Mixed',
