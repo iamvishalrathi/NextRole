@@ -82,15 +82,6 @@ const InterviewStructureCard = ({
             <p className='badge-text'>{normalizedType}</p>
           </div>
 
-          {/* Category Badge */}
-          <div className='absolute top-0 left-0 w-fit px-4 py-2 rounded-br-lg bg-light-600'>
-            <p className={`badge-text ${
-              interviewCategory === 'mock' ? 'text-blue-600' : 'text-green-600'
-            }`}>
-              {interviewCategory === 'mock' ? 'Mock' : 'Job'}
-            </p>
-          </div>
-
           {/* Tech Logo */}
           <Image 
             src={techLogo} 

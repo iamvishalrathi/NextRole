@@ -30,7 +30,7 @@ const page = async () => {
 
       {/* Job Interview Section */}
       <InterviewSection
-        title="Real Job Interviews"
+        title="Active Job Interviews"
         interviews={publicStructures.jobStructures || []}
         interviewCategory="job"
         emptyStateTitle="No job opportunities available"

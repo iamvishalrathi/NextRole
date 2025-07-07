@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { getCurrentUser, isAuthenticated } from '@/lib/actions/auth.action'
 import { redirect } from 'next/navigation'
 import SignOut from '@/components/SignOut'
+import ActiveNavigation from '@/components/ActiveNavigation'
 
 const RootLayout = async ({children}:{children:ReactNode}) => {
   const isUserAuthenticated = await isAuthenticated();
@@ -27,14 +28,7 @@ const RootLayout = async ({children}:{children:ReactNode}) => {
             <h2 className="text-primary-100" >NextRole</h2>
           </Link>
           
-          <div className="flex items-center gap-6 ml-8">
-            <Link href="/" className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200">
-              Home
-            </Link>
-            <Link href="/discover" className="px-3 py-2 rounded-lg font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200">
-              Discover
-            </Link>
-          </div>
+          <ActiveNavigation />
         </>
 
         <div className="flex items-center gap-4">
