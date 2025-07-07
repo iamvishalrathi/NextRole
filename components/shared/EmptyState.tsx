@@ -32,32 +32,24 @@ const EmptyState = ({
   secondaryAction,
   className = ''
 }: EmptyStateProps) => {
-  const containerSizes = {
-    sm: 'w-32 h-32',
-    md: 'w-40 h-40',
-    lg: 'w-48 h-48'
-  };
-
   const iconSizes = {
-    sm: 48,
-    md: 64,
-    lg: 96
+    sm: 80,
+    md: 120,
+    lg: 160
   };
 
   const actualIconSize = iconSizes[containerSize];
 
   return (
     <div className={`flex flex-col items-center justify-center py-16 px-6 text-center w-full ${className}`}>
-      <div className="relative mb-6">
-        <div className={`${containerSizes[containerSize]} rounded-full blue-gradient-dark flex items-center justify-center border-2 border-primary-200/30 shadow-lg`}>
-          <Image
-            src={icon}
-            alt="Empty state"
-            width={actualIconSize}
-            height={actualIconSize}
-            className="opacity-80"
-          />
-        </div>
+      <div className="relative mb-8">
+        <Image
+          src={icon}
+          alt="Empty state"
+          width={actualIconSize}
+          height={actualIconSize}
+          className="opacity-90"
+        />
       </div>
       
       <h2 className="text-xl font-semibold text-primary-100 mb-3">{title}</h2>

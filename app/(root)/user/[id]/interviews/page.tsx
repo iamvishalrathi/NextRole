@@ -31,8 +31,11 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
         createdJobStructures
     } = await getUserInterviewStructures(profileUser.id, profileUser.isRecruiter);
 
-    // Check if user has any interviews at all
-    const hasAnyInterviews = (
+    // Check if user has any interviews at all - for recruiters, exclude taken interviews
+    const hasAnyInterviews = profileUser.isRecruiter ? (
+        (createdMockStructures && createdMockStructures.length > 0) ||
+        (createdJobStructures && createdJobStructures.length > 0)
+    ) : (
         (takenStructures && takenStructures.length > 0) ||
         (createdMockStructures && createdMockStructures.length > 0) ||
         (createdJobStructures && createdJobStructures.length > 0)
@@ -57,14 +60,21 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
                 <EmptyState
                     icon="/user.png"
                     containerSize="lg"
-                    title="Welcome to Your Interview Hub!"
-                    description="This is where you'll find all your interview activities. Start by taking mock interviews to practice your skills, or create your own interviews to help others prepare for their career journey."
+                    title={profileUser.isRecruiter ? "Welcome to Your Interview Hub!" : "Welcome to Your Interview Hub!"}
+                    description={profileUser.isRecruiter 
+                        ? "This is where you'll manage all your interview creations. Start by creating mock interviews to help candidates practice, or set up job interviews to streamline your hiring process."
+                        : "This is where you'll find all your interview activities. Start by taking mock interviews to practice your skills, or create your own interviews to help others prepare for their career journey."
+                    }
                     primaryAction={{
-                        text: "Discover Interviews",
+                        text: profileUser.isRecruiter ? "Create Interview" : "Discover Interviews",
+                        href: profileUser.isRecruiter ? "/create-interview" : "/discover",
+                        icon: profileUser.isRecruiter ? "/star.svg" : "/tech.svg"
+                    }}
+                    secondaryAction={profileUser.isRecruiter ? {
+                        text: "Explore Platform",
                         href: "/discover",
                         icon: "/tech.svg"
-                    }}
-                    secondaryAction={{
+                    } : {
                         text: "Create Interview",
                         href: "/create-interview",
                         icon: "/star.svg"
@@ -91,8 +101,8 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
             {/* Individual Sections - only show when user has some interviews */}
             {hasAnyInterviews && (
                 <>
-                    {/* Taken Interview Structures - Only for own profile */}
-                    {isOwnProfile && (
+                    {/* Taken Interview Structures - Only for candidates (non-recruiters) viewing own profile */}
+                    {isOwnProfile && !profileUser.isRecruiter && (
                         <InterviewStructuresSection
                             title="Interviews Taken"
                             structures={takenStructures || []}
