@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import InterviewStructureCard from '@/components/InterviewStructureCard'
+import InterviewStructureCard from '@/components/shared/InterviewStructureCard'
 import DiscoverEmptyState from './DiscoverEmptyState'
 import ResultsStats from './ResultsStats'
 

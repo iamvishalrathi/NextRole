@@ -1,5 +1,5 @@
-import Agent from '@/components/Agent';
-import DisplayTechIcons from '@/components/DisplayTechIcons';
+import Agent from '@/components/interview/Agent';
+import DisplayTechIcons from '@/components/shared/DisplayTechIcons';
 import { getCurrentUser } from '@/lib/actions/auth.action';
 import { getInterviewById, checkProfileCompletion } from '@/lib/actions/general.actions';
 import Image from 'next/image';

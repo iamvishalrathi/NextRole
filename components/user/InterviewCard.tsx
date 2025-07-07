@@ -1,15 +1,15 @@
 import React from 'react'
 import Image from 'next/image'
 
-import DisplayTechIcons from './DisplayTechIcons'
-import { Button } from './ui/button'
+import DisplayTechIcons from '../shared/DisplayTechIcons'
+import { Button } from '../ui/button'
 import dayjs from "dayjs"
 
 import { getTechLogos } from '@/lib/utils'
 import Link from 'next/link'
 import { getFeedbackByInterviewId, getAverageInterviewRating } from '@/lib/actions/general.actions'
 import { getCurrentUser ,getUserById } from '@/lib/actions/auth.action'
-import ProfileCheckWrapper from './ProfileCheckWrapper'
+import ProfileCheckWrapper from '../shared/ProfileCheckWrapper'
 
 
 const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:InterviewCardProps) => {

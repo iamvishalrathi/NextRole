@@ -1,9 +1,21 @@
 import React from 'react'
 import { Button } from '../../ui/button'
-import InterviewCard from '../../InterviewCard'
+import InterviewCard from '../InterviewCard'
 import Link from 'next/link'
 
-const CreatedInterviews = ({ createdInterviews, isOwnProfile }) => {
+interface CreatedInterviewsProps {
+    createdInterviews: Array<{
+        id: string;
+        userId: string;
+        role: string;
+        type: string;
+        techstack: string[];
+        createdAt: string;
+    }>;
+    isOwnProfile: boolean;
+}
+
+const CreatedInterviews = ({ createdInterviews, isOwnProfile }: CreatedInterviewsProps) => {
     return (
         <div className="mb-12">
             <div className="flex items-center gap-4 mb-6">

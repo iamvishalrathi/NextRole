@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/actions/auth.action';
 import { getProfileByUserId } from '@/lib/actions/general.actions';
-import EditProfileForm from '@/components/EditProfileForm';
+import EditProfileForm from '@/components/user/EditProfileForm';
 
 interface RouteParams {
     params: Promise<{ id: string }>;

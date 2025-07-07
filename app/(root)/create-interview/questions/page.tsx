@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCurrentUser } from '@/lib/actions/auth.action';
 import { redirect } from 'next/navigation';
-import QuestionsManager from '@/components/QuestionsManager';
+import QuestionsManager from '@/components/shared/QuestionsManager';
 
 const QuestionsPage = async () => {
   const user = await getCurrentUser();

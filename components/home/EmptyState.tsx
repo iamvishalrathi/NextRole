@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image"
 import { Button } from '@/components/ui/button'
-import ProfileCheckWrapper from '@/components/ProfileCheckWrapper'
+import ProfileCheckWrapper from '@/components/shared/ProfileCheckWrapper'
 
 interface EmptyStateProps {
   title: string

@@ -2,7 +2,7 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { checkProfileCompletion } from '@/lib/actions/general.actions'
-import TakeInterview from '@/components/TakeInterview'
+import TakeInterview from '@/components/interview/TakeInterview'
 
 interface TakeInterviewStructurePageProps {
   searchParams: Promise<{

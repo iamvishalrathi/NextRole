@@ -2,7 +2,7 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { checkProfileCompletion, getProfileByUserId } from '@/lib/actions/general.actions'
-import ProfileSummaryConfirmation from '@/components/ProfileSummaryConfirmation'
+import ProfileSummaryConfirmation from '@/components/interview/ProfileSummaryConfirmation'
 
 interface ConfirmProfilePageProps {
   searchParams: Promise<{

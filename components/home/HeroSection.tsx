@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import Image from "next/image"
-import ProfileCheckWrapper from '@/components/ProfileCheckWrapper'
+import ProfileCheckWrapper from '@/components/shared/ProfileCheckWrapper'
 
 interface HeroSectionProps {
   userId: string

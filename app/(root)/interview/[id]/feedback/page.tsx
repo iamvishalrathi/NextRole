@@ -2,7 +2,7 @@ import { getCurrentUser } from '@/lib/actions/auth.action';
 import { getFeedbackByInterviewId, getInterviewById } from '@/lib/actions/general.actions';
 
 import { redirect } from "next/navigation";
-import FeedbackWithRating from '@/components/FeedbackWithRating';
+import FeedbackWithRating from '@/components/interview/FeedbackWithRating';
 
 import React from 'react'
 

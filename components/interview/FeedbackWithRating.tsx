@@ -5,8 +5,8 @@ import RatingModal from './RatingModal';
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "./ui/button";
-import { saveInterviewRating } from '../lib/actions/general.actions';
+import { Button } from "@/components/ui/button";
+import { saveInterviewRating } from '@/lib/actions/general.actions';
 
 interface FeedbackWithRatingProps {
   feedback: Feedback; // Replace with your Feedback type

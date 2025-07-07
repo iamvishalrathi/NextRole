@@ -1,4 +1,4 @@
-import InterviewForm from '@/components/InterviewForm'
+import InterviewForm from '@/components/create-interview/InterviewForm'
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { checkProfileCompletion } from '@/lib/actions/general.actions'
 import React from 'react'

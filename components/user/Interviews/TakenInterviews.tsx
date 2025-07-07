@@ -1,9 +1,20 @@
-import InterviewCard from '@/components/InterviewCard'
+import InterviewCard from '../InterviewCard'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
 
-const TakenInterviews = ({ takenInterviews }) => {
+interface TakenInterviewsProps {
+    takenInterviews: Array<{
+        id: string;
+        userId: string;
+        role: string;
+        type: string;
+        techstack: string[];
+        createdAt: string;
+    }>;
+}
+
+const TakenInterviews = ({ takenInterviews }: TakenInterviewsProps) => {
     return (
         <div>
             <div className="flex items-center gap-4 mb-6">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 interface RatingModalProps {

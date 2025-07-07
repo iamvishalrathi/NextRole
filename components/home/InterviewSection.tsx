@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import InterviewStructureCard from '@/components/InterviewStructureCard'
+import InterviewStructureCard from '@/components/shared/InterviewStructureCard'
 import EmptyState from './EmptyState'
 
 interface InterviewStructure {

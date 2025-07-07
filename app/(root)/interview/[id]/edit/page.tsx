@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/lib/actions/auth.action';
 import { getInterviewById } from '@/lib/actions/general.actions';
 import { redirect } from 'next/navigation';
-import EditInterview from '@/components/EditInterview';
+import EditInterview from '@/components/interview/EditInterview';
 import { getTechLogos } from '@/lib/utils';
 
 export default async function EditInterviewPage({params } : RouteParams) {
