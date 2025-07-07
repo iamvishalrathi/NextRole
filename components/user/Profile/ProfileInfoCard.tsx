@@ -82,6 +82,10 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
 
     // Get created interviews
     const createdInterviews = await getInterviewByUserId(profileUser.id);
+    
+    // For recruiters, separate mock and job interviews (assuming interviews have a type field)
+    const mockInterviews = createdInterviews?.filter(interview => interview.type === 'mock') || [];
+    const jobInterviews = createdInterviews?.filter(interview => interview.type === 'job') || [];
 
     // Get user's initial for avatar
     const userInitial = profileUser.name ? profileUser.name.charAt(0).toUpperCase() : '?';
@@ -186,46 +190,88 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
 
                             {/* Enhanced Stats Cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                                {/* Created Interviews Card */}
-                                <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500/10 via-blue-600/5 to-transparent rounded-2xl p-6 border border-blue-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/10 hover:shadow-xl">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="relative">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center ring-1 ring-blue-500/30">
-                                                <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <div className="text-blue-300 text-sm font-medium">Created</div>
-                                                <div className="text-xs text-blue-300/60">
-                                                    {profileUser.isRecruiter ? 'Mock and job interview structure' : 'Mock interview structure'}
+                                {profileUser.isRecruiter ? (
+                                    <>
+                                        {/* Created Mock Interviews Card */}
+                                        <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500/10 via-blue-600/5 to-transparent rounded-2xl p-6 border border-blue-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/10 hover:shadow-xl">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <div className="relative">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center ring-1 ring-blue-500/30">
+                                                        <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-blue-300 text-sm font-medium">Mock</div>
+                                                        <div className="text-xs text-blue-300/60">Interview structures</div>
+                                                    </div>
                                                 </div>
+                                                <div className="text-3xl font-bold text-blue-100 mb-1">{mockInterviews.length}</div>
                                             </div>
                                         </div>
-                                        <div className="text-3xl font-bold text-blue-100 mb-1">{createdInterviews ? createdInterviews.length : 0}</div>
-                                    </div>
-                                </div>
 
-                                {/* Taken Interviews Card - Only for candidates viewing own profile */}
-                                {isOwnProfile && !profileUser.isRecruiter && (
-                                    <div className="group relative overflow-hidden bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent rounded-2xl p-6 border border-green-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-green-500/10 hover:shadow-xl">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                        <div className="relative">
-                                            <div className="flex items-center gap-3 mb-3">
-                                                <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center ring-1 ring-green-500/30">
-                                                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
+                                        {/* Created Job Interviews Card */}
+                                        <div className="group relative overflow-hidden bg-gradient-to-br from-purple-500/10 via-purple-600/5 to-transparent rounded-2xl p-6 border border-purple-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-purple-500/10 hover:shadow-xl">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <div className="relative">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center ring-1 ring-purple-500/30">
+                                                        <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 002 2M8 6a2 2 0 002 2h4a2 2 0 002-2" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-purple-300 text-sm font-medium">Job</div>
+                                                        <div className="text-xs text-purple-300/60">Interview structures</div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div className="text-green-300 text-sm font-medium">Taken</div>
-                                                    <div className="text-xs text-green-300/60">Practice sessions</div>
+                                                <div className="text-3xl font-bold text-purple-100 mb-1">{jobInterviews.length}</div>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* Created Mock Interviews Card for Candidates */}
+                                        <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500/10 via-blue-600/5 to-transparent rounded-2xl p-6 border border-blue-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/10 hover:shadow-xl">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <div className="relative">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center ring-1 ring-blue-500/30">
+                                                        <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-blue-300 text-sm font-medium">Created</div>
+                                                        <div className="text-xs text-blue-300/60">Mock interview structure</div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-3xl font-bold text-blue-100 mb-1">{createdInterviews ? createdInterviews.length : 0}</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Taken Interviews Card - Only for candidates viewing own profile */}
+                                        {isOwnProfile && (
+                                            <div className="group relative overflow-hidden bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent rounded-2xl p-6 border border-green-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-green-500/10 hover:shadow-xl">
+                                                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                <div className="relative">
+                                                    <div className="flex items-center gap-3 mb-3">
+                                                        <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center ring-1 ring-green-500/30">
+                                                            <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-green-300 text-sm font-medium">Taken</div>
+                                                            <div className="text-xs text-green-300/60">Practice sessions</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-3xl font-bold text-green-100 mb-1">{takenInterviews.length}</div>
                                                 </div>
                                             </div>
-                                            <div className="text-3xl font-bold text-green-100 mb-1">{takenInterviews.length}</div>
-                                        </div>
-                                    </div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         </div>
