@@ -4,8 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getCurrentUser, isAuthenticated } from '@/lib/actions/auth.action'
 import { redirect } from 'next/navigation'
-import SignOut from '@/components/SignOut'
-import ActiveNavigation from '@/components/ActiveNavigation'
+import SignOut from '@/components/auth/SignOut'
+import ActiveNavigation from '@/components/shared/ActiveNavigation'
 
 const RootLayout = async ({children}:{children:ReactNode}) => {
   const isUserAuthenticated = await isAuthenticated();

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 import { signOut } from '@/lib/actions/auth.action'
 import { toast } from 'sonner'
 
