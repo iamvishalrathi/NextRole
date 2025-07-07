@@ -10,8 +10,7 @@ const ActiveNavigation = () => {
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/discover', label: 'Discover' },
-    { href: '/create-interview', label: 'Create Interview' },
-    { href: '/take-interview', label: 'Take Interview' }
+    { href: '/create-interview', label: 'Create Interview' }
   ]
 
   return (
