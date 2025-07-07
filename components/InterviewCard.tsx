@@ -135,7 +135,7 @@ const InterviewCard = async ({id , userId , role,type ,techstack , createdAt }:I
           {!feedback ? (
             <ProfileCheckWrapper 
               userId={user?.id || ''} 
-              targetUrl={`/interview/${id}`}
+              targetUrl={`/take-interview/${id}`}
             >
               <Button className="btn-primary">
                 Take Interview

@@ -30,7 +30,7 @@ const EmptyState = ({ title, showButton = false, userId, description }: EmptySta
     {showButton && userId && (
       <ProfileCheckWrapper 
         userId={userId}
-        targetUrl="/interview"
+        targetUrl="/create-interview"
         className="inline-flex"
       >
         <Button variant="outline" size="sm">

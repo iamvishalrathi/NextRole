@@ -82,7 +82,7 @@ const InterviewGenerationLoader = ({ user, structureId }: InterviewGenerationLoa
           // Clear the generation flag on success
           sessionStorage.removeItem(generationKey);
           toast.success('Interview generated successfully!');
-          router.push(`/interview/${data.interviewId}`);
+          router.push(`/take-interview/${data.interviewId}`);
         } else {
           // Clear the generation flag on error
           sessionStorage.removeItem(generationKey);

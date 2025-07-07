@@ -27,7 +27,7 @@ const ProfileSummaryConfirmation = ({ user, userProfile, structureId }: ProfileS
 
     try {
       // Redirect to generation page with loading screen
-      router.push(`/interview/generate?structureId=${structureId}&confirmed=true`);
+      router.push(`/take-interview/generate?structureId=${structureId}&confirmed=true`);
     } catch (error) {
       console.error('Error proceeding:', error);
       toast.error('An error occurred while proceeding');

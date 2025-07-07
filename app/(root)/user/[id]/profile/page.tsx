@@ -183,7 +183,7 @@ const UserProfilePage = async ({ params }: RouteParams) => {
                     </div>
                   </Link>
 
-                  <Link href="/interview/generate">
+                  <Link href="/create-interview">
                     <div className="p-6 bg-dark-gradient-2 rounded-lg border border-primary-500/20 hover:border-primary-500/40 transition-all cursor-pointer group">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:bg-purple-500/30 transition-colors">
