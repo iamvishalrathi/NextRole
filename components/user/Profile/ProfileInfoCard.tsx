@@ -199,7 +199,7 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                             <div>
                                                 <div className="text-blue-300 text-sm font-medium">Created</div>
                                                 <div className="text-xs text-blue-300/60">
-                                                    {profileUser.isRecruiter ? 'Job interviews' : 'Mock interviews'}
+                                                    {profileUser.isRecruiter ? 'Mock and job interview structure' : 'Mock interview structure'}
                                                 </div>
                                             </div>
                                         </div>
