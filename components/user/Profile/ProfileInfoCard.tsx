@@ -68,6 +68,7 @@ interface ProfileInfoCardProps {
         founded?: string;
         website?: string;
         specialties?: string[];
+        completionPercentage?: number; // Profile completion percentage from DB
         [key: string]: unknown;
     };
 }
@@ -86,22 +87,26 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
     const userInitial = profileUser.name ? profileUser.name.charAt(0).toUpperCase() : '?';
     const avatarColor = profileUser.avatarColor || 'bg-blue-500'; // Default to blue if no color is set
 
+    // Get profile completion percentage from database or default to 0
+    const completionPercentage = profile?.completionPercentage || 0;
+    const circumference = 2 * Math.PI * 45; // radius of 45
+    const strokeDashoffset = circumference - (completionPercentage / 100) * circumference;
+
     return (
         <div className="space-y-6">
             {/* Enhanced Profile Info Card */}
             <div className="relative overflow-hidden">
                 {/* Background gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-blue-500/5 rounded-3xl"></div>
-                
                 <div className="relative bg-dark-900/90 backdrop-blur-xl rounded-3xl p-8 border border-primary-500/20 shadow-2xl">
                     {/* Action buttons - positioned at top right */}
                     {isOwnProfile && (
                         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2 sm:gap-3 z-10">
                             {profile && (
                                 <Link href={`/user/${profileUser.id}/profile/edit`}>
-                                    <Button 
-                                        variant="outline" 
-                                        size="sm" 
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
                                         className="group relative overflow-hidden bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 hover:border-blue-400/50 backdrop-blur-sm shadow-lg hover:shadow-blue-500/20 transition-all duration-300"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/20 group-hover:to-purple-500/20 transition-all duration-300"></div>
@@ -113,9 +118,9 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                 </Link>
                             )}
                             <Link href={`/user/${profileUser.id}/interviews`}>
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
+                                <Button
+                                    variant="outline"
+                                    size="sm"
                                     className="group relative overflow-hidden bg-gradient-to-r from-green-500/10 to-teal-500/10 border border-green-500/30 hover:border-green-400/50 backdrop-blur-sm shadow-lg hover:shadow-green-500/20 transition-all duration-300"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 to-teal-500/0 group-hover:from-green-500/20 group-hover:to-teal-500/20 transition-all duration-300"></div>
@@ -129,9 +134,42 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                     )}
 
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                        <div className={`w-28 h-28 rounded-full ${avatarColor} flex items-center justify-center text-white text-4xl font-semibold shadow-lg border-4 border-primary-500/30`}>
-                            {userInitial}
+                        <div className="relative flex-shrink-0">
+                            {/* Progress Ring */}
+                            <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                                {/* Background circle */}
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="45"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                    fill="transparent"
+                                    className="text-gray-600"
+                                />
+                                {/* Progress circle */}
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="45"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                    fill="transparent"
+                                    strokeDasharray={circumference}
+                                    strokeDashoffset={strokeDashoffset}
+                                    strokeLinecap="round"
+                                    className={`transition-all duration-300 ${completionPercentage >= 80 ? 'text-green-500' :
+                                        completionPercentage >= 60 ? 'text-yellow-500' :
+                                            completionPercentage >= 30 ? 'text-orange-500' : 'text-red-500'
+                                        }`}
+                                />
+                            </svg>
+                            {/* Avatar */}
+                            <div className={`absolute inset-2 rounded-full ${avatarColor} flex items-center justify-center text-white text-3xl font-semibold shadow-lg`}>
+                                {userInitial}
+                            </div>
                         </div>
+
                         <div className="flex flex-col items-center md:items-start flex-1">
                             <h1 className="text-3xl font-bold text-primary-100 mb-2">{profileUser.name}</h1>
                             {isOwnProfile && <p className="text-light-400 mb-4">{profileUser.email}</p>}
@@ -139,8 +177,8 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                             {/* Role Badge */}
                             <div className="mb-4">
                                 <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium shadow-lg ${profileUser.isRecruiter
-                                        ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-200 border border-green-500/30'
-                                        : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-200 border border-blue-500/30'
+                                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-200 border border-green-500/30'
+                                    : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-200 border border-blue-500/30'
                                     }`}>
                                     {profileUser.isRecruiter ? '🏢 Recruiter' : '👤 Candidate'}
                                 </span>
@@ -331,10 +369,10 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                             {profile.workExperience.map((exp, index) => (
                                                 <div key={index} className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20">
                                                     <div className="flex justify-between items-start mb-2">                                        <div>
-                                            <h4 className="font-semibold text-primary-100">{exp.position}</h4>
-                                            <p className="text-primary-300">{exp.company}</p>
-                                            {exp.location && <p className="text-light-400 text-sm">{exp.location}</p>}
-                                        </div>
+                                                        <h4 className="font-semibold text-primary-100">{exp.position}</h4>
+                                                        <p className="text-primary-300">{exp.company}</p>
+                                                        {exp.location && <p className="text-light-400 text-sm">{exp.location}</p>}
+                                                    </div>
                                                         <span className="text-sm text-light-400">
                                                             {exp.startDate} - {exp.isCurrentJob ? 'Present' : exp.endDate}
                                                         </span>
@@ -400,14 +438,14 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                                             {project.technologies.map((tech: string, techIndex: number) => (
                                                                 <span key={techIndex} className="bg-primary-500/20 text-primary-200 px-2 py-1 rounded text-xs">
                                                                     {tech}
-                                                                </span>                                            ))}
+                                                                </span>))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}                                {/* Achievements */}
+                                    </div>
+                                )}                                {/* Achievements */}
                                 {profile.achievements && profile.achievements.length > 0 && (
                                     <div>
                                         <h3 className="text-lg font-semibold text-primary-100 mb-4">Achievements</h3>
@@ -435,21 +473,21 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                     </div>
                                 )}
 
-                {/* Languages */}
-                {profile.languages && profile.languages.length > 0 && (
-                    <div>
-                        <h3 className="text-lg font-semibold text-primary-100 mb-2">Languages</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {profile.languages.map((language: string, index: number) => (
-                                <span key={index} className="bg-primary-500/20 text-primary-200 px-3 py-1 rounded-full text-sm">
-                                    {language}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                                {/* Languages */}
+                                {profile.languages && profile.languages.length > 0 && (
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-primary-100 mb-2">Languages</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {profile.languages.map((language: string, index: number) => (
+                                                <span key={index} className="bg-primary-500/20 text-primary-200 px-3 py-1 rounded-full text-sm">
+                                                    {language}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
-                {/* Social Links */}
+                                {/* Social Links */}
                                 {(profile.socialLinks?.linkedin || profile.socialLinks?.github || profile.socialLinks?.portfolio || profile.socialLinks?.twitter) && (
                                     <div>
                                         <h3 className="text-lg font-semibold text-primary-100 mb-2">Social Links</h3>
