@@ -29,15 +29,22 @@ const GenerateInterviewPage = async ({ searchParams }: GenerateInterviewPageProp
   // Await searchParams and check if structureId and confirmation are provided
   const { structureId, confirmed } = await searchParams;
   if (!structureId || !confirmed) {
-    redirect('/');
+    redirect('/discover');
   }
 
   return (
     <div className="w-full mx-auto py-12 px-4 bg-dark-300 min-h-screen">
-      <InterviewGenerationLoader 
-        user={user} 
-        structureId={structureId}
-      />
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-primary-100 mb-4 text-center">Generating Your Interview</h1>
+        <p className="text-center text-primary-300 mb-12 max-w-2xl mx-auto">
+          Please wait while we generate personalized interview questions based on your profile and the selected interview structure.
+        </p>
+        
+        <InterviewGenerationLoader 
+          user={user} 
+          structureId={structureId}
+        />
+      </div>
     </div>
   )
 }

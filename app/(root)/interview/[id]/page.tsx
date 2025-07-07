@@ -14,7 +14,7 @@ const page = async ({params} : RouteParams) => {
     const interview = await getInterviewById(id);
     const user = await getCurrentUser();
     
-    if(!interview) redirect('/');
+    if(!interview) redirect('/discover');
     
     // Redirect if not authenticated
     if (!user) {

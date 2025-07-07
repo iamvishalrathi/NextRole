@@ -70,7 +70,7 @@ const InterviewStructureCard = ({
   const formattedDate = dayjs(createdAt).format("MMM D, YYYY");
 
   const handleTakeInterview = () => {
-    window.location.href = `/take-interview/confirm-profile?structureId=${id}`;
+    window.location.href = `/interview/confirm-profile?structureId=${id}`;
   };
 
   return (

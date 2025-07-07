@@ -28,7 +28,7 @@ const ConfirmProfilePage = async ({ searchParams }: ConfirmProfilePageProps) => 
   // Await searchParams and check if structureId is provided
   const { structureId } = await searchParams;
   if (!structureId) {
-    redirect('/');
+    redirect('/discover');
   }
 
   // Get user profile for display

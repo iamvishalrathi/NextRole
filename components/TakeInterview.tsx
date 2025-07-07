@@ -112,7 +112,7 @@ const TakeInterview = ({ user, structureId, isStructureBased = false }: TakeInte
 
       if (data.success) {
         toast.success(data.message || 'Personalized interview generated!');
-        router.push(`/take-interview/${data.interviewId}`);
+        router.push(`/interview/${data.interviewId}`);
       } else {
         toast.error(data.error || 'Failed to generate interview');
       }

@@ -28,22 +28,12 @@ const TakeInterviewPage = async ({ searchParams }: TakeInterviewPageProps) => {
   // Await searchParams and check if structureId is provided
   const { structureId } = await searchParams;
   if (!structureId) {
-    redirect('/interview');
+    redirect('/discover');
   }
 
-  return (
-    <div className="w-full mx-auto py-12 px-4 bg-dark-300">
-      <h1 className="text-4xl font-bold text-primary-100 mb-4 text-center">Take Interview</h1>
-      <p className="text-center text-primary-300 mb-12 max-w-2xl mx-auto">
-        Get ready for your personalized interview experience. Questions will be tailored based on your profile and the selected structure.
-      </p>
-      <TakeInterview 
-        user={user} 
-        structureId={structureId}
-        isStructureBased={true}
-      />
-    </div>
-  )
+  // Redirect to the structure route for better organization
+  const searchParamsString = new URLSearchParams({ structureId }).toString();
+  redirect(`/interview/structure?${searchParamsString}`);
 }
 
 export default TakeInterviewPage
