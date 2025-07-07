@@ -15,7 +15,7 @@ const page = async () => {
   return (
     <>
       {/* Hero Section */}
-      <HeroSection userId={user.id} />
+      <HeroSection user={user} />
 
       {/* Mock Interview Section */}
       <InterviewSection
