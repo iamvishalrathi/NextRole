@@ -4,6 +4,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import InterviewStructureCard from '@/components/shared/InterviewStructureCard';
+import EmptyState from '@/components/shared/EmptyState';
 
 interface InterviewStructuresSectionProps {
   title: string;
@@ -14,6 +15,8 @@ interface InterviewStructuresSectionProps {
   showViewButton?: boolean;
   viewButtonText?: string;
   viewButtonHref?: string;
+  emptyStateIcon?: string;
+  emptyStateDescription?: string;
 }
 
 const InterviewStructuresSection = ({
@@ -24,7 +27,9 @@ const InterviewStructuresSection = ({
   emptyActionHref,
   showViewButton = false,
   viewButtonText = "View All",
-  viewButtonHref = "#"
+  viewButtonHref = "#",
+  emptyStateIcon = "/tech.svg",
+  emptyStateDescription
 }: InterviewStructuresSectionProps) => {
   return (
     <div className="mb-12">
@@ -62,14 +67,16 @@ const InterviewStructuresSection = ({
           ))}
         </div>
       ) : (
-        <div className="blue-gradient-dark rounded-lg border-2 border-primary-200/30 p-8 text-center">
-          <p className="text-light-400 mb-4">{emptyMessage}</p>
-          {emptyActionText && emptyActionHref && (
-            <Button asChild className="btn-primary">
-              <Link href={emptyActionHref}>{emptyActionText}</Link>
-            </Button>
-          )}
-        </div>
+        <EmptyState
+          icon={emptyStateIcon || '/user.png'}
+          containerSize="md"
+          title={emptyMessage}
+          description={emptyStateDescription || 'No items to display at the moment.'}
+          primaryAction={emptyActionText && emptyActionHref ? {
+            text: emptyActionText,
+            href: emptyActionHref
+          } : undefined}
+        />
       )}
     </div>
   );
