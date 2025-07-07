@@ -1,7 +1,7 @@
 import React from 'react'
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { getPublicInterviewStructures } from '@/lib/actions/general.actions'
-import { HeroSection, InterviewSection } from '@/components/Home Page'
+import { HeroSection, InterviewSection } from '@/components/home'
 
 const page = async () => {
   const user = await getCurrentUser();
