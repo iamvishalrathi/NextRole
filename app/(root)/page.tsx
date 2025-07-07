@@ -19,12 +19,15 @@ const page = async () => {
 
       {/* Mock Interview Section */}
       <InterviewSection
-        title="Practice Mock Interviews"
+        title={"Popular Mock Interviews"}
         interviews={publicStructures.mockStructures || []}
         interviewCategory="mock"
         userId={user.id}
-        emptyStateTitle="No practice sessions available"
-        emptyStateDescription="Start practicing with mock interviews to build confidence and improve your interview skills."
+        emptyStateTitle={user.isRecruiter ? "No mock interviews available" : "No practice sessions available"}
+        emptyStateDescription={user.isRecruiter 
+          ? "Create engaging mock interviews with AI feedback to help candidates prepare for real opportunities."
+          : "Start practicing with mock interviews to build confidence and improve your interview skills."
+        }
         showCreateButton={true}
       />
 
@@ -33,9 +36,12 @@ const page = async () => {
         title="Active Job Interviews"
         interviews={publicStructures.jobStructures || []}
         interviewCategory="job"
-        emptyStateTitle="No job opportunities available"
-        emptyStateDescription="Check back soon for new job openings and interview opportunities from top companies."
-        showCreateButton={false}
+        emptyStateTitle={user.isRecruiter ? "No job interviews created" : "No job opportunities available"}
+        emptyStateDescription={user.isRecruiter 
+          ? "Launch intelligent job interviews with real-time analytics and automated candidate evaluation."
+          : "Discover exciting job openings and interview opportunities from top companies hiring now."
+        }
+        showCreateButton={user.isRecruiter}
       />
     </>
   )

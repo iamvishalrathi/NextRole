@@ -8,9 +8,10 @@ interface EmptyStateProps {
   showButton?: boolean
   userId?: string
   description?: string
+  interviewCategory?: 'mock' | 'job'
 }
 
-const EmptyState = ({ title, showButton = false, userId, description }: EmptyStateProps) => (
+const EmptyState = ({ title, showButton = false, userId, description, interviewCategory = 'mock' }: EmptyStateProps) => (
   <div className="flex flex-col items-center justify-center py-12 px-6 text-center w-full">
     <div className="relative mb-6">
       <div className="w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed border-gray-300">
@@ -34,7 +35,7 @@ const EmptyState = ({ title, showButton = false, userId, description }: EmptySta
         className="inline-flex"
       >
         <Button variant="outline" size="sm">
-          Create Mock Interview
+          {interviewCategory === 'job' ? 'Create Job Interview' : 'Create Mock Interview'}
         </Button>
       </ProfileCheckWrapper>
     )}

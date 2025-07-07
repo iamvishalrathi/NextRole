@@ -80,6 +80,7 @@ const InterviewSection = ({
             showButton={showCreateButton}
             userId={userId}
             description={emptyStateDescription}
+            interviewCategory={interviewCategory}
           />
         )}
       </div>

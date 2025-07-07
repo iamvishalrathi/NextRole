@@ -16,7 +16,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
         <h2>
           {isRecruiter 
             ? "Hire Smarter with AI-Powered Interviews" 
-            : "Master Any Interview with AI"
+            : "Ace Your Next Interview with AI"
           }
         </h2>
         <p className="text-lg">
