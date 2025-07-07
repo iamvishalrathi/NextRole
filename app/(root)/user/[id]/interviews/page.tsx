@@ -29,7 +29,7 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
         takenStructures,
         createdMockStructures,
         createdJobStructures
-    } = await getUserInterviewStructures(profileUser.id, profileUser.isRecruiter);
+    } = await getUserInterviewStructures(profileUser.id, profileUser.isRecruiter, isOwnProfile);
 
     // Check if user has any interviews at all - for recruiters, exclude taken interviews
     const hasAnyInterviews = profileUser.isRecruiter ? (
@@ -48,8 +48,8 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
                     {isOwnProfile ? 'My Interviews' : `${profileUser.name}'s Interviews`}
                 </h1>
                 <p className="text-light-400">
-                    {isOwnProfile 
-                        ? 'Manage your interviews and view your interview history' 
+                    {isOwnProfile
+                        ? 'Manage your interviews and view your interview history'
                         : `View ${profileUser.name}'s public interviews`
                     }
                 </p>
@@ -61,7 +61,7 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
                     icon="/user.png"
                     containerSize="lg"
                     title={profileUser.isRecruiter ? "Welcome to Your Interview Hub!" : "Welcome to Your Interview Hub!"}
-                    description={profileUser.isRecruiter 
+                    description={profileUser.isRecruiter
                         ? "This is where you'll manage all your interview creations. Start by creating mock interviews to help candidates practice, or set up job interviews to streamline your hiring process."
                         : "This is where you'll find all your interview activities. Start by taking mock interviews to practice your skills, or create your own interviews to help others prepare for their career journey."
                     }
@@ -119,12 +119,12 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
                         title="Mock Interviews Created"
                         structures={createdMockStructures || []}
                         emptyMessage={
-                            isOwnProfile 
-                                ? "No mock interviews created yet" 
+                            isOwnProfile
+                                ? "No mock interviews created yet"
                                 : "No public mock interviews available"
                         }
                         emptyStateDescription={
-                            isOwnProfile 
+                            isOwnProfile
                                 ? "Create your first mock interview to help candidates practice and improve their skills."
                                 : `${profileUser.name} hasn't created any public mock interviews yet.`
                         }
@@ -142,12 +142,12 @@ const UserInterviewsPage = async ({ params }: RouteParams) => {
                             title="Job Interviews Created"
                             structures={createdJobStructures || []}
                             emptyMessage={
-                                isOwnProfile 
-                                    ? "No job interviews created yet" 
+                                isOwnProfile
+                                    ? "No job interviews created yet"
                                     : "No public job interviews available"
                             }
                             emptyStateDescription={
-                                isOwnProfile 
+                                isOwnProfile
                                     ? "Create job interviews to streamline your hiring process and find the best candidates."
                                     : `${profileUser.name} hasn't created any public job interviews yet.`
                             }

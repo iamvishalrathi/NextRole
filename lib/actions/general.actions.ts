@@ -666,21 +666,36 @@ export async function getUserTakenInterviewStructures(
       .filter(id => id !== undefined)
     )] as string[];
     
-    // Get all structures from both collections
+    // Get all structures from both collections with visibility filtering
     const structurePromises = structureIds.map(async (structureId) => {
       // Try mock structures first
       let structureDoc = await db.collection('mock_interview_structures').doc(structureId).get();
       
-      if (!structureDoc.exists) {
-        // Try job structures
-        structureDoc = await db.collection('job_interview_structures').doc(structureId).get();
+      if (structureDoc.exists) {
+        const data = structureDoc.data();
+        // Only return if visibility is true (public)
+        if (data?.visibility === true) {
+          return {
+            id: structureDoc.id,
+            ...data,
+          } as InterviewStructure;
+        }
+        return null;
       }
       
+      // Try job structures
+      structureDoc = await db.collection('job_interview_structures').doc(structureId).get();
+      
       if (structureDoc.exists) {
-        return {
-          id: structureDoc.id,
-          ...structureDoc.data(),
-        } as InterviewStructure;
+        const data = structureDoc.data();
+        // Only return if visibility is true (public)
+        if (data?.visibility === true) {
+          return {
+            id: structureDoc.id,
+            ...data,
+          } as InterviewStructure;
+        }
+        return null;
       }
       
       return null;
@@ -697,7 +712,8 @@ export async function getUserTakenInterviewStructures(
 // Get all user's interview structures based on user type
 export async function getUserInterviewStructures(
   userId: string,
-  isRecruiter: boolean
+  isRecruiter: boolean,
+  isOwnProfile: boolean = true
 ): Promise<{
   takenStructures: InterviewStructure[] | null;
   createdMockStructures: InterviewStructure[] | null;
@@ -706,8 +722,8 @@ export async function getUserInterviewStructures(
   try {
     const promises = [
       getUserTakenInterviewStructures(userId),
-      getUserMockInterviewStructures(userId),
-      isRecruiter ? getUserJobInterviewStructures(userId) : Promise.resolve(null),
+      isOwnProfile ? getUserMockInterviewStructures(userId) : getPublicUserMockInterviewStructures(userId),
+      isRecruiter ? (isOwnProfile ? getUserJobInterviewStructures(userId) : getPublicUserJobInterviewStructures(userId)) : Promise.resolve(null),
     ];
 
     const [takenStructures, createdMockStructures, createdJobStructures] = await Promise.all(promises);
@@ -724,5 +740,49 @@ export async function getUserInterviewStructures(
       createdMockStructures: null,
       createdJobStructures: null,
     };
+  }
+}
+
+// Get user's public mock interview structures (for viewing other users' profiles)
+export async function getPublicUserMockInterviewStructures(
+  userId: string
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("mock_interview_structures")
+      .where("userId", "==", userId)
+      .where("visibility", "==", true)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching user public mock interview structures:", error);
+    return null;
+  }
+}
+
+// Get user's public job interview structures (for viewing other users' profiles)
+export async function getPublicUserJobInterviewStructures(
+  userId: string
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("job_interview_structures")
+      .where("userId", "==", userId)
+      .where("visibility", "==", true)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching user public job interview structures:", error);
+    return null;
   }
 }

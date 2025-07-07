@@ -33,9 +33,9 @@ const EmptyState = ({
   className = ''
 }: EmptyStateProps) => {
   const iconSizes = {
-    sm: 80,
-    md: 120,
-    lg: 160
+    sm: 120,
+    md: 180,
+    lg: 240
   };
 
   const actualIconSize = iconSizes[containerSize];
