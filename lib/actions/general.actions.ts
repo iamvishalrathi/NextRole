@@ -605,3 +605,124 @@ export async function getPublicInterviewStructures(
     };
   }
 }
+
+// Get user's created mock interview structures
+export async function getUserMockInterviewStructures(
+  userId: string
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("mock_interview_structures")
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching user mock interview structures:", error);
+    return null;
+  }
+}
+
+// Get user's created job interview structures
+export async function getUserJobInterviewStructures(
+  userId: string
+): Promise<InterviewStructure[] | null> {
+  try {
+    const structures = await db
+      .collection("job_interview_structures")
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return structures.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching user job interview structures:", error);
+    return null;
+  }
+}
+
+// Get user's taken interview structures (from taken interviews)
+export async function getUserTakenInterviewStructures(
+  userId: string
+): Promise<InterviewStructure[] | null> {
+  try {
+    // Get all taken interviews for the user
+    const takenInterviews = await getUserTakenInterviews(userId);
+    
+    if (!takenInterviews || takenInterviews.length === 0) {
+      return [];
+    }
+
+    // Extract unique structure IDs from taken interviews
+    const structureIds = [...new Set(takenInterviews
+      .map(interview => interview.structureId)
+      .filter(id => id !== undefined)
+    )] as string[];
+    
+    // Get all structures from both collections
+    const structurePromises = structureIds.map(async (structureId) => {
+      // Try mock structures first
+      let structureDoc = await db.collection('mock_interview_structures').doc(structureId).get();
+      
+      if (!structureDoc.exists) {
+        // Try job structures
+        structureDoc = await db.collection('job_interview_structures').doc(structureId).get();
+      }
+      
+      if (structureDoc.exists) {
+        return {
+          id: structureDoc.id,
+          ...structureDoc.data(),
+        } as InterviewStructure;
+      }
+      
+      return null;
+    });
+
+    const structures = await Promise.all(structurePromises);
+    return structures.filter(structure => structure !== null) as InterviewStructure[];
+  } catch (error) {
+    console.error("Error fetching user taken interview structures:", error);
+    return null;
+  }
+}
+
+// Get all user's interview structures based on user type
+export async function getUserInterviewStructures(
+  userId: string,
+  isRecruiter: boolean
+): Promise<{
+  takenStructures: InterviewStructure[] | null;
+  createdMockStructures: InterviewStructure[] | null;
+  createdJobStructures: InterviewStructure[] | null;
+}> {
+  try {
+    const promises = [
+      getUserTakenInterviewStructures(userId),
+      getUserMockInterviewStructures(userId),
+      isRecruiter ? getUserJobInterviewStructures(userId) : Promise.resolve(null),
+    ];
+
+    const [takenStructures, createdMockStructures, createdJobStructures] = await Promise.all(promises);
+
+    return {
+      takenStructures,
+      createdMockStructures,
+      createdJobStructures,
+    };
+  } catch (error) {
+    console.error("Error fetching user interview structures:", error);
+    return {
+      takenStructures: null,
+      createdMockStructures: null,
+      createdJobStructures: null,
+    };
+  }
+}

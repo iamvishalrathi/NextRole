@@ -4,13 +4,18 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const ActiveNavigation = () => {
+interface ActiveNavigationProps {
+  user: User | null;
+}
+
+const ActiveNavigation = ({ user }: ActiveNavigationProps) => {
   const pathname = usePathname()
 
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/discover', label: 'Discover' },
-    { href: '/create-interview', label: 'Create Interview' }
+    { href: '/create-interview', label: 'Create Interview' },
+    ...(user ? [{ href: `/user/${user.id}/interviews`, label: 'My Interviews' }] : [])
   ]
 
   return (

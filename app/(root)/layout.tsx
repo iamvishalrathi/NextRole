@@ -28,7 +28,7 @@ const RootLayout = async ({children}:{children:ReactNode}) => {
             <h2 className="text-primary-100" >NextRole</h2>
           </Link>
           
-          <ActiveNavigation />
+          <ActiveNavigation user={user} />
         </>
 
         <div className="flex items-center gap-4">
