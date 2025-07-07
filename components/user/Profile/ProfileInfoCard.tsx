@@ -2,6 +2,7 @@ import { getInterviewByUserId, getUserTakenInterviews } from '@/lib/actions/gene
 import React from 'react'
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PenIcon, FileTextIcon } from 'lucide-react';
 
 interface ProfileInfoCardProps {
     currentUser: User;
@@ -87,53 +88,126 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
 
     return (
         <div className="space-y-6">
-            {/* Basic Profile Info */}
-            <div className="card-border w-full">
-                <div className="dark-gradient rounded-2xl p-8">
+            {/* Enhanced Profile Info Card */}
+            <div className="relative overflow-hidden">
+                {/* Background gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-blue-500/5 rounded-3xl"></div>
+                
+                <div className="relative bg-dark-900/90 backdrop-blur-xl rounded-3xl p-8 border border-primary-500/20 shadow-2xl">
+                    {/* Action buttons - positioned at top right */}
+                    {isOwnProfile && (
+                        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2 sm:gap-3 z-10">
+                            {profile && (
+                                <Link href={`/user/${profileUser.id}/profile/edit`}>
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm" 
+                                        className="group relative overflow-hidden bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 hover:border-blue-400/50 backdrop-blur-sm shadow-lg hover:shadow-blue-500/20 transition-all duration-300"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/20 group-hover:to-purple-500/20 transition-all duration-300"></div>
+                                        <div className="relative flex items-center gap-2">
+                                            <PenIcon className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                                            <span className="hidden sm:inline text-blue-100 group-hover:text-white font-medium">Edit Profile</span>
+                                        </div>
+                                    </Button>
+                                </Link>
+                            )}
+                            <Link href={`/user/${profileUser.id}/interviews`}>
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="group relative overflow-hidden bg-gradient-to-r from-green-500/10 to-teal-500/10 border border-green-500/30 hover:border-green-400/50 backdrop-blur-sm shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 to-teal-500/0 group-hover:from-green-500/20 group-hover:to-teal-500/20 transition-all duration-300"></div>
+                                    <div className="relative flex items-center gap-2">
+                                        <FileTextIcon className="w-4 h-4 text-green-400 group-hover:text-green-300 transition-colors" />
+                                        <span className="hidden sm:inline text-green-100 group-hover:text-white font-medium">View Interviews</span>
+                                    </div>
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
+
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                         <div className={`w-28 h-28 rounded-full ${avatarColor} flex items-center justify-center text-white text-4xl font-semibold shadow-lg border-4 border-primary-500/30`}>
                             {userInitial}
                         </div>
                         <div className="flex flex-col items-center md:items-start flex-1">
-                            <div className="flex items-center gap-4 mb-2">
-                                <h1 className="text-3xl font-bold text-primary-100">{profileUser.name}</h1>
-                                {isOwnProfile && profile && (
-                                    <Link href={`/user/${profileUser.id}/profile/edit`}>
-                                        <Button variant="outline" size="sm">
-                                            Edit Profile
-                                        </Button>
-                                    </Link>
-                                )}
-                            </div>
+                            <h1 className="text-3xl font-bold text-primary-100 mb-2">{profileUser.name}</h1>
                             {isOwnProfile && <p className="text-light-400 mb-4">{profileUser.email}</p>}
 
                             {/* Role Badge */}
                             <div className="mb-4">
-                                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${profileUser.isRecruiter
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-blue-100 text-blue-800'
+                                <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium shadow-lg ${profileUser.isRecruiter
+                                        ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-200 border border-green-500/30'
+                                        : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-200 border border-blue-500/30'
                                     }`}>
-                                    {profileUser.isRecruiter ? 'Recruiter' : 'Candidate'}
+                                    {profileUser.isRecruiter ? '🏢 Recruiter' : '👤 Candidate'}
                                 </span>
                             </div>
 
-                            <div className="flex flex-wrap gap-4 mt-2">
-                                <div className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20 shadow-md">
-                                    <div className="text-primary-300 text-sm mb-1">Created</div>
-                                    <div className="text-2xl font-bold text-primary-100">{createdInterviews ? createdInterviews.length : 0}</div>
+                            {/* Enhanced Stats Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                                {/* Created Interviews Card */}
+                                <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500/10 via-blue-600/5 to-transparent rounded-2xl p-6 border border-blue-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/10 hover:shadow-xl">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="relative">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center ring-1 ring-blue-500/30">
+                                                <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div className="text-blue-300 text-sm font-medium">Created</div>
+                                                <div className="text-xs text-blue-300/60">
+                                                    {profileUser.isRecruiter ? 'Job interviews' : 'Mock interviews'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="text-3xl font-bold text-blue-100 mb-1">{createdInterviews ? createdInterviews.length : 0}</div>
+                                    </div>
                                 </div>
 
-                                {isOwnProfile && (
-                                    <div className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20 shadow-md">
-                                        <div className="text-primary-300 text-sm mb-1">Taken</div>
-                                        <div className="text-2xl font-bold text-primary-100">{takenInterviews.length}</div>
+                                {/* Taken Interviews Card - Only for candidates viewing own profile */}
+                                {isOwnProfile && !profileUser.isRecruiter && (
+                                    <div className="group relative overflow-hidden bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent rounded-2xl p-6 border border-green-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-green-500/10 hover:shadow-xl">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="relative">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center ring-1 ring-green-500/30">
+                                                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <div className="text-green-300 text-sm font-medium">Taken</div>
+                                                    <div className="text-xs text-green-300/60">Practice sessions</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-3xl font-bold text-green-100 mb-1">{takenInterviews.length}</div>
+                                        </div>
                                     </div>
                                 )}
 
-                                <div className="bg-dark-gradient-2 rounded-lg p-4 border border-primary-500/20 shadow-md">
-                                    <div className="text-primary-300 text-sm mb-1">Profile</div>
-                                    <div className="text-sm font-medium text-light-300">
-                                        {profile ? 'Completed' : 'Not Completed'}
+                                {/* Profile Completion Card */}
+                                <div className="group relative overflow-hidden bg-gradient-to-br from-purple-500/10 via-purple-600/5 to-transparent rounded-2xl p-6 border border-purple-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-purple-500/10 hover:shadow-xl">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="relative">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center ring-1 ring-purple-500/30">
+                                                <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div className="text-purple-300 text-sm font-medium">Profile</div>
+                                                <div className="text-xs text-purple-300/60">Completion status</div>
+                                            </div>
+                                        </div>
+                                        <div className="text-lg font-bold text-purple-100 mb-1">
+                                            {profile ? 'Complete' : 'Incomplete'}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
