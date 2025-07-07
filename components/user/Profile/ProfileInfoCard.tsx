@@ -189,27 +189,6 @@ const ProfileInfoCard = async ({ currentUser, profileUser, profile }: ProfileInf
                                         </div>
                                     </div>
                                 )}
-
-                                {/* Profile Completion Card */}
-                                <div className="group relative overflow-hidden bg-gradient-to-br from-purple-500/10 via-purple-600/5 to-transparent rounded-2xl p-6 border border-purple-500/20 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-purple-500/10 hover:shadow-xl">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="relative">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center ring-1 ring-purple-500/30">
-                                                <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <div className="text-purple-300 text-sm font-medium">Profile</div>
-                                                <div className="text-xs text-purple-300/60">Completion status</div>
-                                            </div>
-                                        </div>
-                                        <div className="text-lg font-bold text-purple-100 mb-1">
-                                            {profile ? 'Complete' : 'Incomplete'}
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
