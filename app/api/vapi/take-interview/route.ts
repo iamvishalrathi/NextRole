@@ -117,13 +117,59 @@ export async function POST(request: Request) {
         const profileData = userProfile ? `
 USER PROFILE DATA:
 - Current Role: ${userProfile.currentRole || 'Not specified'}
-- Experience: ${userProfile.experience || 'Not specified'}
-- Skills: ${userProfile.skills || 'Not specified'}
-- Education: ${userProfile.education || 'Not specified'}
+- Experience: ${userProfile.experience || 'Not specified'} ${userProfile.experience ? (parseInt(userProfile.experience) === 1 ? 'year' : 'years') : ''}
 - Location: ${userProfile.location || 'Not specified'}
 - Phone: ${userProfile.phone || 'Not specified'}
+
+PROFESSIONAL SUMMARY:
+${userProfile.summary || 'Not provided'}
+
+TECHNICAL SKILLS:
+${userProfile.skills && Array.isArray(userProfile.skills) ? userProfile.skills.join(', ') : (userProfile.skills || 'Not specified')}
+
+WORK EXPERIENCE:
+${userProfile.workExperience && Array.isArray(userProfile.workExperience) ? userProfile.workExperience.map(exp => `
+- ${exp.position} at ${exp.company} (${exp.startDate} - ${exp.isCurrentJob ? 'Present' : exp.endDate})
+  Location: ${exp.location || 'Not specified'}
+  Description: ${exp.description || 'Not provided'}
+`).join('') : 'Not provided'}
+
+EDUCATION:
+${userProfile.education && Array.isArray(userProfile.education) ? userProfile.education.map(edu => `
+- ${edu.degree} in ${edu.fieldOfStudy} from ${edu.institution} (${edu.startDate} - ${edu.endDate})
+  ${edu.grade ? `Grade: ${edu.grade}` : ''}
+`).join('') : (userProfile.education || 'Not provided')}
+
+PROJECTS:
+${userProfile.projects && Array.isArray(userProfile.projects) ? userProfile.projects.map(project => `
+- ${project.name}
+  Description: ${project.description}
+  Technologies: ${project.technologies ? project.technologies.join(', ') : 'Not specified'}
+  ${project.liveUrl ? `Live URL: ${project.liveUrl}` : ''}
+  ${project.githubUrl ? `GitHub: ${project.githubUrl}` : ''}
+`).join('') : 'Not provided'}
+
+ACHIEVEMENTS:
+${userProfile.achievements && Array.isArray(userProfile.achievements) ? userProfile.achievements.map(achievement => `
+- ${achievement.title} (${achievement.date})
+  Organization: ${achievement.organization}
+  Description: ${achievement.description}
+  ${achievement.url ? `URL: ${achievement.url}` : ''}
+`).join('') : 'Not provided'}
+
+LANGUAGES:
+${userProfile.languages && Array.isArray(userProfile.languages) ? userProfile.languages.join(', ') : 'Not specified'}
+
+SOCIAL LINKS:
+${userProfile.socialLinks ? `
+- LinkedIn: ${userProfile.socialLinks.linkedin || 'Not provided'}
+- GitHub: ${userProfile.socialLinks.github || 'Not provided'}
+- Portfolio: ${userProfile.socialLinks.portfolio || 'Not provided'}
+- Twitter: ${userProfile.socialLinks.twitter || 'Not provided'}
+` : 'Not provided'}
+
 ${userProfile.resume ? `
-Resume/Background:
+RESUME/BACKGROUND:
 ${userProfile.resume}
 ` : ''}
 ` : '';
@@ -133,10 +179,23 @@ ${userProfile.resume}
             'Focus on the candidate\'s specific experience, skills mentioned in their profile, and practical scenarios related to their background.';
 
         console.log(`[${requestId}] Using personalized prompt: ${personalizedPrompt}`);
+        console.log(`[${requestId}] User profile data availability:`, {
+            hasCurrentRole: !!userProfile?.currentRole,
+            hasExperience: !!userProfile?.experience,
+            hasSummary: !!userProfile?.summary,
+            hasSkills: !!(userProfile?.skills && userProfile.skills.length > 0),
+            hasWorkExperience: !!(userProfile?.workExperience && userProfile.workExperience.length > 0),
+            hasEducation: !!(userProfile?.education && userProfile.education.length > 0),
+            hasProjects: !!(userProfile?.projects && userProfile.projects.length > 0),
+            hasAchievements: !!(userProfile?.achievements && userProfile.achievements.length > 0),
+            hasLanguages: !!(userProfile?.languages && userProfile.languages.length > 0),
+            hasSocialLinks: !!(userProfile?.socialLinks && Object.keys(userProfile.socialLinks).length > 0),
+            hasResume: !!userProfile?.resume
+        });
 
         const { text: personalizedQuestionsText } = await generateText({
             model: google("gemini-2.0-flash-001"),
-            prompt: `Generate EXACTLY ${structure.personalizedQuestions} personalized interview questions based on the candidate's profile, resume, and the specific requirements below:
+            prompt: `Generate EXACTLY ${structure.personalizedQuestions} personalized interview questions based on the candidate's comprehensive profile, resume, and the specific requirements below:
 
 INTERVIEW STRUCTURE REQUIREMENTS:
 - Role: ${structure.role}
@@ -169,11 +228,23 @@ ${resume}
 Use specific details from their resume to create targeted questions.
 ` : ''}
 
+PERSONALIZATION GUIDELINES:
+1. Reference specific projects, achievements, or experiences from their profile
+2. Ask about technologies they've actually worked with based on their work experience
+3. Connect their past roles and responsibilities to the target position
+4. Leverage their educational background for relevant technical or domain questions
+5. Use their professional summary to understand their career trajectory and goals
+6. Ask about specific skills they've listed and how they've applied them
+7. Reference their achievements to understand their impact and problem-solving abilities
+8. Consider their experience level when framing question complexity
+9. Use their location, current role, and career progression for context-appropriate questions
+10. Build questions that assess both technical competency and cultural fit based on their background
+
 CRITICAL INSTRUCTIONS:
 1. Generate EXACTLY ${structure.personalizedQuestions} questions - no more, no less
-2. Each question must be personalized based on the candidate's actual background
+2. Each question MUST be personalized using specific details from the candidate's profile
 3. Use the personalization requirements above as your primary guide
-4. Reference specific details from their profile/resume when possible
+4. Reference concrete details from their work experience, projects, skills, or achievements
 5. Make questions relevant to the ${structure.role} role and ${structure.level} experience level
 6. Follow the ${structure.type} interview type approach
 7. Return ONLY a valid JSON object in this exact format: {"questions": ["Question 1", "Question 2", ...]}
@@ -184,12 +255,14 @@ CRITICAL INSTRUCTIONS:
 12. Make questions conversational and natural for voice interaction
 13. Ensure questions assess both technical skills and cultural fit for the role
 
-EXAMPLES OF GOOD PERSONALIZED QUESTIONS:
-- "I see you have ${userProfile?.experience || 'X years'} of experience with ${structure.techstack[0] || 'technology'}. Can you walk me through a challenging project where you used this?"
-- "Your background in ${userProfile?.currentRole || 'your current role'} is interesting. How would you apply those skills to ${structure.role}?"
-- "I noticed you've worked with ${structure.techstack.join(' and ')}. Which of these technologies do you feel most confident with and why?"
+EXAMPLES OF HIGHLY PERSONALIZED QUESTIONS:
+- "I see you worked as a ${userProfile?.currentRole || 'developer'} for ${userProfile?.experience || 'X years'}. Can you walk me through a specific project where you used ${structure.techstack[0] || 'relevant technology'} and the impact it had?"
+- "Your experience at ${userProfile?.workExperience?.[0]?.company || 'your previous company'} shows you worked on ${userProfile?.workExperience?.[0]?.description ? 'complex projects' : 'various challenges'}. How would you apply those learnings to ${structure.role}?"
+- "I noticed you have experience with ${userProfile?.skills?.[0] || 'specific technologies'}. Can you describe a challenging scenario where you had to optimize performance or solve a critical issue?"
+- "Your background in ${userProfile?.education?.[0]?.fieldOfStudy || 'your field'} combined with your ${userProfile?.experience || 'X years'} of experience is interesting. How has this academic foundation influenced your approach to ${structure.type.toLowerCase()} challenges?"
+- "Looking at your project '${userProfile?.projects?.[0]?.name || 'recent project'}' where you used ${userProfile?.projects?.[0]?.technologies?.join(' and ') || 'various technologies'}, what was the most technically challenging aspect?"
 
-Remember: Generate EXACTLY ${structure.personalizedQuestions} questions based on the personalization requirements and candidate profile.`,
+Remember: Every question should demonstrate that you've thoroughly reviewed their profile and are asking about their specific experiences, skills, and background.`,
         });
 
         // Parse and validate the generated personalized questions
@@ -298,19 +371,31 @@ Remember: Generate EXACTLY ${structure.personalizedQuestions} questions based on
             id: userId,
             currentRole: userProfile.currentRole || '',
             experience: userProfile.experience || '',
-            skills: userProfile.skills || [],
-            education: userProfile.education || '',
             location: userProfile.location || '',
             phone: userProfile.phone || '',
+            summary: userProfile.summary || '',
+            skills: userProfile.skills || [],
+            workExperience: userProfile.workExperience || [],
+            education: userProfile.education || [],
+            projects: userProfile.projects || [],
+            achievements: userProfile.achievements || [],
+            languages: userProfile.languages || [],
+            socialLinks: userProfile.socialLinks || {},
             resume: userProfile.resume || ''
         } : {
             id: userId,
             currentRole: '',
             experience: '',
-            skills: [],
-            education: '',
             location: '',
             phone: '',
+            summary: '',
+            skills: [],
+            workExperience: [],
+            education: [],
+            projects: [],
+            achievements: [],
+            languages: [],
+            socialLinks: {},
             resume: ''
         };
 

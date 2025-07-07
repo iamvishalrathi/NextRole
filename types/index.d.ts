@@ -48,10 +48,48 @@ interface Interview {
     id: string;
     currentRole?: string;
     experience?: string;
-    skills?: string;
-    education?: string;
     location?: string;
     phone?: string;
+    summary?: string;
+    skills?: string[];
+    workExperience?: {
+      company: string;
+      position: string;
+      location: string;
+      startDate: string;
+      endDate: string;
+      description: string;
+      isCurrentJob: boolean;
+    }[];
+    education?: {
+      institution: string;
+      degree: string;
+      fieldOfStudy: string;
+      startDate: string;
+      endDate: string;
+      grade?: string;
+    }[];
+    projects?: {
+      name: string;
+      description: string;
+      technologies: string[];
+      liveUrl?: string;
+      githubUrl?: string;
+    }[];
+    achievements?: {
+      title: string;
+      description: string;
+      date: string;
+      organization: string;
+      url?: string;
+    }[];
+    languages?: string[];
+    socialLinks?: {
+      linkedin?: string;
+      github?: string;
+      portfolio?: string;
+      twitter?: string;
+    };
     resume?: string;
   } | null;
 }
