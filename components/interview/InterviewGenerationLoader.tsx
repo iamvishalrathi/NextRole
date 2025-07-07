@@ -120,13 +120,6 @@ const InterviewGenerationLoader = ({ user, structureId }: InterviewGenerationLoa
         {/* Loading Animation */}
         <div className="mb-8">
           <div className="relative w-32 h-32 mx-auto mb-6">
-            <Image
-              src="/ai-avatar.png"
-              alt="AI Assistant"
-              width={128}
-              height={128}
-              className="rounded-full animate-pulse"
-            />
             <div className="absolute inset-0 border-4 border-primary-200/30 rounded-full animate-spin border-t-primary-200"></div>
           </div>
           
