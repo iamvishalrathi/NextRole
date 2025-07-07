@@ -21,11 +21,6 @@ const ResultsStats = ({ filteredCount, totalCount, filters }: ResultsStatsProps)
           {hasActiveFilters ? `${filteredCount} of ${totalCount}` : `${totalCount}`} 
           <span className="text-primary-300 font-normal ml-2">interviews</span>
         </h2>
-        {hasActiveFilters && (
-          <span className="px-3 py-1 bg-primary-500/20 text-primary-200 rounded-full text-sm font-medium border border-primary-500/30">
-            filtered
-          </span>
-        )}
       </div>
       
       {hasActiveFilters && (

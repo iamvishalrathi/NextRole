@@ -128,11 +128,6 @@ const SearchFilters = ({ searchParams, totalCount }: SearchFiltersProps) => {
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-primary-100">Filter Interviews</h2>
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-primary-300">Found:</span>
-              <span className="text-lg font-semibold text-primary-100">{totalCount}</span>
-              <span className="text-sm text-primary-300">interviews</span>
-            </div>
             <Button 
               variant="outline" 
               size="sm" 
