@@ -2,7 +2,7 @@ import React from 'react';
 import { getCurrentUser, getUserById } from '@/lib/actions/auth.action';
 import { getProfileByUserId } from '@/lib/actions/general.actions';
 import { redirect } from 'next/navigation';
-import ProfilePageClient from '@/components/user/Profile/ProfilePageClient';
+import ProfileInfoCard from '@/components/user/Profile/ProfileInfoCard';
 
 const UserProfilePage = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -20,17 +20,19 @@ const UserProfilePage = async ({ params }: RouteParams) => {
     redirect('/');
   }
 
-  // Check if profile is completed
+  // Get profile data
   const profile = await getProfileByUserId(id);
-  const isOwnProfile = currentUser.id === id;
 
   return (
-    <ProfilePageClient
-      currentUser={currentUser}
-      profileUser={profileUser}
-      profile={profile}
-      isOwnProfile={isOwnProfile}
-    />
+    <div className="min-h-screen pattern">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <ProfileInfoCard
+          currentUser={currentUser}
+          profileUser={profileUser}
+          profile={profile || undefined}
+        />
+      </div>
+    </div>
   );
 };
 
