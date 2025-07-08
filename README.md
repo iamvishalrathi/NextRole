@@ -108,7 +108,9 @@ NextRole is an AI-powered interview preparation platform designed to help job se
 ---
 
 ## 🔍 Website Preview
-![image](https://github.com/iamvishalrathi/NextRole/blob/main/public/sns.png)
+![image](https://github.com/iamvishalrathi/NextRole/blob/main/public/sns1.png)
+![image](https://github.com/iamvishalrathi/NextRole/blob/main/public/sns2.png)
+![image](https://github.com/iamvishalrathi/NextRole/blob/main/public/sns3.png)
 
 ---
 
