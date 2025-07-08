@@ -41,7 +41,7 @@
 ---
 
 ## 📍 Overview
-NextRole is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate customized interview questions, conduct realistic interview simulations, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
+NextRole is an AI-powered interview preparation platform designed to help job seekers practice and improve their interview skills. The application uses advanced AI technology to generate highly personalized interview questions based on the candidate's actual projects and experience, conduct realistic interview simulations with voice-based AI interviewers, and provide detailed feedback and scoring to help users identify their strengths and areas for improvement.
 
 ---
 
@@ -49,17 +49,22 @@ NextRole is an AI-powered interview preparation platform designed to help job se
 
 ### 1. Customized Interview Generation
 - 📝 Create personalized interview experiences based on:
-  - 💼 Job role (e.g., Frontend Developer, Data Scientist)
+  - 💼 Job role (e.g., Frontend Developer, Data Scientist, Full Stack Developer)
   - 📈 Experience level (Entry, Mid, Senior)
   - 🧩 Interview type (Behavioral, Technical, Mixed)
   - 🛠️ Tech stack (e.g., React, Node.js, MongoDB)
   - 🔢 Number of questions (1-20)
   - 🔒 Visibility settings (Public or Private)
+  - 🎯 **Highly Personalized Questions**: Full Stack Developer interviews now feature questions specifically tailored to the candidate's actual projects, coding experience, and technical implementations
+  - 📋 **Pre-built Interview Structures**: Access ready-to-use interview templates for various roles and experience levels
+  - 🔧 **Custom Question Prompts**: Generate questions based on specific candidate backgrounds and project experiences
 
 ### 2. AI-Powered Interview Simulation
 - 🎤 Voice-based interview conducted by an AI interviewer
 - 💬 Natural conversation flow with realistic questions
 - 📝 Real-time transcription of responses
+- ⚡ **Smart Loading Animations**: Progressive loading stages during interview generation with detailed status updates
+- 🔄 **Feedback Processing**: Elegant loading animations when processing interview responses and generating feedback
 
 ### 3. Comprehensive Feedback
 - 📊 Detailed performance analysis across multiple categories:
@@ -77,9 +82,16 @@ NextRole is an AI-powered interview preparation platform designed to help job se
 - 🌐 Access to public interviews created by other users
 - ⭐ Rating system for interview quality
 - 📈 Analytics for interview creators
+- 💼 **Dual Interview Categories**: Separate collections for Mock Interviews and Job-specific Interviews
+- 🎯 **Structure-based Generation**: Generate interviews from pre-built templates with personalized question generation
+- 🔍 **Enhanced Interview Discovery**: Browse and take interviews created by the community with improved filtering
 
 ### 5. Community Features
 - 🔎 Discover and practice with interviews created by other users
+- 🏢 **Job Interview Structures**: Dedicated interview templates for specific job openings with company details, CTC, and location
+- 📊 **Usage Analytics**: Track how many times interview structures have been used
+- 🎨 **Enhanced User Experience**: Improved loading states, better error handling, and smoother navigation
+- 🔧 **Developer-Focused Questions**: Specialized question sets for Full Stack Developers focusing on actual project experience and coding journey
 - 📤 Share your custom interviews with the community
 - 👥 View profiles of other users and their public interviews
 ---
