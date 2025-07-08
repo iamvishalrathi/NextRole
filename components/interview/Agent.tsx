@@ -26,6 +26,7 @@ const Agent = ({userName , userId, userInitial ,avatarColor  , type , interviewI
 
     const router = useRouter();
     const [isSpeaking , setIsSpeaking] = useState(false);
+    const [isProcessingFeedback, setIsProcessingFeedback] = useState(false);
 
     const [callStatus ,setCallStatus]  = useState<CallStatus>(CallStatus.INACTIVE);
 
@@ -70,12 +71,15 @@ const Agent = ({userName , userId, userInitial ,avatarColor  , type , interviewI
         const handleGenerateFeedback = async(messages : SavedMessage[]) => {
             console.log("Generate feedback here .");
             
+            setIsProcessingFeedback(true);
 
             const {success , feedbackId : id , score} = await createFeedback({
                 interviewId : interviewId!,
                 userId : userId!,
                 transcript : messages ,
             })
+
+            setIsProcessingFeedback(false);
 
             if(score){
                 toast.success(`Your current score came out to be ${score} which is less as compared to previous attempt .`);
@@ -101,7 +105,7 @@ const Agent = ({userName , userId, userInitial ,avatarColor  , type , interviewI
                 handleGenerateFeedback(messages);
             }
         }
-    },[messages , callStatus , type , userId])
+    },[messages , callStatus , type , userId, interviewId, router])
 
     const handleCall = async ()=>{
         setCallStatus(CallStatus.CONNECTING);
@@ -177,6 +181,21 @@ const Agent = ({userName , userId, userInitial ,avatarColor  , type , interviewI
                 <div className='transcript' >
                     <p key={latestMessage} className={cn('transition-opacity duration-500 opacity-0','animate-fadeIn opacity-100')} >
                         {latestMessage}
+                    </p>
+                </div>
+            </div>
+        )}
+
+        {/* Loading animation when processing feedback */}
+        {isProcessingFeedback && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-dark-200 rounded-2xl p-8 max-w-md mx-4 text-center">
+                    <div className="flex justify-center mb-4">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-100"></div>
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary-100 mb-2">Processing Your Interview</h3>
+                    <p className="text-light-400">
+                        We&apos;re analyzing your responses and generating personalized feedback. This may take a few moments...
                     </p>
                 </div>
             </div>
